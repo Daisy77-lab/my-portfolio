@@ -17,13 +17,64 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
       - name: Restore and verify static assets
         run: python3 .deployment/assemble.py
       - uses: actions/upload-pages-artifact@v3
+        id: upload
         with:
           path: _site
-      - uses: actions/deploy-pages@v4.0.0
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Deploy the verified artifact
+        uses: actions/github-script@v7
         id: deployment
+        env:
+          PAGES_ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+        with:
+          script: |
+            // Use the uploader's exact ID instead of the eventually consistent name listing.
+            const artifactId = Number(process.env.PAGES_ARTIFACT_ID);
+            if (!Number.isSafeInteger(artifactId) || artifactId <= 0) {
+              core.setFailed('The upload did not return an artifact ID.');
+              return;
+            }
+            const repo = context.repo;
+            const oidcToken = await core.getIDToken();
+            core.setSecret(oidcToken);
+            let deployment;
+            for (let attempt = 0; attempt < 6; attempt++) {
+              try {
+                const result = await github.request('POST /repos/{owner}/{repo}/pages/deployments', {
+                  ...repo, artifact_id: artifactId, pages_build_version: context.sha, oidc_token: oidcToken
+                });
+                deployment = result.data;
+                break;
+              } catch (error) {
+                if (![404, 409, 500, 502, 503].includes(error.status) || attempt === 5) {
+                  core.setFailed(`Pages deployment could not start: ${error.message}`);
+                  return;
+                }
+                await new Promise(resolve => setTimeout(resolve, 5000));
+              }
+            }
+            core.setOutput('page_url', deployment.page_url);
+            const deploymentId = deployment.id || context.sha;
+            for (let attempt = 0; attempt < 120; attempt++) {
+              await new Promise(resolve => setTimeout(resolve, 5000));
+              const { data } = await github.request('GET /repos/{owner}/{repo}/pages/deployments/{deploymentId}', {
+                ...repo, deploymentId
+              });
+              if (data.status === 'succeed') {
+                core.info('GitHub Pages deployment succeeded.');
+                return;
+              }
+              if (['deployment_failed', 'deployment_perms_error', 'deployment_content_failed', 'deployment_cancelled', 'deployment_lost'].includes(data.status)) {
+                core.setFailed(`Pages deployment failed: ${data.status}`);
+                return;
+              }
+            }
+            await github.request('POST /repos/{owner}/{repo}/pages/deployments/{deploymentId}/cancel', { ...repo, deploymentId });
+            core.setFailed('Pages deployment timed out.');
