@@ -56,10 +56,10 @@ window.PALMX_RESEARCH_GALLERY = [
   function show(index){
     current=(index+scenes.length)%scenes.length;
     const item=window.PALMX_RESEARCH_GALLERY[10+current];
-    shot.src=item.src;
+    shot.src=window.portfolioMedia.preview(item.src);
     shot.alt=item.label;
-    middle.src=window.PALMX_RESEARCH_GALLERY[10+(current+1)%scenes.length].src;
-    back.src=window.PALMX_RESEARCH_GALLERY[10+(current+2)%scenes.length].src;
+    middle.src=window.portfolioMedia.preview(window.PALMX_RESEARCH_GALLERY[10+(current+1)%scenes.length].src);
+    back.src=window.portfolioMedia.preview(window.PALMX_RESEARCH_GALLERY[10+(current+2)%scenes.length].src);
     enlarge.dataset.imageIndex=String(15+current);
     enlarge.setAttribute('aria-label','放大查看：'+item.label);
     title.textContent=scenes[current][0];

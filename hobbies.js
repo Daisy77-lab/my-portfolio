@@ -20,6 +20,8 @@
     const media = button.querySelector('.hobby-media').cloneNode(true);
     media.querySelectorAll('img').forEach((image, index) => {
       image.loading = 'eager';
+      const full = image.dataset.fullSrc || image.dataset.src;
+      if (full) { image.src = full; delete image.dataset.src; }
       const original = button.querySelectorAll('img')[index];
       image.alt = window.portfolioI18n?.originalAttribute(original, 'alt') || original.alt;
     });
@@ -44,6 +46,9 @@
         slide.setAttribute('aria-hidden', String(i !== selected));
         buttons[i].tabIndex = i === selected ? 0 : -1;
         thumbnails[i].setAttribute('aria-pressed', String(i === selected));
+      });
+      slides.filter(slide => slide.matches('.is-current, .is-previous, .is-next')).forEach(slide => {
+        slide.querySelectorAll('[data-src]').forEach(image => window.portfolioMedia?.load(image));
       });
       album.querySelector('.hobby-album-count').textContent = position(selected, buttons.length);
       album.querySelector('.hobby-album-title').textContent = buttons[selected].dataset.title;
