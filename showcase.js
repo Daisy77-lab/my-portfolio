@@ -12,6 +12,10 @@
   const viewerBody = dialog.querySelector('.showcase-viewer-body');
   const viewerImage = dialog.querySelector('[data-showcase-full]');
   const zoom = dialog.querySelector('[data-showcase-zoom]');
+  const viewerVideo = document.createElement('video');
+  viewerVideo.muted = true; viewerVideo.loop = true; viewerVideo.playsInline = true;
+  viewerVideo.hidden = true; viewerVideo.preload = 'none';
+  viewerBody.prepend(viewerVideo);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let motionPlaying = !reducedMotion.matches;
   const viewerMotion = document.createElement('button');
@@ -23,13 +27,16 @@
   let pointerStart = null, wheelEventAt = 0, ignoreClickUntil = 0;
   const escape = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
+  const thumbnail = src => src.replace(/\.webp$/, '-thumb.webp');
+
   function cropMedia(scene, image) {
     return scene.crop === 'community-browser' ? '<span class="showcase-cropped-media">' + image + '</span>' : image;
   }
 
   function media(key, index) {
     const scene = data[key].scenes[index];
-    if (scene.src) return cropMedia(scene, '<img src="' + escape(scene.poster && !motionPlaying ? scene.poster : scene.src) + '"' + (scene.poster ? ' data-motion-src="' + escape(scene.src) + '" data-motion-poster="' + escape(scene.poster) + '"' : '') + ' alt="' + escape(scene.alt) + '" loading="lazy"' + (key === 'pc' ? ' draggable="false"' : '') + '>');
+    if (scene.poster) return '<video data-src="' + escape(scene.src) + '" data-motion-src="' + escape(scene.src) + '" data-playing="' + motionPlaying + '" poster="' + escape(scene.poster) + '" muted loop playsinline preload="none" aria-label="' + escape(scene.alt) + '"></video>';
+    if (scene.src) return cropMedia(scene, '<img data-src="' + escape(scene.poster && !motionPlaying ? scene.poster : scene.src) + '"' + (scene.poster ? ' data-motion-src="' + escape(scene.src) + '" data-motion-poster="' + escape(scene.poster) + '"' : '') + ' alt="' + escape(scene.alt) + '" loading="lazy"' + (key === 'pc' ? ' draggable="false"' : '') + '>');
     return '<div class="showcase-placeholder"><span>' + data[key].name + '</span><strong>' + escape(scene.title) + '</strong><small>页面素材位</small></div>';
   }
 
@@ -61,7 +68,7 @@
 
   function pcNavigation() {
     return '<div class="pc-gallery-nav"><div class="pc-thumbnails" role="group" aria-label="PC 图集缩略图">' + data.pc.scenes.map((scene, index) =>
-      '<button type="button" data-key="pc" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(scene.title) + '" title="' + escape(scene.title) + '" aria-pressed="' + (selected.pc === index) + '"><img src="' + escape(scene.src) + '" alt="" loading="lazy"></button>'
+      '<button type="button" data-key="pc" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(scene.title) + '" title="' + escape(scene.title) + '" aria-pressed="' + (selected.pc === index) + '"><img data-src="' + escape(thumbnail(scene.src)) + '" alt="" loading="lazy"></button>'
     ).join('') + '</div><span data-pc-count aria-live="polite">' + String(selected.pc + 1).padStart(2, '0') + ' / ' + data.pc.scenes.length + '</span></div>';
   }
 
@@ -78,7 +85,7 @@
   function hmiNavigation() {
     const scene = data.hmi.scenes[selected.hmi];
     return '<div class="hmi-gallery-nav"><div class="hmi-thumbnails" role="group" aria-label="HMI 图集缩略图">' + data.hmi.scenes.map((item, index) =>
-      '<button type="button" data-key="hmi" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(item.title) + '" title="' + escape(item.title) + '" aria-pressed="' + (selected.hmi === index) + '"><img src="' + escape(item.poster || item.src) + '" alt="" loading="lazy">' + (item.poster ? '<span class="hmi-thumbnail-play" aria-hidden="true">▶</span>' : '') + '</button>'
+      '<button type="button" data-key="hmi" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(item.title) + '" title="' + escape(item.title) + '" aria-pressed="' + (selected.hmi === index) + '"><img data-src="' + escape(thumbnail(item.poster || item.src)) + '" alt="" loading="lazy">' + (item.poster ? '<span class="hmi-thumbnail-play" aria-hidden="true">▶</span>' : '') + '</button>'
     ).join('') + '</div><div class="hmi-gallery-meta"><p class="hmi-gallery-caption" data-hmi-caption aria-live="polite" aria-atomic="true">' + hmiCaption() + '</p><button type="button" class="hmi-motion-toggle" data-motion-toggle data-playing="' + motionPlaying + '" aria-label="' + (motionPlaying ? '暂停动图' : '播放动图') + '"' + (scene.poster ? '' : ' hidden') + '>' + (motionPlaying ? '暂停动图' : '播放动图') + '</button></div></div>';
   }
 
@@ -94,7 +101,7 @@
 
   function mobileFrame() {
     const scene = mobileScene();
-    return '<button type="button" class="ecosystem-phone" data-app-device aria-label="放大查看 App ' + escape(scene.title) + '"><img src="' + scene.src + '" alt="' + escape(scene.alt) + '" loading="lazy" draggable="false"></button>';
+    return '<button type="button" class="ecosystem-phone" data-app-device aria-label="放大查看 App ' + escape(scene.title) + '"><img data-src="' + scene.src + '" alt="' + escape(scene.alt) + '" loading="lazy" draggable="false"></button>';
   }
 
   function mobileCaption() {
@@ -110,7 +117,7 @@
 
   function communityNavigation() {
     return '<div class="community-gallery-nav"><div class="community-thumbnails" role="group" aria-label="Community 图集缩略图">' + data.app.scenes.map((scene, index) =>
-      '<button type="button" data-key="app" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(scene.title) + '" title="' + escape(scene.title) + '" aria-pressed="' + (selected.app === index) + '">' + cropMedia(scene, '<img src="' + escape(scene.src) + '" alt="" loading="lazy">') + '</button>'
+      '<button type="button" data-key="app" data-scene="' + index + '" aria-label="查看 ' + (index + 1) + '：' + escape(scene.title) + '" title="' + escape(scene.title) + '" aria-pressed="' + (selected.app === index) + '">' + cropMedia(scene, '<img data-src="' + escape(thumbnail(scene.src)) + '" alt="" loading="lazy">') + '</button>'
     ).join('') + '</div><div class="community-caption" data-community-caption aria-live="polite" aria-atomic="true">' + communityCaption() + '</div></div>';
   }
 
@@ -221,17 +228,23 @@
     crop.hidden = !cropped;
     if (cropped) crop.append(viewerImage);
     else viewerBody.prepend(viewerImage);
-    viewerImage.hidden = !scene.src;
+    viewerImage.hidden = !scene.src || !!scene.poster;
+    viewerVideo.pause();
+    viewerVideo.hidden = !scene.poster;
+    if (scene.poster) {
+      viewerVideo.poster = scene.poster; viewerVideo.src = scene.src;
+      viewerVideo.dataset.motionSrc = scene.src; viewerVideo.dataset.playing = String(motionPlaying);
+    } else { viewerVideo.removeAttribute('src'); delete viewerVideo.dataset.motionSrc; }
     let slot = viewerBody.querySelector('.showcase-viewer-slot');
     if (!slot) { slot = document.createElement('div'); slot.className = 'showcase-viewer-slot'; viewerBody.append(slot); }
     slot.hidden = !!scene.src;
-    if (scene.src) { viewerImage.src = scene.poster && !motionPlaying ? scene.poster : scene.src; viewerImage.alt = scene.alt; }
-    else slot.innerHTML = media(key, selected[key]);
+    if (scene.src && !scene.poster) { viewerImage.src = scene.poster && !motionPlaying ? scene.poster : scene.src; viewerImage.alt = scene.alt; }
+    else if (!scene.src) slot.innerHTML = media(key, selected[key]);
     viewerMotion.hidden = !scene.poster;
     viewerMotion.textContent = motionPlaying ? '暂停动图' : '播放动图';
     if (scene.poster) {
-      viewerImage.dataset.motionSrc = scene.src;
-      viewerImage.dataset.motionPoster = scene.poster;
+      delete viewerImage.dataset.motionSrc;
+      delete viewerImage.dataset.motionPoster;
     } else {
       delete viewerImage.dataset.motionSrc;
       delete viewerImage.dataset.motionPoster;
@@ -245,6 +258,7 @@
     savedOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     dialog.showModal();
+    if (scene.poster && motionPlaying) viewerVideo.play().catch(() => {});
     viewerBody.scrollTo(0, 0);
     dialog.querySelector('[data-showcase-close]').focus();
   }
@@ -272,8 +286,9 @@
   });
   function toggleMotion() {
     motionPlaying = !motionPlaying;
-    document.querySelectorAll('[data-motion-src]').forEach(img => {
-      img.src = motionPlaying ? img.dataset.motionSrc : img.dataset.motionPoster;
+    document.querySelectorAll('video[data-motion-src]').forEach(video => {
+      video.dataset.playing = String(motionPlaying);
+      window.portfolioMedia.syncVideo(video);
     });
     document.querySelectorAll('[data-motion-toggle]').forEach(button => {
       button.textContent = motionPlaying ? '暂停动图' : '播放动图';
@@ -396,6 +411,7 @@
   });
   dialog.querySelector('[data-showcase-close]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => {
+    viewerVideo.pause(); viewerVideo.removeAttribute('src'); viewerVideo.load();
     document.body.style.overflow = savedOverflow;
     if (opener && opener.isConnected) opener.focus({preventScroll: true});
   });

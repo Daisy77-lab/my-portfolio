@@ -114,5 +114,23 @@
       ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0018.part",
       ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0019.part"
     ]
+  },
+  {
+    "path": "assets/anker/listing-web.mp4",
+    "sha256": "803ce80b48ebbe5731c14f553d677d34b2534ab6801231dc113f378b44820552",
+    "parts": [
+      ".deployment/chunks/803ce80b48ebbe5731c14f553d677d34b2534ab6801231dc113f378b44820552/0000.part",
+      ".deployment/chunks/803ce80b48ebbe5731c14f553d677d34b2534ab6801231dc113f378b44820552/0001.part",
+      ".deployment/chunks/803ce80b48ebbe5731c14f553d677d34b2534ab6801231dc113f378b44820552/0002.part"
+    ]
+  },
+  {
+    "path": "assets/palmx-hmi-workflow-web.mp4",
+    "sha256": "aed2a5d9e0f78e243962274a41e786353cec2721245c0c11112e9fc109d850d4",
+    "parts": [
+      ".deployment/chunks/aed2a5d9e0f78e243962274a41e786353cec2721245c0c11112e9fc109d850d4/0000.part",
+      ".deployment/chunks/aed2a5d9e0f78e243962274a41e786353cec2721245c0c11112e9fc109d850d4/0001.part",
+      ".deployment/chunks/aed2a5d9e0f78e243962274a41e786353cec2721245c0c11112e9fc109d850d4/0002.part"
+    ]
   }
 ]

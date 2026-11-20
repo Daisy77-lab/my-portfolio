@@ -1,25 +1,33 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<script src="i18n-init.js?v=1120"></script>
+<script>(() => {
+  const requested = new URLSearchParams(location.search).get('lang');
+  let saved;
+  try { saved = localStorage.getItem('lidaiyu-portfolio-language'); } catch {}
+  document.documentElement.lang = (requested === 'en' || (requested !== 'zh' && saved === 'en')) ? 'en' : 'zh-CN';
+})();
+</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Daisy Li 在 PalmX 的产品工作：从用户研究、信息架构与 AI-native 方案，到三端体验优化和 AI 辅助交付。">
 <meta name="theme-color" content="#f3f5f3"><title>PalmX G1 Hybrid — Daisy Li 产品经理作品集</title>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="story.css?v=1120-compact-hero2">
-<link rel="stylesheet" href="palmx-overview.css?v=1120-jewelry-studio5">
-<link rel="stylesheet" href="research.css?v=rhythm-1119">
-<link rel="stylesheet" href="architecture.css?v=rhythm-1119">
-<link rel="stylesheet" href="showcase.css?v=1120-locale2">
-<link rel="stylesheet" href="delivery.css?v=1120-codex-full">
-<link rel="stylesheet" href="interaction.css?v=1120-locale2">
-<link rel="stylesheet" href="other-works.css?v=1120-website-tour">
-<script src="content.js?v=1120-locale3" defer></script><script src="research.js?v=1120-hmi-label" defer></script><script src="app.js?v=1120-locale2" defer></script>
-<script src="other-works.js?v=1120-autoplay2" defer></script>
-<script src="showcase-data.js?v=community-1119" defer></script><script src="showcase.js?v=community-1119" defer></script>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="bundles/palmx.4dba2ee077.css">
 
-<link rel="stylesheet" href="i18n.css?v=1120-layout-audit3">
-<script src="i18n-en.js?v=1120-locale8" defer></script>
-<script src="i18n.js?v=1120-locale6" defer></script>
+
+
+
+
+
+
+<script src="bundles/palmx.7720628dc3.js" defer></script>
+
+
+
+
+
+
+
+
 </head>
 <body>
 <a class="skip-link" href="#main">跳到主要内容</a>
@@ -38,7 +46,7 @@
       <p>面向海外创客与小型工作室，通过 AI 辅助规划与多端协同，降低从设计到加工的使用门槛。</p>
     </div>
     <figure>
-      <img src="assets/palmx-jewelry-studio-v3.png" alt="PalmX G1 Hybrid 放置于珠宝工作室的场景概念图，设备与人物处于同一工作区，人物作为尺度参考" width="1536" height="1024" fetchpriority="high">
+      <img src="assets/palmx-jewelry-studio-v3.webp" srcset="assets/palmx-jewelry-studio-v3-small.webp 640w, assets/palmx-jewelry-studio-v3.webp 1280w" sizes="(max-width: 700px) 86vw, 540px" alt="PalmX G1 Hybrid 放置于珠宝工作室的场景概念图，设备与人物处于同一工作区，人物作为尺度参考" width="1536" height="1024" fetchpriority="high">
       <figcaption>珠宝工作室 · 场景概念图</figcaption>
     </figure>
   </header>
@@ -61,17 +69,17 @@
           <p>结合竞品体验、工厂实操、工坊走访与用户访谈，梳理操作痛点、用户画像和任务流程。</p>
           <dl class="research-counts"><div><dt>目标用户访谈</dt><dd><strong>20+</strong> 位</dd></div><div><dt>竞品调研</dt><dd>约 <strong>14</strong> 家</dd></div></dl>
         </div>
-        <figure><button class="research-photo" data-image-index="5" aria-label="放大查看 Makera 竞品体验主图"><img src="assets/research/makera-field.jpg" alt="我在 Makera 设备旁观察加工，桌上放着电脑、工具和午餐" width="1080" height="1440" loading="lazy"></button><figcaption>Makera · 我的竞品体验记录</figcaption></figure>
+        <figure><button class="research-photo" data-image-index="5" aria-label="放大查看 Makera 竞品体验主图"><img data-src="assets/research/makera-field.webp" alt="我在 Makera 设备旁观察加工，桌上放着电脑、工具和午餐" width="1080" height="1440" loading="lazy"></button><figcaption>Makera · 我的竞品体验记录</figcaption></figure>
       </div>
 
       <section class="research-block" id="hands-on-research" aria-labelledby="hands-on-title">
         <div class="research-block-heading"><h3 id="hands-on-title">竞品体验与工厂实操</h3><p>关注装夹判断、加工反馈与异常恢复。</p></div>
         <div class="research-photo-strip" aria-label="竞品与工业 CNC 实操照片">
-          <figure><button class="research-photo" data-image-index="6" aria-label="放大查看 Makera 加工后取件"><img src="assets/research/makera-clamping.jpg" alt="加工完成后，从 Makera 设备中取出工件" width="1350" height="1800" loading="lazy"></button><figcaption>Makera · 加工后取件</figcaption></figure>
-          <figure><button class="research-photo" data-image-index="8" aria-label="放大查看 Makera 切削过程"><img src="assets/research/makera-cutting.jpg" alt="Makera 加工舱内的刀具、工件与切屑" width="1350" height="1800" loading="lazy"></button><figcaption>Makera · 加工观察</figcaption></figure>
-          <figure><button class="research-photo" data-image-index="27" aria-label="放大查看 Xhorse 木雕加工"><img src="assets/research/xhorse-carving.jpg" alt="Xhorse 设备内正在加工的木雕人物，旁边可见刀具与夹具" width="1080" height="1440" loading="lazy"></button><figcaption>Xhorse · 木雕加工</figcaption></figure>
-          <figure><button class="research-photo" data-image-index="10" aria-label="放大查看工业 CNC 控制台操作"><img src="assets/research/industrial-console.jpg" alt="车间内在工业 CNC 控制台旁操作与观察" width="1350" height="1800" loading="lazy"></button><figcaption>工业 CNC · 现场操作</figcaption></figure>
-          <figure><button class="research-photo" data-image-index="12" aria-label="放大查看工件找正"><img src="assets/research/industrial-alignment.jpg" alt="观察百分表读数并调整工件位置" width="1350" height="1800" loading="lazy"></button><figcaption>工业 CNC · 工件找正</figcaption></figure>
+          <figure><button class="research-photo" data-image-index="6" aria-label="放大查看 Makera 加工后取件"><img data-src="assets/research/makera-clamping.webp" alt="加工完成后，从 Makera 设备中取出工件" width="1350" height="1800" loading="lazy"></button><figcaption>Makera · 加工后取件</figcaption></figure>
+          <figure><button class="research-photo" data-image-index="8" aria-label="放大查看 Makera 切削过程"><img data-src="assets/research/makera-cutting.webp" alt="Makera 加工舱内的刀具、工件与切屑" width="1350" height="1800" loading="lazy"></button><figcaption>Makera · 加工观察</figcaption></figure>
+          <figure><button class="research-photo" data-image-index="27" aria-label="放大查看 Xhorse 木雕加工"><img data-src="assets/research/xhorse-carving.webp" alt="Xhorse 设备内正在加工的木雕人物，旁边可见刀具与夹具" width="1080" height="1440" loading="lazy"></button><figcaption>Xhorse · 木雕加工</figcaption></figure>
+          <figure><button class="research-photo" data-image-index="10" aria-label="放大查看工业 CNC 控制台操作"><img data-src="assets/research/industrial-console.webp" alt="车间内在工业 CNC 控制台旁操作与观察" width="1350" height="1800" loading="lazy"></button><figcaption>工业 CNC · 现场操作</figcaption></figure>
+          <figure><button class="research-photo" data-image-index="12" aria-label="放大查看工件找正"><img data-src="assets/research/industrial-alignment.webp" alt="观察百分表读数并调整工件位置" width="1350" height="1800" loading="lazy"></button><figcaption>工业 CNC · 工件找正</figcaption></figure>
         </div>
         <div class="research-inline-links"><a href="research/factory-diary.html" target="_blank" rel="noopener noreferrer">三天工厂实操日记</a><button data-image-index="7" aria-label="查看其他实操照片">更多实操照片</button></div>
       </section>
@@ -82,9 +90,9 @@
         <div class="workshop-album" data-workshop-album role="region" aria-roledescription="相册" aria-label="CrashSpace 工坊照片相册">
           <figure class="workshop-main">
             <div class="workshop-stack">
-              <div class="workshop-card workshop-card-back" aria-hidden="true"><img data-workshop-back src="assets/research/workshop-laser.jpg" alt="" width="1080" height="1440" loading="lazy"></div>
-              <div class="workshop-card workshop-card-middle" aria-hidden="true"><img data-workshop-middle src="assets/research/workshop-cnc.jpg" alt="" width="1080" height="1440" loading="lazy"></div>
-              <button class="workshop-card workshop-card-front" data-workshop-flip aria-label="翻到下一张工坊照片"><img data-workshop-shot src="assets/research/workshop-exterior.jpg" alt="CrashSpace · 工坊外观" width="1080" height="1440" loading="lazy"><span aria-hidden="true">↗</span></button>
+              <div class="workshop-card workshop-card-back" aria-hidden="true"><img data-workshop-back data-src="assets/research/workshop-laser.webp" alt="" width="1080" height="1440" loading="lazy"></div>
+              <div class="workshop-card workshop-card-middle" aria-hidden="true"><img data-workshop-middle data-src="assets/research/workshop-cnc.webp" alt="" width="1080" height="1440" loading="lazy"></div>
+              <button class="workshop-card workshop-card-front" data-workshop-flip aria-label="翻到下一张工坊照片"><img data-workshop-shot data-src="assets/research/workshop-exterior.webp" alt="CrashSpace · 工坊外观" width="1080" height="1440" loading="lazy"><span aria-hidden="true">↗</span></button>
             </div>
             <figcaption>点击照片翻页</figcaption>
           </figure>
@@ -98,9 +106,9 @@
       <section class="research-block" id="research-synthesis" aria-labelledby="synthesis-title">
         <div class="research-block-heading"><h3 id="synthesis-title">调研归纳</h3></div>
         <div class="research-documents">
-          <figure><button class="research-photo research-document-image" data-image-index="25" aria-label="放大查看操作痛点热力图"><img src="assets/research/pain-map.jpg" alt="14 个加工环节与 8 类痛点交叉整理的研究热力图，包含一手与二手来源说明" width="1265" height="1907" loading="lazy"></button><figcaption><strong>操作痛点热力图</strong></figcaption></figure>
-          <figure><button class="research-photo research-document-image" data-image-index="26" aria-label="放大查看三类用户画像"><img src="assets/research/user-personas.jpg" alt="用户旅程 v0.2 草案，区分转化者、成长者和评估者" width="1265" height="1078" loading="lazy"></button><figcaption><strong>用户画像与旅程</strong></figcaption></figure>
-          <figure><button class="research-photo research-document-image" data-image-index="23" aria-label="放大查看 HMI 用户行为与系统行为 FigJam 流程原稿"><img src="assets/research/hmi-flow-figjam.png" alt="PalmX HMI 校准流程与七类异常恢复路径" width="2030" height="1347" loading="lazy"></button><figcaption><strong>用户动作与异常恢复</strong></figcaption></figure>
+          <figure><button class="research-photo research-document-image" data-image-index="25" aria-label="放大查看操作痛点热力图"><img data-src="assets/research/pain-map.webp" alt="14 个加工环节与 8 类痛点交叉整理的研究热力图，包含一手与二手来源说明" width="1265" height="1907" loading="lazy"></button><figcaption><strong>操作痛点热力图</strong></figcaption></figure>
+          <figure><button class="research-photo research-document-image" data-image-index="26" aria-label="放大查看三类用户画像"><img data-src="assets/research/user-personas.webp" alt="用户旅程 v0.2 草案，区分转化者、成长者和评估者" width="1265" height="1078" loading="lazy"></button><figcaption><strong>用户画像与旅程</strong></figcaption></figure>
+          <figure><button class="research-photo research-document-image" data-image-index="23" aria-label="放大查看 HMI 用户行为与系统行为 FigJam 流程原稿"><img data-src="assets/research/hmi-flow-figjam.webp" alt="PalmX HMI 校准流程与七类异常恢复路径" width="2030" height="1347" loading="lazy"></button><figcaption><strong>用户动作与异常恢复</strong></figcaption></figure>
         </div>
         <p class="research-takeaway"><span>HMW</span>如何通过 AI-native 的软件体验，将复杂的加工逻辑转化为清晰、可控的操作流程？</p>
       </section>
@@ -116,14 +124,14 @@
         <figure class="ia-pool-evidence">
           <figcaption><strong>动态需求池</strong><p>按场景明确优先级与终端归属。</p></figcaption>
           <button type="button" class="ia-evidence-shot" data-image-index="28" aria-label="放大查看动态需求池截图">
-            <img src="assets/research/requirements-pool.jpg" alt="需求池节选：按痛点列出需求、优先级、所属终端与页面、来源和状态" width="1280" height="559" loading="lazy">
+            <img data-src="assets/research/requirements-pool.webp" alt="需求池节选：按痛点列出需求、优先级、所属终端与页面、来源和状态" width="1280" height="559" loading="lazy">
             <span>放大查看 <span aria-hidden="true">＋</span></span>
           </button>
         </figure>
         <figure class="ia-figjam-evidence">
           <figcaption><strong>HMI 架构与任务流程 <span>FigJam</span></strong><p>从一级入口展开任务与操作流程。</p></figcaption>
           <button type="button" class="ia-evidence-shot" data-image-index="29" aria-label="放大查看 HMI FigJam 信息架构">
-            <img src="assets/research/hmi2-figjam-overview.jpg" alt="HMI FigJam 画布概览：导航与全局规则、项目选择、开始加工、原点核对和加工中流程" width="1174" height="510" loading="lazy">
+            <img data-src="assets/research/hmi2-figjam-overview.webp" alt="HMI FigJam 画布概览：导航与全局规则、项目选择、开始加工、原点核对和加工中流程" width="1174" height="510" loading="lazy">
             <span>放大查看 <span aria-hidden="true">＋</span></span>
           </button>
         </figure>
@@ -181,7 +189,7 @@
           <button type="button" id="showcase-tab-app" role="tab" aria-selected="false" aria-controls="showcase-panel-app" tabindex="-1" data-terminal="app"><strong>App + 社区</strong><span>创作与连接原型</span></button>
         </div>
         <div data-showcase-panels></div>
-        <noscript><p class="showcase-no-script">开启 JavaScript 可切换三端展示。</p><img src="assets/palmx-pc-current.jpg" alt="PalmX PC 现有界面预览" loading="lazy"></noscript>
+        <noscript><p class="showcase-no-script">开启 JavaScript 可切换三端展示。</p><img data-src="assets/palmx-pc-current.webp" alt="PalmX PC 现有界面预览" loading="lazy"></noscript>
       </div>
       <dialog class="showcase-viewer" aria-labelledby="showcase-viewer-title">
         <div class="showcase-viewer-top"><p id="showcase-viewer-title"></p><button type="button" data-showcase-close aria-label="关闭界面预览">关闭 ×</button></div>
@@ -198,22 +206,22 @@
         <article class="interaction-evidence-item">
           <header><h3>智能旋钮交互</h3><p>替代传统手轮，聚焦倍率与步进。</p></header>
           <div class="interaction-media interaction-knob-preview">
-            <figure><svg viewBox="1006 64 492 492" role="img" aria-label="旋钮倍率选择：×1、×10、×100，当前为 ×10"><image href="assets/palmx-knob-rate.jpg" width="2504" height="1343"/></svg><figcaption>倍率调节</figcaption></figure>
-            <figure><svg viewBox="1006 64 492 492" role="img" aria-label="旋钮步进微调：X 轴坐标 +0.010，每格位移 0.01 mm"><image href="assets/palmx-knob-step.jpg" width="2504" height="1343"/></svg><figcaption>步进微调</figcaption></figure>
+            <figure><svg viewBox="1006 64 492 492" role="img" aria-label="旋钮倍率选择：×1、×10、×100，当前为 ×10"><image data-href="assets/palmx-knob-rate.webp" width="2504" height="1343"/></svg><figcaption>倍率调节</figcaption></figure>
+            <figure><svg viewBox="1006 64 492 492" role="img" aria-label="旋钮步进微调：X 轴坐标 +0.010，每格位移 0.01 mm"><image data-href="assets/palmx-knob-step.webp" width="2504" height="1343"/></svg><figcaption>步进微调</figcaption></figure>
           </div>
           <footer><span>交互原型</span></footer>
         </article>
         <article class="interaction-evidence-item">
           <header><h3>样机交互测试</h3><p>观察机旁操作，记录使用反馈。</p></header>
           <button type="button" class="interaction-media interaction-photo-preview" data-image-index="35" aria-label="放大查看样机交互测试现场照片">
-            <img src="assets/palmx-prototype-test.svg" width="1650" height="1236" alt="在样机旁使用电脑进行交互测试，右侧样机已做保密处理" loading="lazy">
+            <img data-src="assets/palmx-prototype-test.svg" width="1650" height="1236" alt="在样机旁使用电脑进行交互测试，右侧样机已做保密处理" loading="lazy">
             <span aria-hidden="true">放大查看 ＋</span>
           </button>
         </article>
         <article class="interaction-evidence-item">
           <header><h3>异常情况梳理</h3><p>归类触发场景、原因与处置方式。</p></header>
           <button type="button" class="interaction-media interaction-table-preview" data-image-index="30" aria-label="放大查看 CNC 全量报警异常清单">
-            <svg viewBox="70 430 2720 1310" role="img" aria-label="CNC 全量报警异常清单，包含运动控制、机床、工艺、耗材与损坏五类"><image href="assets/palmx-alarm-inventory.png" width="2940" height="1846"/></svg>
+            <svg viewBox="70 430 2720 1310" role="img" aria-label="CNC 全量报警异常清单，包含运动控制、机床、工艺、耗材与损坏五类"><image data-href="assets/palmx-alarm-inventory.webp" width="2940" height="1846"/></svg>
             <span aria-hidden="true">放大查看 ＋</span>
           </button>
           <footer><span>5 类异常 · 510 条记录</span></footer>
@@ -271,21 +279,21 @@
       <div class="ai-practice-gallery" role="group" aria-label="AI 协作实践截图">
         <figure>
           <button type="button" class="ai-practice-preview" data-image-index="31" aria-label="放大查看 AI 通过 MCP 建模截图">
-            <svg viewBox="220 90 1000 562.5" role="img" aria-label="Blender 中的猫咪模型与已连接的 MCP 面板"><image href="assets/ai-blender-mcp.png" width="1470" height="845"/></svg>
+            <svg viewBox="220 90 1000 562.5" role="img" aria-label="Blender 中的猫咪模型与已连接的 MCP 面板"><image data-href="assets/ai-blender-mcp.webp" width="1470" height="845"/></svg>
             <span aria-hidden="true">＋</span>
           </button>
           <figcaption><h3>AI × MCP 建模</h3><p>连接 Blender，生成与调整模型。</p></figcaption>
         </figure>
         <figure>
           <button type="button" class="ai-practice-preview" data-image-index="32" aria-label="放大查看 Codex 用量截图">
-            <img src="assets/ai-codex-usage-full.png" width="2938" height="1846" alt="Codex 完整使用记录：累计 100.9 亿 Token、连续使用 32 天及全年 Token 活动热力图" loading="lazy">
+            <img data-src="assets/ai-codex-usage-full.webp" width="2938" height="1846" alt="Codex 完整使用记录：累计 100.9 亿 Token、连续使用 32 天及全年 Token 活动热力图" loading="lazy">
             <span aria-hidden="true">＋</span>
           </button>
           <figcaption><h3>Codex 使用记录</h3><p>持续用于原型、实现与走查。</p></figcaption>
         </figure>
         <figure>
           <button type="button" class="ai-practice-preview" data-image-index="33" aria-label="放大查看 Claude Design 使用截图">
-            <svg viewBox="26.889 0 2222.222 1250" role="img" aria-label="Claude Design 的设计系统与多版方案对比截图"><image href="assets/ai-claude-design.png" width="2276" height="1250"/></svg>
+            <svg viewBox="26.889 0 2222.222 1250" role="img" aria-label="Claude Design 的设计系统与多版方案对比截图"><image data-href="assets/ai-claude-design.webp" width="2276" height="1250"/></svg>
             <span aria-hidden="true">＋</span>
           </button>
           <figcaption><h3>Claude Design</h3><p>探索设计方向，对比多版方案。</p></figcaption>
@@ -303,7 +311,7 @@
           <figure>
             <div class="website-tour" data-website-tour>
               <div class="other-work-preview other-website-shot">
-                <video id="website-tour-film" width="1280" height="720" autoplay muted loop playsinline controls preload="metadata" poster="assets/palmx-website-tour-poster.jpg" src="assets/palmx-website-tour.mp4" aria-label="Palm X 概念交互：整机与内部结构导览"></video>
+                <video id="website-tour-film" width="1280" height="720" autoplay muted loop playsinline controls preload="none" poster="assets/palmx-website-tour-poster.webp" data-src="assets/palmx-website-tour-web.mp4" aria-label="Palm X 概念交互：整机与内部结构导览"></video>
                 <div class="website-tour-header" aria-hidden="true"><strong>Palm X</strong><span>精密结构 · 进入式观察</span></div>
                 <div class="website-tour-title" aria-hidden="true">Palm X</div>
                 <button class="website-tour-toggle" type="button" aria-controls="website-tour-film" aria-label="播放结构导览" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path class="tour-play-icon" d="m7 4 9 6-9 6Z"/><path class="tour-pause-icon" d="M6 4h3v12H6zm5 0h3v12h-3z"/></svg><span>播放</span></button>
@@ -322,21 +330,21 @@
           </div>
           <figure id="design-system-panel" data-design-panel="system">
             <button type="button" class="other-work-preview other-design-shot" data-image-index="3" aria-label="放大查看设计系统组件总览">
-              <svg viewBox="0 0 1384 778.5" role="img" aria-label="PalmX Studio UI Kit 的组件总览：操作层级、紧凑操作、输入与选择"><image href="assets/palmx-design-system.jpg" width="1399" height="817"/></svg>
+              <svg viewBox="0 0 1384 778.5" role="img" aria-label="PalmX Studio UI Kit 的组件总览：操作层级、紧凑操作、输入与选择"><image data-href="assets/palmx-design-system.webp" width="1399" height="817"/></svg>
               <span aria-hidden="true">＋</span>
             </button>
             <figcaption><span>组件状态与使用规范</span></figcaption>
           </figure>
           <figure id="design-icons-panel" data-design-panel="icons" hidden>
             <button type="button" class="other-work-preview other-design-shot" data-image-index="4" aria-label="放大查看完整 Icon 库">
-              <svg viewBox="0 0 1232 693" role="img" aria-label="PalmX 软件 UI 柔和线性图标库局部预览"><image href="assets/palmx-icon-library.png" width="1232" height="1749"/></svg>
+              <svg viewBox="0 0 1232 693" role="img" aria-label="PalmX 软件 UI 柔和线性图标库局部预览"><image data-href="assets/palmx-icon-library.webp" width="1232" height="1749"/></svg>
               <span aria-hidden="true">＋</span>
             </button>
             <figcaption><span>线性图标与操作语义</span></figcaption>
           </figure>
           <figure id="design-logo-panel" data-design-panel="logo" hidden>
             <button type="button" class="other-work-preview other-design-shot" data-image-index="34" aria-label="放大查看 Palm X Logo 设计说明图">
-              <img src="assets/palmx-logo-design.png" width="2400" height="1350" alt="Palm X 正式 Logo 与设计构造：抽象手掌、模数间距、局部比例、斜切折转和双色紫" loading="lazy">
+              <img data-src="assets/palmx-logo-design.webp" width="2400" height="1350" alt="Palm X 正式 Logo 与设计构造：抽象手掌、模数间距、局部比例、斜切折转和双色紫" loading="lazy">
               <span aria-hidden="true">＋</span>
             </button>
             <figcaption><span>手掌意象与几何构造</span></figcaption>

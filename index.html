@@ -1,21 +1,29 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<script src="i18n-init.js?v=1120"></script>
+<script>(() => {
+  const requested = new URLSearchParams(location.search).get('lang');
+  let saved;
+  try { saved = localStorage.getItem('lidaiyu-portfolio-language'); } catch {}
+  document.documentElement.lang = (requested === 'en' || (requested !== 'zh' && saved === 'en')) ? 'en' : 'zh-CN';
+})();
+</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="李带雨（lidaiyu）的工作经历与项目案例，涵盖 PalmX 智能硬件软件、安克创新 AI 业务产品与用户体验研究。">
 <meta name="theme-color" content="#f3f5f3"><title>lidaiyu — 产品经理作品集</title>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="story.css?v=1120-compact-hero2">
-<link rel="stylesheet" href="ink-home.css?v=1120-footer-layout">
-<link rel="stylesheet" href="anker.css?v=1120-layout-audit">
-<script src="ink-home.js?v=1" defer></script>
-<script src="portfolio-like.js?v=1120-footer-like" defer></script>
-<script src="hobbies.js?v=1120-locale2" defer></script>
-<script src="content.js?v=1120-locale3" defer></script><script src="archive.js?v=resume-1116" defer></script><script src="app.js?v=1120-locale2" defer></script>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="bundles/index.2f83a67b14.css">
 
-<link rel="stylesheet" href="i18n.css?v=1120-layout-audit3">
-<script src="i18n-en.js?v=1120-locale8" defer></script>
-<script src="i18n.js?v=1120-locale6" defer></script>
+
+<script src="bundles/index.b1e61f0826.js" defer></script>
+
+
+
+
+
+
+
+
+
 </head>
 <body>
 <a class="skip-link" href="#main">跳到主要内容</a>
@@ -37,7 +45,7 @@
   <p class="hero-focus">求职方向 · 智能硬件配套软件 PM / AI 软件产品 PM</p>
 </div>
 <figure class="ink-portrait" aria-label="李带雨的水墨风格肖像">
-  <img class="ink-portrait-image" src="assets/lidaiyu-ink-portrait.png" alt="李带雨戴着白色棒球帽低头站立，肖像边缘渐变为细碎墨点" width="1122" height="1402" fetchpriority="high">
+  <img class="ink-portrait-image" src="assets/lidaiyu-ink-portrait.webp" srcset="assets/lidaiyu-ink-portrait-small.webp 420w, assets/lidaiyu-ink-portrait.webp 840w" sizes="(max-width: 700px) 86vw, 540px" alt="李带雨戴着白色棒球帽低头站立，肖像边缘渐变为细碎墨点" width="1122" height="1402" fetchpriority="high">
   <canvas class="ink-particles" aria-hidden="true"></canvas>
 </figure>
 </section>
@@ -72,15 +80,15 @@
     </div>
     <figure class="palmx-feature-image">
       <div class="feature-brand" data-no-translate>
-        <span class="feature-brand-lockup"><span class="feature-brand-icon"><img src="assets/palmx-logo-mark.png" alt="" width="1040" height="1800" loading="lazy"></span><span>PalmX</span></span>
+        <span class="feature-brand-lockup"><span class="feature-brand-icon"><img data-src="assets/palmx-logo-mark.webp" alt="" width="1040" height="1800" loading="lazy"></span><span>PalmX</span></span>
         <span class="feature-product-name">G1 Hybrid</span>
       </div>
       <svg class="feature-machine" viewBox="573 124 489 432" role="img" aria-label="PalmX 黑曜钛款整机与急停按钮" xmlns="http://www.w3.org/2000/svg">
         <defs><clipPath id="feature-machine-crop"><rect x="573" y="124" width="489" height="432" rx="18"/></clipPath></defs>
-        <image href="assets/palmx-cmf-exploration.png" width="1634" height="962" clip-path="url(#feature-machine-crop)"/>
+        <image data-href="assets/palmx-cmf-exploration.webp" width="1634" height="962" clip-path="url(#feature-machine-crop)"/>
       </svg>
       <figcaption class="feature-glass">
-        <img class="feature-pc" src="assets/palmx-fixture.png" alt="我参与定义的 PC 加工准备界面，显示夹具和装夹方向选项" width="1470" height="923" loading="lazy">
+        <img class="feature-pc" data-src="assets/palmx-fixture.webp" alt="我参与定义的 PC 加工准备界面，显示夹具和装夹方向选项" width="1470" height="923" loading="lazy">
         <span class="feature-glass-copy"><strong>软硬件协同体验</strong><span data-no-translate>PC · HMI · App</span></span>
       </figcaption>
     </figure>
@@ -112,37 +120,37 @@
           <ol class="hobby-gallery">
             <li class="hobby-album-slide is-current" aria-hidden="false">
               <button class="hobby-image-button" type="button" data-hobby-image="0" data-title="个人照片" data-caption="从一张喜欢的照片开始。" aria-label="放大查看：个人照片" tabindex="0">
-                <span class="hobby-media hobby-media-personal-photo"><img src="assets/hobbies/personal-photo.webp" alt="海边的个人照片，碎花上衣与墨镜成为角色的形象参考" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-personal-photo"><img data-src="assets/hobbies/personal-photo.webp" alt="海边的个人照片，碎花上衣与墨镜成为角色的形象参考" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide is-next" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="1" data-title="Codex 桌宠" data-caption="把自己的形象变成桌面上的小伙伴。" aria-label="放大查看：Codex 桌宠" tabindex="-1">
-                <span class="hobby-media hobby-media-desktop-character"><img src="assets/hobbies/desktop-character.webp" alt="以我的形象制作的桌宠角色，完整展示碎花上衣、蓝色牛仔裤和墨镜" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-desktop-character"><img data-src="assets/hobbies/desktop-character.webp" alt="以我的形象制作的桌宠角色，完整展示碎花上衣、蓝色牛仔裤和墨镜" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="2" data-title="角色多面图" data-caption="补齐不同角度，作为 3D 建模参考。" aria-label="放大查看：角色多面图" tabindex="-1">
-                <span class="hobby-media hobby-media-character-views"><img src="assets/hobbies/character-views.webp" alt="角色多面图，展示主视图与不同角度的参考缩略图" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-character-views"><img data-src="assets/hobbies/character-views.webp" alt="角色多面图，展示主视图与不同角度的参考缩略图" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="3" data-title="混元 3D" data-caption="用多面图生成可继续加工的模型。" aria-label="放大查看：混元 3D" tabindex="-1">
-                <span class="hobby-media hobby-media-hunyuan-model"><img src="assets/hobbies/hunyuan-model.webp" alt="混元 3D 中生成的完整角色模型" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-hunyuan-model"><img data-src="assets/hobbies/hunyuan-model.webp" alt="混元 3D 中生成的完整角色模型" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="4" data-title="五轴 CNC 加工" data-caption="用 Xhorse CAM 生成刀路，再交给五轴 CNC 加工。" aria-label="放大查看：五轴 CNC 加工" tabindex="-1">
-                <span class="hobby-media hobby-media-cnc-carving"><img src="assets/hobbies/cnc-carving.webp" alt="Xhorse 五轴 CNC 正在切削木料，木雕角色已逐渐成形" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-cnc-carving"><img data-src="assets/hobbies/cnc-carving.webp" alt="Xhorse 五轴 CNC 正在切削木料，木雕角色已逐渐成形" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide is-previous" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="5" data-title="木雕成品" data-caption="屏幕里的桌宠，终于来到了办公桌上。" aria-label="放大查看：木雕成品" tabindex="-1">
-                <span class="hobby-media hobby-media-wooden-character"><img src="assets/hobbies/wooden-character.webp" alt="手持完成加工的个人角色木雕，保留完整人物和木料底座" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-wooden-character"><img data-src="assets/hobbies/wooden-character.webp" alt="手持完成加工的个人角色木雕，保留完整人物和木料底座" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
@@ -152,12 +160,12 @@
         </div>
         <p class="hobby-album-caption" aria-live="polite"><span class="hobby-album-count">01 / 06</span><span class="hobby-album-title">个人照片</span></p>
         <div class="hobby-album-thumbnails" role="group" aria-label="选择创作过程图片">
-            <button class="hobby-album-thumb" type="button" data-hobby-select="0" aria-label="查看个人照片" aria-pressed="true"><span class="hobby-media hobby-media-personal-photo"><img src="assets/hobbies/personal-photo.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="1" aria-label="查看Codex 桌宠" aria-pressed="false"><span class="hobby-media hobby-media-desktop-character"><img src="assets/hobbies/desktop-character.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="2" aria-label="查看角色多面图" aria-pressed="false"><span class="hobby-media hobby-media-character-views"><img src="assets/hobbies/character-views.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="3" aria-label="查看混元 3D" aria-pressed="false"><span class="hobby-media hobby-media-hunyuan-model"><img src="assets/hobbies/hunyuan-model.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="4" aria-label="查看五轴 CNC 加工" aria-pressed="false"><span class="hobby-media hobby-media-cnc-carving"><img src="assets/hobbies/cnc-carving.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="5" aria-label="查看木雕成品" aria-pressed="false"><span class="hobby-media hobby-media-wooden-character"><img src="assets/hobbies/wooden-character.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="0" aria-label="查看个人照片" aria-pressed="true"><span class="hobby-media hobby-media-personal-photo"><img data-src="assets/hobbies/personal-photo-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="1" aria-label="查看Codex 桌宠" aria-pressed="false"><span class="hobby-media hobby-media-desktop-character"><img data-src="assets/hobbies/desktop-character-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="2" aria-label="查看角色多面图" aria-pressed="false"><span class="hobby-media hobby-media-character-views"><img data-src="assets/hobbies/character-views-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="3" aria-label="查看混元 3D" aria-pressed="false"><span class="hobby-media hobby-media-hunyuan-model"><img data-src="assets/hobbies/hunyuan-model-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="4" aria-label="查看五轴 CNC 加工" aria-pressed="false"><span class="hobby-media hobby-media-cnc-carving"><img data-src="assets/hobbies/cnc-carving-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="5" aria-label="查看木雕成品" aria-pressed="false"><span class="hobby-media hobby-media-wooden-character"><img data-src="assets/hobbies/wooden-character-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
         </div>
       </div>
       <p class="hobby-making-note">个人照片 → Codex 桌宠与多面图 → 混元 3D → Xhorse CAM → 五轴 CNC</p>
@@ -169,49 +177,49 @@
           <ol class="hobby-gallery">
             <li class="hobby-album-slide is-current" aria-hidden="false">
               <button class="hobby-image-button" type="button" data-hobby-image="0" data-title="攀岩" data-caption="攀岩时的专注与身体协调。" aria-label="放大查看：攀岩" tabindex="0">
-                <span class="hobby-media hobby-media-sport hobby-media-climbing"><img src="assets/hobbies/sport-climbing.webp" alt="在室内岩壁上攀爬的运动照片" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-climbing"><img data-src="assets/hobbies/sport-climbing.webp" alt="在室内岩壁上攀爬的运动照片" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide is-next" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="1" data-title="普拉提" data-caption="在普拉提练习中感受身体的控制与伸展。" aria-label="放大查看：普拉提" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-pilates"><img src="assets/hobbies/sport-pilates.webp" alt="在普拉提器械上完成伸展动作" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-pilates"><img data-src="assets/hobbies/sport-pilates.webp" alt="在普拉提器械上完成伸展动作" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="2" data-title="力量训练" data-caption="日常力量训练。" aria-label="放大查看：力量训练" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-strength"><img src="assets/hobbies/sport-strength.webp" alt="在健身房进行力量训练的照片" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-strength"><img data-src="assets/hobbies/sport-strength.webp" alt="在健身房进行力量训练的照片" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="3" data-title="搏击" data-caption="在搏击训练中练习动作与反应。" aria-label="放大查看：搏击" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-kickboxing"><img src="assets/hobbies/sport-kickboxing.webp" alt="佩戴拳套进行踢击训练，教练持靶配合" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-kickboxing"><img data-src="assets/hobbies/sport-kickboxing.webp" alt="佩戴拳套进行踢击训练，教练持靶配合" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="4" data-title="浮潜" data-caption="换个视角，看看水下的世界。" aria-label="放大查看：浮潜" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-snorkeling"><img src="assets/hobbies/sport-snorkeling.webp" alt="水下景色与佩戴面镜浮潜的照片" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-snorkeling"><img data-src="assets/hobbies/sport-snorkeling.webp" alt="水下景色与佩戴面镜浮潜的照片" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="5" data-title="滑翔伞" data-caption="从空中看看远处的山和海。" aria-label="放大查看：滑翔伞" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-paragliding"><img src="assets/hobbies/sport-paragliding.webp" alt="体验双人滑翔伞，身后是山脉与海岸" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-paragliding"><img data-src="assets/hobbies/sport-paragliding.webp" alt="体验双人滑翔伞，身后是山脉与海岸" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="6" data-title="射击" data-caption="专注眼前的目标。" aria-label="放大查看：射击" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-shooting"><img src="assets/hobbies/sport-shooting.webp" alt="佩戴护耳在靶场体验射击" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-shooting"><img data-src="assets/hobbies/sport-shooting.webp" alt="佩戴护耳在靶场体验射击" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
             <li class="hobby-album-slide is-previous" aria-hidden="true">
               <button class="hobby-image-button" type="button" data-hobby-image="7" data-title="射箭" data-caption="感受拉弓、瞄准时的专注。" aria-label="放大查看：射箭" tabindex="-1">
-                <span class="hobby-media hobby-media-sport hobby-media-archery"><img src="assets/hobbies/sport-archery.webp" alt="在室内射箭场持弓准备射箭" loading="lazy" decoding="async"></span>
+                <span class="hobby-media hobby-media-sport hobby-media-archery"><img data-src="assets/hobbies/sport-archery.webp" alt="在室内射箭场持弓准备射箭" loading="lazy" decoding="async"></span>
                 <span class="hobby-image-zoom" aria-hidden="true">＋</span>
               </button>
             </li>
@@ -221,14 +229,14 @@
         </div>
         <p class="hobby-album-caption" aria-live="polite"><span class="hobby-album-count">01 / 08</span><span class="hobby-album-title">攀岩</span></p>
         <div class="hobby-album-thumbnails" role="group" aria-label="选择运动照片">
-            <button class="hobby-album-thumb" type="button" data-hobby-select="0" aria-label="查看攀岩" aria-pressed="true"><span class="hobby-media hobby-media-sport hobby-media-climbing"><img src="assets/hobbies/sport-climbing.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="1" aria-label="查看普拉提" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-pilates"><img src="assets/hobbies/sport-pilates.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="2" aria-label="查看力量训练" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-strength"><img src="assets/hobbies/sport-strength.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="3" aria-label="查看搏击" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-kickboxing"><img src="assets/hobbies/sport-kickboxing.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="4" aria-label="查看浮潜" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-snorkeling"><img src="assets/hobbies/sport-snorkeling.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="5" aria-label="查看滑翔伞" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-paragliding"><img src="assets/hobbies/sport-paragliding.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="6" aria-label="查看射击" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-shooting"><img src="assets/hobbies/sport-shooting.webp" alt="" loading="lazy" decoding="async"></span></button>
-            <button class="hobby-album-thumb" type="button" data-hobby-select="7" aria-label="查看射箭" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-archery"><img src="assets/hobbies/sport-archery.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="0" aria-label="查看攀岩" aria-pressed="true"><span class="hobby-media hobby-media-sport hobby-media-climbing"><img data-src="assets/hobbies/sport-climbing-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="1" aria-label="查看普拉提" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-pilates"><img data-src="assets/hobbies/sport-pilates-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="2" aria-label="查看力量训练" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-strength"><img data-src="assets/hobbies/sport-strength-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="3" aria-label="查看搏击" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-kickboxing"><img data-src="assets/hobbies/sport-kickboxing-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="4" aria-label="查看浮潜" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-snorkeling"><img data-src="assets/hobbies/sport-snorkeling-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="5" aria-label="查看滑翔伞" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-paragliding"><img data-src="assets/hobbies/sport-paragliding-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="6" aria-label="查看射击" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-shooting"><img data-src="assets/hobbies/sport-shooting-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
+            <button class="hobby-album-thumb" type="button" data-hobby-select="7" aria-label="查看射箭" aria-pressed="false"><span class="hobby-media hobby-media-sport hobby-media-archery"><img data-src="assets/hobbies/sport-archery-thumb.webp" alt="" loading="lazy" decoding="async"></span></button>
         </div>
       </div>
     </article>

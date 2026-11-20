@@ -31,6 +31,7 @@
 
     function syncPlayback() {
       if (wantsPlayback && visible && !document.hidden && !video.error) {
+        window.portfolioMedia.load(video);
         video.play().then(() => {
           // A pause or scroll can happen while the first frame is loading.
           if (!wantsPlayback || !visible || document.hidden) video.pause();

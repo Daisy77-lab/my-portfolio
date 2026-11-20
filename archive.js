@@ -7,7 +7,7 @@ window.PORTFOLIO.archive = [
     "title": "围绕车手，重新连接 F1 粉丝体验",
     "shortTitle": "Sky Sports F1",
     "summary": "担任组长，带队访谈来自 4 个国家的 12 位用户，将车手资讯和粉丝交流做成互动原型。",
-    "image": "assets/archive/page-02.jpg",
+    "image": "assets/archive/page-02.webp",
     "status": "研究与交互原型",
     "subtitle": "Sky Sports F1 / 粉丝互动体验",
     "role": "项目组长 · 主导用户研究与交互方案",
@@ -34,47 +34,47 @@ window.PORTFOLIO.archive = [
     "learning": "有价值的个性化，需要先理解用户在什么时刻关注什么，再决定信息如何聚合，以及哪些互动值得被放到前面。",
     "gallery": [
       {
-        "src": "assets/archive/page-02.jpg",
+        "src": "assets/archive/page-02.webp",
         "label": "项目概览",
         "caption": "项目概览 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-08.jpg",
+        "src": "assets/archive/page-08.webp",
         "label": "背景与设计挑战",
         "caption": "背景与设计挑战 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-13.jpg",
+        "src": "assets/archive/page-13.webp",
         "label": "研究过程",
         "caption": "研究过程 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-18.jpg",
+        "src": "assets/archive/page-18.webp",
         "label": "洞察与用户画像",
         "caption": "洞察与用户画像 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-23.jpg",
+        "src": "assets/archive/page-23.webp",
         "label": "用户体验地图",
         "caption": "用户体验地图 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-28.jpg",
+        "src": "assets/archive/page-28.webp",
         "label": "故事版",
         "caption": "故事版 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-32.jpg",
+        "src": "assets/archive/page-32.webp",
         "label": "信息架构与设计系统",
         "caption": "信息架构与设计系统 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-36.jpg",
+        "src": "assets/archive/page-36.webp",
         "label": "原型反馈与迭代",
         "caption": "原型反馈与迭代 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-38.jpg",
+        "src": "assets/archive/page-38.webp",
         "label": "高保真交互页面",
         "caption": "高保真交互页面 · 历史作品原稿"
       }
@@ -88,7 +88,7 @@ window.PORTFOLIO.archive = [
     "title": "把能耗数据，转化为每天愿意做的小行动",
     "shortTitle": "EcoChamps",
     "summary": "围绕智能电表数据，探索小目标、即时反馈与家庭节能挑战。",
-    "image": "assets/archive/page-03.jpg",
+    "image": "assets/archive/page-03.webp",
     "status": "概念产品与原型",
     "subtitle": "EcoChamps / 节能生活应用",
     "role": "用户体验、服务流程与游戏化方案探索",
@@ -115,47 +115,47 @@ window.PORTFOLIO.archive = [
     "learning": "硬件产生的数据，只有进入用户能够理解和执行的任务，才可能变得有价值。激励机制也应服务核心行为。",
     "gallery": [
       {
-        "src": "assets/archive/page-03.jpg",
+        "src": "assets/archive/page-03.webp",
         "label": "项目概览",
         "caption": "项目概览 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-09.jpg",
+        "src": "assets/archive/page-09.webp",
         "label": "背景与智能电表场景",
         "caption": "背景与智能电表场景 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-14.jpg",
+        "src": "assets/archive/page-14.webp",
         "label": "设计问题",
         "caption": "设计问题 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-19.jpg",
+        "src": "assets/archive/page-19.webp",
         "label": "洞察与画像",
         "caption": "洞察与画像 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-24.jpg",
+        "src": "assets/archive/page-24.webp",
         "label": "功能与信息架构",
         "caption": "功能与信息架构 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-29.jpg",
+        "src": "assets/archive/page-29.webp",
         "label": "用户故事版",
         "caption": "用户故事版 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-33.jpg",
+        "src": "assets/archive/page-33.webp",
         "label": "设计系统与迭代",
         "caption": "设计系统与迭代 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-37.jpg",
+        "src": "assets/archive/page-37.webp",
         "label": "能耗仪表盘",
         "caption": "能耗仪表盘 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-39.jpg",
+        "src": "assets/archive/page-39.webp",
         "label": "挑战与奖励机制",
         "caption": "挑战与奖励机制 · 历史作品原稿"
       }
@@ -169,7 +169,7 @@ window.PORTFOLIO.archive = [
     "title": "先理清诊所日常工作，再找到 AI 的位置",
     "shortTitle": "Curadent 诊所 CRM",
     "summary": "聚合预约、人员与运营信息，探索对话式操作如何进入业务工作流。",
-    "image": "assets/archive/page-04.jpg",
+    "image": "assets/archive/page-04.webp",
     "status": "产品设计与概念探索",
     "subtitle": "Curadent / 私人诊所工作台",
     "role": "业务场景、CRM 界面与扩展方案设计",
@@ -196,27 +196,27 @@ window.PORTFOLIO.archive = [
     "learning": "AI 产品的起点是一个值得改善的工作流。先把对象、状态和决策理清，再讨论智能能力应该如何介入。",
     "gallery": [
       {
-        "src": "assets/archive/page-04.jpg",
+        "src": "assets/archive/page-04.webp",
         "label": "项目概览",
         "caption": "项目概览 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-10.jpg",
+        "src": "assets/archive/page-10.webp",
         "label": "诊所场景与需求",
         "caption": "诊所场景与需求 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-15.jpg",
+        "src": "assets/archive/page-15.webp",
         "label": "虚拟品牌与设计系统",
         "caption": "虚拟品牌与设计系统 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-20.jpg",
+        "src": "assets/archive/page-20.webp",
         "label": "工作台、预约与对话流程",
         "caption": "工作台、预约与对话流程 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-25.jpg",
+        "src": "assets/archive/page-25.webp",
         "label": "AI 与 VR 扩展探索",
         "caption": "AI 与 VR 扩展探索 · 历史作品原稿"
       }
@@ -230,7 +230,7 @@ window.PORTFOLIO.archive = [
     "title": "让沉浸式体验，回应人的感受与理解方式",
     "shortTitle": "VR 沉浸式体验",
     "summary": "两个设计探索：轻量冥想交互，以及面向儿童的消防情境学习。",
-    "image": "assets/archive/page-05.jpg",
+    "image": "assets/archive/page-05.webp",
     "status": "沉浸式交互原型",
     "subtitle": "VR / 冥想空间与儿童情境教育",
     "role": "场景、引导、反馈与沉浸式交互探索",
@@ -257,37 +257,37 @@ window.PORTFOLIO.archive = [
     "learning": "空间体验的品质不只取决于画面。如何进入、何时回应、反馈有多强，都会改变用户的感受和理解。",
     "gallery": [
       {
-        "src": "assets/archive/page-05.jpg",
+        "src": "assets/archive/page-05.webp",
         "label": "VR 项目概览",
         "caption": "VR 项目概览 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-11.jpg",
+        "src": "assets/archive/page-11.webp",
         "label": "冥想：背景与交互流程",
         "caption": "冥想：背景与交互流程 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-16.jpg",
+        "src": "assets/archive/page-16.webp",
         "label": "冥想：环境与轻量互动",
         "caption": "冥想：环境与轻量互动 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-21.jpg",
+        "src": "assets/archive/page-21.webp",
         "label": "消防教育：场景与挑战",
         "caption": "消防教育：场景与挑战 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-26.jpg",
+        "src": "assets/archive/page-26.webp",
         "label": "消防教育：故事版与设计原则",
         "caption": "消防教育：故事版与设计原则 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-30.jpg",
+        "src": "assets/archive/page-30.webp",
         "label": "消防教育：用户旅程",
         "caption": "消防教育：用户旅程 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-34.jpg",
+        "src": "assets/archive/page-34.webp",
         "label": "消防教育：声音、表情与视点",
         "caption": "消防教育：声音、表情与视点 · 历史作品原稿"
       }
@@ -301,7 +301,7 @@ window.PORTFOLIO.archive = [
     "title": "把养老服务，也放进家人的日常",
     "shortTitle": "Silver Bond",
     "summary": "将社区养老服务、家人参与与代际交流放在同一套服务体验中考虑。",
-    "image": "assets/archive/page-22.jpg",
+    "image": "assets/archive/page-22.webp",
     "status": "服务与交互设计",
     "subtitle": "Silver Bond / 养老社区服务",
     "role": "养老场景与服务体验探索",
@@ -328,12 +328,12 @@ window.PORTFOLIO.archive = [
     "learning": "跨角色产品需要理解不同人的任务，也需要看见任务背后的关系。流程设计与情感体验可以在同一个服务中被考虑。",
     "gallery": [
       {
-        "src": "assets/archive/page-22.jpg",
+        "src": "assets/archive/page-22.webp",
         "label": "养老社区场景与研究",
         "caption": "养老社区场景与研究 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-27.jpg",
+        "src": "assets/archive/page-27.webp",
         "label": "服务旅程与界面设计",
         "caption": "服务旅程与界面设计 · 历史作品原稿"
       }
@@ -347,7 +347,7 @@ window.PORTFOLIO.archive = [
     "title": "在身体、情感与技术之间，继续探索",
     "shortTitle": "可穿戴与互动装置",
     "summary": "通过推测性可穿戴系统和情感互动装置，拓展对实体产品体验的理解。",
-    "image": "assets/archive/page-06.jpg",
+    "image": "assets/archive/page-06.webp",
     "status": "跨领域设计探索",
     "subtitle": "Other Works / 实体与情感交互",
     "role": "产品概念与交互表达探索",
@@ -374,27 +374,27 @@ window.PORTFOLIO.archive = [
     "learning": "实体交互提醒我：产品不是界面的总和。人的身体、环境和情感，会持续影响每一次操作。",
     "gallery": [
       {
-        "src": "assets/archive/page-06.jpg",
+        "src": "assets/archive/page-06.webp",
         "label": "其他作品概览",
         "caption": "其他作品概览 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-12.jpg",
+        "src": "assets/archive/page-12.webp",
         "label": "I-Health：可穿戴系统概念",
         "caption": "I-Health：可穿戴系统概念 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-17.jpg",
+        "src": "assets/archive/page-17.webp",
         "label": "I-Health：形态与场景设计",
         "caption": "I-Health：形态与场景设计 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-31.jpg",
+        "src": "assets/archive/page-31.webp",
         "label": "情感互动装置",
         "caption": "情感互动装置 · 历史作品原稿"
       },
       {
-        "src": "assets/archive/page-35.jpg",
+        "src": "assets/archive/page-35.webp",
         "label": "互动装置的操作流程",
         "caption": "互动装置的操作流程 · 历史作品原稿"
       }

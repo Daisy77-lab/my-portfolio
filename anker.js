@@ -84,8 +84,8 @@
         if (key === state.stage) return;
         state.stage = key;
         state.video.pause();
-        state.video.dataset.src = 'assets/anker/' + key + '.mp4';
-        state.video.poster = 'assets/anker/' + key + '.jpg';
+        state.video.dataset.src = 'assets/anker/' + key + '-web.mp4';
+        state.video.poster = 'assets/anker/' + key + '.webp';
         load(state);
         state.element.querySelector('[data-anker-caption]').textContent = stages[key] + ' · 交互原型';
         state.element.querySelectorAll('[data-anker-stage]').forEach(item => {

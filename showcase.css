@@ -264,3 +264,8 @@ button.hmi-display { cursor:zoom-in; }
 @media (prefers-reduced-motion:reduce) {
   .terminal-showcase * { transition:none!important; }
 }
+
+/* Video replaces the GIF without changing the existing presentation geometry. */
+.hmi-display video { display:block; width:100%; aspect-ratio:1452/838; object-fit:contain; }
+.showcase-viewer-body video { max-width:100%; max-height:100%; width:auto; height:auto; margin:auto; }
+.showcase-viewer-body video[hidden] { display:none; }

@@ -1,6 +1,14 @@
 <!doctype html><html lang="zh-CN"><head>
-<script src="i18n-init.js?v=1120"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f3f5f3"><title>项目案例 — lidaiyu</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css?v=vertical-gallery"><link rel="stylesheet" href="story.css?v=20261116b"><script src="content.js?v=1120-locale3" defer></script><script src="archive.js?v=resume-1116" defer></script><script src="app.js?v=1120-locale2" defer></script>
-<link rel="stylesheet" href="i18n.css?v=1120-layout-audit3">
-<script src="i18n-en.js?v=1120-locale8" defer></script>
-<script src="i18n.js?v=1120-locale6" defer></script>
+<script>(() => {
+  const requested = new URLSearchParams(location.search).get('lang');
+  let saved;
+  try { saved = localStorage.getItem('lidaiyu-portfolio-language'); } catch {}
+  document.documentElement.lang = (requested === 'en' || (requested !== 'zh' && saved === 'en')) ? 'en' : 'zh-CN';
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f3f5f3"><title>项目案例 — lidaiyu</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="bundles/case.dc7b40623f.css"><script src="bundles/case.2256228069.js" defer></script>
+
+
+
+
+
 </head><body class="case-page"><a class="skip-link" href="#main">跳到主要内容</a><header class="header"><a class="wordmark" href="index.html" aria-label="lidaiyu 首页">li<span class="wordmark-dot">d</span>aiyu<span class="brand-star" aria-hidden="true">✳</span></a><nav aria-label="案例导航"><a href="index.html#work">工作经历</a><a href="index.html#about">关于我</a><a class="nav-contact" href="index.html#contact">聊聊机会 ↗</a></nav><button class="menu-toggle" aria-label="打开导航" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button><nav id="mobile-nav" class="mobile-nav" hidden aria-label="移动导航"><a href="index.html#work">工作经历</a><a href="index.html#about">关于我</a><a href="index.html#archive">项目与作品</a><a href="index.html#contact">聊聊机会</a></nav></header><main id="main" class="case-main"><div id="case-content"><p class="wrap">正在加载项目…</p></div></main><footer class="footer wrap"><span>© 2026 lidaiyu</span><a href="index.html#archive">返回项目与作品</a><a href="#main">回到顶部 ↑</a></footer><dialog id="image-viewer" aria-label="项目图片查看器"><div class="viewer-toolbar"><span id="viewer-caption"></span><button class="viewer-close" aria-label="关闭图片">关闭 ×</button></div><div class="viewer-body"><img id="viewer-image" alt=""></div><div class="viewer-controls"><button id="viewer-prev" aria-label="上一张图片">← 上一张</button><span id="viewer-count"></span><button id="viewer-next" aria-label="下一张图片">下一张 →</button><button id="viewer-zoom" aria-pressed="false">放大原图</button></div></dialog></body></html>
