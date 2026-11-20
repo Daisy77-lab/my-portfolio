@@ -1,0 +1,83 @@
+/* One active recording gives each case a clear reading order. */
+.anker-experience { display: block; padding: clamp(24px, 3vw, 40px); scroll-margin-top: 90px; }
+.anker-intro { display: grid; grid-template-columns: 1fr 1.05fr; gap: 48px; align-items: center; }
+.anker-copy, .anker-results { padding: 0; }
+.anker-copy h3 { margin: 10px 0 12px; }
+.anker-summary .anker-copy > .button { margin-top: 20px; font-size: 14px; }
+.anker-detail { padding-top: 32px; padding-bottom: 48px; }
+.anker-detail .anker-experience { margin-top: 24px; }
+.anker-detail .anker-copy h1 { margin: 10px 0 12px; font-size: clamp(28px, 3vw, 40px); line-height: 1.3; letter-spacing: -.04em; }
+.anker-copy > p:not(.feature-role) { font-size: 16px; line-height: 1.8; }
+.anker-results { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 18px; }
+.anker-results > div + div { border-top: 0; margin-top: 0; padding-top: 0; }
+.anker-results dt { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+.anker-results dd { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.anker-results dd strong { font-size: 22px; line-height: 1.4; font-weight: 500; color: var(--ink); white-space: nowrap; }
+.anker-results .metric-arrow { font-size: .75em; }
+.anker-projects { display: flex; gap: 4px; width: fit-content; max-width: 100%; padding: 4px; margin-top: 28px; border: 1px solid rgb(255 255 255 / .65); border-radius: 999px; background: rgb(255 255 255 / .32); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: inset 0 1px 0 rgb(255 255 255 / .35); }
+.anker-projects button { min-width: 0; padding: 10px 20px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: 16px; font-weight: 500; line-height: 1.5; text-align: center; cursor: pointer; transition: background .18s ease, color .18s ease, box-shadow .18s ease; }
+.anker-projects button:hover { color: var(--ink); background: rgb(255 255 255 / .35); }
+.anker-projects button[aria-selected="true"] { color: #66528c; background: rgb(255 255 255 / .82); box-shadow: 0 2px 7px rgb(42 50 44 / .08), inset 0 1px 0 rgb(255 255 255 / .9); }
+.anker-projects button:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+.anker-showcase { margin-top: 24px; }
+.anker-case { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 28px; align-items: center; min-width: 0; }
+.anker-case[hidden] { display: none; }
+.anker-figure { margin: 0; min-width: 0; }
+.anker-media-open { display: block; width: 100%; padding: 0; overflow: hidden; border: 1px solid #c9d2cc; border-radius: 10px; background: #fff; cursor: zoom-in; }
+.anker-media-open video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; pointer-events: none; }
+.anker-media-caption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.anker-media-caption > div { display: flex; gap: 16px; }
+.anker-media-caption button { padding: 6px 0; border: 0; background: transparent; color: var(--ink); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.anker-case-description { margin: 0; font-size: 16px; color: var(--ink); line-height: 1.85; }
+.anker-case-outcome { margin: 16px 0 0; font-size: 14px; color: var(--muted); line-height: 1.8; }
+.anker-stages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; margin-top: 24px; border-bottom: 1px solid #cbd5ce; }
+.anker-stages button { position: relative; min-width: 0; padding: 10px 0; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 13px; line-height: 1.5; white-space: normal; text-wrap: balance; cursor: pointer; }
+.anker-stages button[aria-pressed="true"] { color: var(--purple); font-weight: 600; }
+.anker-stages button[aria-pressed="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: currentColor; }
+.anker-material-note { margin: 24px 0 0; font-size: 13px; color: var(--muted); line-height: 1.7; }
+.anker-experience button:focus-visible, .anker-viewer button:focus-visible { outline: 2px solid var(--purple); outline-offset: 4px; }
+.anker-viewer { width: min(1180px, calc(100% - 40px), calc((100dvh - 180px) * 16 / 9 + 40px)); height: fit-content; max-height: calc(100dvh - 40px); padding: 20px; margin: auto; border: 0; border-radius: 16px; background: var(--paper); color: var(--ink); }
+.anker-viewer::backdrop { background: rgb(20 21 24 / .76); }
+.anker-viewer-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 16px; }
+.anker-viewer h2 { margin: 0; font-size: 20px; font-weight: 550; }
+.anker-viewer-close { flex-shrink: 0; padding: 8px; border: 0; background: transparent; color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
+.anker-viewer-close span { font-size: 22px; vertical-align: -1px; margin-left: 6px; }
+.anker-viewer video { display: block; width: 100%; height: auto; max-height: calc(100dvh - 180px); aspect-ratio: 16 / 9; object-fit: contain; background: #101519; }
+.anker-viewer > p { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 1000px) {
+  .anker-intro { grid-template-columns: 1fr; gap: 20px; }
+  .anker-results { gap: 24px; }
+  .anker-results dt { margin-bottom: 6px; }
+  .anker-case { grid-template-columns: minmax(0, 1fr) 190px; gap: 24px; }
+  .anker-stages { gap: 10px; }
+}
+@media (max-width: 760px) {
+  .anker-experience { padding: 24px; }
+  .anker-results { gap: 12px; }
+  .anker-results dt { font-size: 12px; min-height: 38px; }
+  .anker-results dd { font-size: 12px; }
+  .anker-results dd strong { font-size: clamp(17px, 4.3vw, 22px); }
+  .anker-projects { display: grid; grid-template-columns: 1fr 1fr; width: 100%; margin-top: 24px; }
+  .anker-projects button { padding: 9px 12px; font-size: 14px; }
+  .anker-showcase { margin-top: 20px; }
+  .anker-case { grid-template-columns: 1fr; gap: 20px; }
+  .anker-case-description { font-size: 15px; }
+  .anker-case-outcome { margin-top: 8px; }
+  .anker-stages { margin-top: 16px; gap: 20px; }
+  .anker-viewer { width: calc(100% - 24px); padding: 14px; border-radius: 12px; }
+  .anker-viewer h2 { font-size: 17px; }
+}
+@media (max-width: 380px) {
+  .anker-experience { padding: 20px; }
+  .anker-results { grid-template-columns: 1fr; gap: 14px; }
+  .anker-results > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .anker-results dt { min-height: 0; margin: 0; }
+  .anker-results dd { flex-direction: row; align-items: baseline; gap: 6px; }
+  .anker-results dd strong { font-size: 18px; }
+  .anker-projects { gap: 4px; }
+  .anker-projects button { padding-inline: 6px; font-size: 14px; }
+}
+@media print {
+  .anker-media-caption button, .anker-viewer, .anker-projects { display: none; }
+  .anker-case, .anker-case[hidden] { display: grid; break-inside: avoid; margin-top: 24px; }
+}

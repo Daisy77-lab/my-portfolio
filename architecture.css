@@ -1,0 +1,56 @@
+/* Compact portfolio view of the documented architecture proposal. */
+.ia-map { margin:0; padding:var(--panel-inset) var(--panel-inset) 0; background:#eeebf3; border-radius:14px; }
+.ia-map > figcaption { display:flex; align-items:baseline; justify-content:space-between; gap:12px; color:#544268; font-size:14px; margin-bottom:16px; }
+.ia-map > figcaption span { color:var(--muted); }
+.ia-terminals { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--grid-space); }
+.ia-terminal { min-width:0; }
+.ia-terminal header { display:flex; align-items:baseline; gap:12px; padding-bottom:12px; border-bottom:2px solid #c8bddb; }
+.ia-terminal h3 { margin:0; font-size:23px; font-weight:600; }
+.ia-terminal header p { color:#655d6f; font-size:14px; }
+.ia-tree { margin:14px 0 18px 4px; padding-left:15px; border-left:1px solid #c9c1d3; }
+.ia-tree > div { position:relative; display:grid; grid-template-columns:84px minmax(0,1fr); align-items:baseline; gap:8px; padding:8px 0; }
+.ia-tree > div::before { content:''; position:absolute; left:-16px; top:19px; width:10px; height:1px; background:#c9c1d3; }
+.ia-tree dt { font-size:14px; font-weight:550; line-height:1.6; }
+.ia-tree dd { margin:0; font-size:14px; line-height:1.6; color:#645d6d; }
+.ia-tree dd small { display:block; font-size:12px; margin-top:3px; color:#746b80; }
+.ia-tree dd em { font-style:normal; color:#71617f; font-size:11px; margin-left:7px; border:1px dashed #bdb0cb; border-radius:3px; padding:1px 4px; white-space:nowrap; }
+.ia-tree .ia-main-node dt, .ia-tree .ia-main-node dd > span { color:#52397d; }
+.ia-handoff { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px 20px; padding:14px 0; border-top:1px solid #d9d1e2; font-size:14px; color:#655d6f; }
+.ia-handoff strong { font-weight:550; color:#43324f; margin-right:5px; }
+.ia-handoff i { font-style:normal; color:#8e7ba7; }
+/* The requirements evidence precedes terminal responsibilities. */
+.ia-map-footer { margin:12px 0 0; font-size:14px; color:var(--muted); }
+.ia-evidence-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--grid-space); margin:var(--content-space) 0 var(--content-space); }
+.ia-evidence-grid > figure { min-width:0; margin:0; }
+.ia-evidence-grid figcaption { margin-bottom:12px; }
+.ia-evidence-grid figcaption strong { display:flex; align-items:baseline; gap:12px; font-size:18px; font-weight:550; }
+.ia-evidence-grid figcaption strong span { font-size:12px; font-weight:400; color:var(--muted); }
+.ia-evidence-grid figcaption p { margin-top:4px; font-size:14px; line-height:1.6; color:var(--muted); }
+.ia-evidence-shot { position:relative; width:100%; aspect-ratio:2.35; display:flex; align-items:center; border:1px solid #ddd8e6; padding:8px; border-radius:8px; background:#eeebf3; cursor:zoom-in; }
+.ia-evidence-shot img { display:block; width:100%; height:100%; object-fit:contain; border-radius:4px; background:#fff; }
+.ia-evidence-shot > span { position:absolute; right:10px; bottom:10px; display:flex; gap:10px; align-items:center; padding:6px 9px; background:#fff; color:var(--ink); border:1px solid #e4dfee; border-radius:5px; font-size:12px; }
+.ia-evidence-shot:focus-visible { outline:3px solid var(--purple); outline-offset:4px; }
+@media(max-width:1150px){
+ .ia-terminal header { display:block; }
+ .ia-terminal header p { margin-top:4px; }
+ .ia-tree > div { grid-template-columns:1fr; gap:2px; padding:7px 0; }
+ .ia-tree dd small { margin-top:2px; }
+}
+@media(max-width:760px){
+ .ia-evidence-grid { grid-template-columns:1fr; }
+ .ia-evidence-shot { min-height:150px; }
+ .ia-map > figcaption { margin-bottom:18px; }
+ .ia-terminals { grid-template-columns:1fr; gap:18px; }
+ .ia-terminal header { display:flex; }
+ .ia-terminal header p { margin:0; }
+ .ia-tree { margin-bottom:6px; }
+ .ia-tree > div { grid-template-columns:82px minmax(0,1fr); gap:8px; padding:7px 0; }
+ .ia-tree dt, .ia-tree dd { font-size:14px; }
+ .ia-handoff { align-items:flex-start; flex-direction:column; gap:6px; margin-top:12px; }
+ .ia-handoff i { transform:rotate(90deg); margin-left:6px; }
+}
+@media(max-width:370px){
+ .ia-tree > div { grid-template-columns:1fr; gap:2px; }
+ .ia-terminal header { flex-wrap:wrap; gap:4px 12px; }
+}
+@media print { .ia-map, .ia-evidence-grid { break-inside:avoid; } }

@@ -1,0 +1,446 @@
+<meta charset="utf-8">
+<title>PalmX · PM 需求池 · Daisy 动态工作台</title>
+<style>
+  :root{
+    --bg:#f6f4fb; --card:#fff; --ink:#2a2540; --sub:#6b6486; --line:#ece8f6;
+    --purple:#6C3BAA; --purple-soft:#efe8fa;
+    --coral:#f2795a; --coral-soft:#fdece6;
+    --blue:#4f74c9; --blue-soft:#e8effb;
+    --gray:#9a94ad; --gray-soft:#eeecf3;
+    --ok:#10B981; --ok-soft:#e7f8f1; --warn:#F97316; --err:#EF4444;
+    --hmi:#F97316; --pc:#4f74c9; --app:#8b5cf6;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --ui:'Plus Jakarta Sans',-apple-system,'PingFang SC',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;line-height:1.5}
+  .wrap{max-width:1400px;margin:0 auto;padding:26px 22px 80px}
+  h1{font-size:22px;margin:0 0 4px;letter-spacing:-.3px}
+  .lede{color:var(--sub);margin:0 0 14px;max-width:940px}
+  .lede b{color:var(--ink)}
+  .spine{font-family:var(--mono);font-size:12px;color:var(--purple);background:var(--purple-soft);border-radius:8px;padding:8px 12px;margin:0 0 16px;display:inline-block}
+  .spine .car{color:var(--sub)}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tab{font-size:14px;font-weight:600;padding:9px 16px;border-radius:10px;background:var(--card);color:var(--sub);cursor:pointer;border:2px solid transparent}
+  .tab.on{background:var(--purple);color:#fff}
+  .tab .badge{font-family:var(--mono);font-size:11px;opacity:.7;margin-left:5px}
+  .view{display:none} .view.on{display:block}
+
+  .prov{font-size:12px;color:var(--sub);background:var(--card);border-radius:10px;padding:12px 14px;margin:0 0 14px;line-height:1.7}
+  .tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:5px;margin-right:5px}
+  .flag{color:var(--warn);font-weight:700}
+
+  .panel{background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+  .panel h3{margin:0 0 10px;font-size:12px;color:var(--sub);font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+  .weights{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .w{display:flex;flex-direction:column;gap:4px}
+  .w label{font-size:12.5px;font-weight:600;display:flex;justify-content:space-between}
+  .w label .pct{font-family:var(--mono);color:var(--purple)}
+  .w .desc{font-size:10.5px;color:var(--sub);line-height:1.35;min-height:26px}
+  input[type=range]{width:100%;accent-color:var(--purple);cursor:pointer}
+  .w-foot{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--sub)}
+  .btn{font-family:var(--ui);font-size:12px;font-weight:600;background:var(--purple);color:#fff;border:none;border-radius:8px;padding:6px 13px;cursor:pointer}
+  .btn.ghost{background:var(--purple-soft);color:var(--purple)}
+
+  .stats{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+  .stat{background:var(--card);border-radius:10px;padding:8px 13px;min-width:76px}
+  .stat .n{font-family:var(--mono);font-size:19px;font-weight:700}
+  .stat .l{font-size:10.5px;color:var(--sub)}
+  .stat.pain .n{color:var(--blue)} .stat.plan .n{color:var(--purple)} .stat.sup .n{color:var(--ok)}
+
+  .capbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+  .capbar .t{font-size:11px;color:var(--sub);margin-right:2px}
+  .capcell{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:var(--card);display:flex;gap:5px;align-items:center}
+  .capcell b{font-weight:700}
+
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+  .filters .fl{font-size:11px;color:var(--sub)}
+  .chip{font-size:11.5px;padding:4px 10px;border-radius:20px;background:var(--card);color:var(--sub);cursor:pointer;user-select:none}
+  .chip.on{background:var(--purple);color:#fff}
+  .chip.sep{background:transparent;cursor:default;color:var(--line);padding:4px 0}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:12.5px}
+  thead th{position:sticky;top:0;background:#efeaf8;color:var(--sub);font-size:10.5px;text-transform:uppercase;letter-spacing:.2px;font-weight:700;padding:9px 8px;text-align:left;cursor:pointer;white-space:nowrap;z-index:2}
+  thead th.num{text-align:right}
+  tbody td{padding:9px 8px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr.main{cursor:pointer}
+  tbody tr.main:hover{background:#faf8fe}
+  td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+  .id{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--purple)}
+  .painreq{max-width:320px}
+  .painreq .pn{color:var(--sub);font-size:11.5px}
+  .painreq .rq{font-weight:600;margin-top:2px}
+  .painreq .rq::before{content:'→ ';color:var(--purple);font-weight:700}
+  .score{font-family:var(--mono);font-weight:700;font-size:14px}
+  .band{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;font-family:var(--mono)}
+  .b-P0{background:#fde7e7;color:var(--err)} .b-P1{background:#feecdb;color:var(--warn)}
+  .b-P2{background:var(--blue-soft);color:var(--blue)} .b-观察{background:var(--gray-soft);color:var(--gray)}
+  .b-支撑{background:var(--ok-soft);color:var(--ok)} .b-登记{background:var(--gray-soft);color:var(--gray)}
+  .b-M1{background:var(--purple-soft);color:var(--purple)} .b-M2{background:#f3e8fc;color:#8b5cf6}
+  .dr{display:inline-block;font-size:10px;font-weight:700;font-family:var(--mono);padding:1px 6px;border-radius:5px;white-space:nowrap}
+  .dr-痛点{background:var(--blue-soft);color:var(--blue)} .dr-规划{background:var(--purple-soft);color:var(--purple)} .dr-支撑{background:var(--ok-soft);color:var(--ok)}
+  .term{display:inline-block;font-size:10.5px;font-weight:700;font-family:var(--mono);padding:1px 6px;border-radius:5px}
+  .term-PC{background:#e8effb;color:var(--pc)} .term-HMI{background:#fdecd9;color:var(--hmi)} .term-APP{background:#f0e9fc;color:var(--app)}
+  .term-跨端{background:linear-gradient(90deg,#e8effb,#fdecd9);color:#555} .term-硬件,.term-其它{background:var(--gray-soft);color:var(--gray)}
+  .cap{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:700;padding:1px 4px;border-radius:4px;margin-right:2px}
+  .cap-K{background:#e8effb;color:#4f74c9}.cap-D{background:#efe8fa;color:#6C3BAA}.cap-A{background:#e0f2fe;color:#0891b2}.cap-S{background:#e7f8f1;color:#0d9488}.cap-E{background:#fdecd9;color:#F97316}.cap-F{background:#fce7f0;color:#db2777}.cap-L{background:#e7f8ec;color:#10B981}.cap-C{background:#f0e9fc;color:#8b5cf6}.cap-R{background:var(--gray-soft);color:var(--gray)}
+  .src{font-size:11px;color:var(--sub)}
+  .st{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:5px}
+  .st-发现{background:var(--gray-soft);color:var(--gray)}.st-验证{background:var(--blue-soft);color:var(--blue)}.st-方案{background:#fef3c7;color:#b45309}.st-设计{background:var(--purple-soft);color:var(--purple)}.st-规划{background:#f3e8fc;color:#8b5cf6}
+  .page{font-size:11px;color:var(--sub);font-family:var(--mono)}
+  .evs{font-family:var(--mono);font-size:10.5px;color:var(--sub)}
+  .owner{font-size:11.5px}
+  tr.detail td{background:#faf9fe;padding:0}
+  .dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0}
+  .dcell{padding:10px 14px;border-top:1px solid var(--line);border-right:1px solid var(--line)}
+  .dcell .k{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--purple);font-weight:700;margin-bottom:3px}
+  .dcell .val{font-size:12px;line-height:1.5}
+  .dcell .val.todo{color:var(--warn);font-family:var(--mono);font-size:11px}
+  .conflict td{background:#fdf1ec}
+
+  /* 终端视图 */
+  .tv-term{margin:20px 0 10px;padding:12px 15px;border-radius:12px;color:#fff}
+  .tv-term.PC{background:linear-gradient(100deg,#4f74c9,#6C3BAA)} .tv-term.HMI{background:linear-gradient(100deg,#F97316,#ea580c)} .tv-term.APP{background:linear-gradient(100deg,#8b5cf6,#6C3BAA)} .tv-term.其它{background:linear-gradient(100deg,#9a94ad,#6b6486)}
+  .tv-term h3{margin:0;font-size:16px} .tv-term .role{font-size:12px;opacity:.9;margin-top:2px}
+  .tv-term .role .warn{background:rgba(255,255,255,.25);padding:1px 6px;border-radius:4px;font-weight:700}
+  .tv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+  .tv-card{background:var(--card);border-radius:12px;padding:13px 15px}
+  .tv-card h4{margin:0 0 3px;font-size:13px;font-family:var(--mono)}
+  .tv-card .cnt{font-size:10.5px;color:var(--sub);margin-bottom:8px}
+  .tv-row{display:flex;gap:6px;align-items:baseline;padding:4px 0;border-top:1px dashed var(--line);font-size:12px}
+  .tv-row .cid{font-family:var(--mono);font-weight:700;font-size:10.5px;min-width:32px}
+  .tv-row .caps{margin-left:auto;white-space:nowrap}
+  .tv-gap{color:var(--warn);font-size:10.5px;font-weight:600;margin-top:7px}
+
+  .global-rule{margin:14px 0 2px;padding:15px 17px;border:1px solid #c4b5fd;border-radius:14px;background:linear-gradient(135deg,#f5f3ff 0%,#fff 72%);box-shadow:0 8px 26px rgba(124,58,237,.08)}
+  .global-rule .eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--purple);text-transform:uppercase}
+  .global-rule h2{margin:5px 0 7px;font-size:17px;color:var(--ink)}
+  .global-rule p{margin:0;color:var(--sub);font-size:13px;line-height:1.75}
+  .global-rule .rule-flow{margin-top:9px;color:var(--ink);font-weight:750}
+  .global-rule .guard{margin-top:7px;font-size:11.5px;color:var(--sub)}
+
+  footer{margin-top:22px;font-size:12px;color:var(--sub);line-height:1.8;background:var(--card);border-radius:12px;padding:15px 17px}
+  footer b{color:var(--ink)} code{font-family:var(--mono);background:var(--purple-soft);color:var(--purple);padding:1px 5px;border-radius:4px;font-size:11.5px}
+  .grid-bg{position:fixed;inset:0;pointer-events:none;opacity:.03;background-image:linear-gradient(var(--purple) 1px,transparent 1px),linear-gradient(90deg,var(--purple) 1px,transparent 1px);background-size:36px 36px;z-index:0}
+</style>
+
+<div class="grid-bg"></div>
+<div class="wrap">
+  <h1>PalmX · PM 需求池 <span style="font-family:var(--mono);font-size:14px;color:var(--sub)">动态工作台 · 唯一真源</span></h1>
+  <p class="lede"><b>脊 = 问题空间;终端/页面 = 解空间的载体。</b>需求池按 <b>场景→痛点→需求</b> 组织(你 PM 节点的活);终端、页面、模块是需求的<b>承载对象</b>,单开一个视图看"产品落地",不当组织轴。</p>
+  <div class="spine">场景 <span class="car">Scene</span> → 痛点 <span class="car">Pain</span> → 需求 <span class="car">Req</span> <span class="car">──载体──▸</span> 终端 · 页面 · 模块 <span class="car">│ 属性:</span>来源 · 能力 · 状态 · 体验目标 · KPI · 闭环 · 依赖 · 优先级依据</div>
+
+  <div class="tabs">
+    <div class="tab" data-v="scene">① 场景机会层 <span class="badge" id="scnN"></span></div>
+    <div class="tab on" data-v="req">② 需求脊 <span class="badge" id="reqN"></span></div>
+    <div class="tab" data-v="term">③ 终端视图(产品落地)</div>
+  </div>
+
+  <!-- ① 场景 -->
+  <div class="view" id="v-scene">
+    <div class="prov"><b>选题层 · 机型 = CFL-1(五轴+激光复合,2026 下半年众筹)。</b>全 40 条 = CFL-1 可服务的场景域,真源=《五轴CNC+双激光一体机 全场景综合分析表 2026.6.26》。<b>市场潜力★ = 优先级(★ 高者先,默认降序)</b> + KOL 社区信号选场景;★ 不打痛点分。<span style="color:var(--ok);font-weight:700">✓对齐</span>/<span style="color:var(--gray)">○中性</span>/<span style="color:var(--coral);font-weight:700">⚠偏离</span>(撞#10.1)。<b>选定的场景才触发调研 → 长出该场景的专属痛点</b>(填回需求脊的"场景"列)。</div>
+    <div class="filters" id="scnFilt"></div>
+    <table><thead><tr><th data-k="star" class="num">潜力★</th><th data-k="name">场景</th><th data-k="ct">客户</th><th data-k="obj">核心加工对象</th><th data-k="kol">社区信号</th><th data-k="narr">叙事</th><th data-k="status">选题状态</th></tr></thead><tbody id="scnTb"></tbody></table>
+  </div>
+
+  <!-- ② 需求脊 -->
+  <div class="view on" id="v-req">
+    <div class="prov">
+      <b>点行展开看全字段。</b>驱动:<span class="dr dr-痛点">痛点</span>走四维分 · <span class="dr dr-规划">规划</span>挂路线图不打分 · <span class="dr dr-支撑">支撑</span>。
+      能力标签:<span class="cap cap-K">知</span>识 <span class="cap cap-D">决</span>策 <span class="cap cap-A">动</span>自动 <span class="cap cap-S">仿</span>真 <span class="cap cap-E">执</span>行 <span class="cap cap-F">馈</span>反馈 <span class="cap cap-L">学</span>习 <span class="cap cap-C">群</span>社区 <span class="cap cap-R">资</span>源。
+      <span class="flag">⚠ KPI/闭环/依赖 = 能填才填,填不出标「待定」,不造数字。HMI L1 5v6 未定。</span>
+    </div>
+    <div class="panel">
+      <h3>四维权重 · 只作用于「痛点驱动」</h3>
+      <div class="weights">
+        <div class="w"><label>证据 <span class="pct" id="pe">30%</span></label><input type="range" id="we" min="0" max="60" value="30"><div class="desc">一手多人=高。</div></div>
+        <div class="w"><label>价值 <span class="pct" id="pv">30%</span></label><input type="range" id="wv" min="0" max="60" value="30"><div class="desc">痛感×频次×付费/留存。</div></div>
+        <div class="w"><label>战略 <span class="pct" id="ps">25%</span></label><input type="range" id="ws" min="0" max="60" value="25"><div class="desc">恐惧/AI原生/千人千面/灵巧手。</div></div>
+        <div class="w"><label>节点 <span class="pct" id="pn">15%</span></label><input type="range" id="wn" min="0" max="60" value="15"><div class="desc">PC CAM/AI/引导能直接解=高。</div></div>
+      </div>
+      <div class="w-foot"><span>权重和 <span id="wsum">100%</span></span><button class="btn ghost" onclick="resetW()">恢复默认</button></div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="capbar" id="capbar"></div>
+    <div class="filters" id="reqFilt"></div>
+    <table><thead><tr>
+      <th data-k="driver">驱动</th><th data-k="prio" class="num">优先级</th><th data-k="scn">场景</th>
+      <th data-k="req">痛点 → 需求</th><th data-k="cap">能力</th><th data-k="term">端·页面</th>
+      <th data-k="src">来源</th><th data-k="st">状态</th><th data-k="own">归属</th>
+    </tr></thead><tbody id="reqTb"></tbody></table>
+  </div>
+
+  <!-- ③ 终端视图 -->
+  <div class="view" id="v-term">
+    <div class="prov"><b>终端单开页 = 产品落地参考。</b>解空间投影:每个终端负责什么、每块页面承载哪些需求。<b>组织轴仍是需求</b>,页面只是把它们投影到屏上。有痛点没规划=用户逼出来的别漏;有规划没痛点=原则8验证依据。</div>
+    <div id="termWrap"></div>
+  </div>
+
+  <section class="global-rule" aria-labelledby="global-rule-title">
+    <div class="eyebrow">全局体验约束 G01 · Consumer Result First</div>
+    <h2 id="global-rule-title">结果先于参数：先让用户选“我想做成什么样”，再由系统完成专业翻译</h2>
+    <p>C 端用户默认只需要判断两件事：<b>能不能做出来</b>，以及<b>做出来是不是我期待的结果</b>。所有终端的默认体验必须优先使用成品效果图、3D 模型、材料样片、参数效果矩阵、图标、示意图、动画或仿真来表达可选结果；当视觉表达足够时，不暴露 CAM、五轴、激光术语、参数表和长文本。用户点击某个结果后，系统再将该选择自动映射并写入刀具、工艺、功率、速度、进给、步距等底层参数。</p>
+    <p class="rule-flow">表达顺序：结果意图 → 可视化选项/对比 → 选中结果 → 系统自动写参 → 结果与风险复核。</p>
+    <p class="guard"><b>边界：</b>可视化不是装饰，必须绑定当前材料、机型、刀具/激光类型和真实参数组合，并区分“实测样片 / 仿真预测 / 仅供示意”。仅在专家主动展开、系统把握度不足、安全风险、必要单位数值或无障碍场景中，才补充最少且可执行的文字与参数。</p>
+  </section>
+
+  <section class="global-rule" aria-labelledby="laser-rule-title">
+    <div class="eyebrow">激光体验约束 G02 · Workpiece as Canvas</div>
+    <h2 id="laser-rule-title">单结果直接编辑，多结果按依赖成链；真实工件也是画布</h2>
+    <p>激光默认以<b>“加工区域 × 用户内容 × 期待效果”</b>组成结果对象。用户可从数字模型起步，也可将实物放入机床，由视觉抓拍并建立带设备坐标的实物画布。单个 Logo、文字、图案等应在同一画布内完成放置、效果选择和确认；只有多个结果存在承载面、覆盖、深度、精度或工件释放依赖时，AI 才展开成有顺序的结果工序链。</p>
+    <p class="rule-flow">最短有效路径：数字模型/实物抓拍 → 在工件上放置内容 → 可视化选效果 → AI 写参与排序 → 坐标、焦距、边界与安全检查 → 确认加工。</p>
+    <p class="guard"><b>已确认：</b>用户结果覆盖表面标记、表面雕刻/灰度图、深度浮雕和轮廓切割；硬件已支持轮廓切割。<b>证据边界：</b>实物画布必须绑定抓拍时间、工件轮廓/位姿/高度、标定版本、坐标转换和把握度；工件移动或标定失效后必须阻断旧画布。当前 EVT 证据只覆盖 100×100mm 核心加工区，整机壳视野/拼接待验证；材料自动识别未见明确任务，不得伪装已识别。</p>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+// ===== 场景层 =====
+const SCEN=[
+ {name:'消费电子/硬件初创',ct:'To B',obj:'结构件原型·传感器支架·散热鳍片',star:5,kol:'工程原型 19人',narr:'y',status:'候选'},
+ {name:'微型五金/治具加工厂',ct:'To B',obj:'定位治具·检测夹具·精密零件',star:5,kol:'CNC 6 / 工程原型',narr:'y',status:'候选'},
+ {name:'EDC/五金文创电商',ct:'To B',obj:'金属文创·徽章·配件·周边',star:5,kol:'刀柄 18人',narr:'o',status:'候选'},
+ {name:'机器人/智能硬件实验室',ct:'To Lab',obj:'机器人零件·执行器支架·传动件',star:4,kol:'工程原型相关',narr:'y',status:'候选'},
+ {name:'材料科学试样加工',ct:'To Lab',obj:'拉伸/冲击试样·微结构测试件',star:4,kol:'—',narr:'y',status:'候选'},
+ {name:'机械工程专业实训',ct:'To 教育',obj:'教学打样·功能件·工艺实践',star:5,kol:'—',narr:'y',status:'候选'},
+ {name:'独立首饰设计师工作室',ct:'To B',obj:'定制银饰·珠宝蜡模·戒托',star:4,kol:'珠宝 1人(弱)',narr:'o',status:'候选'},
+ {name:'首饰珠宝 DIY',ct:'To C',obj:'银/黄铜戒托·失蜡蜡模·刻字',star:4,kol:'珠宝 1人(弱)',narr:'o',status:'候选'},
+ {name:'EDC 随身装备定制',ct:'To C',obj:'钛刀坠·陀螺·财布扣·工具卡',star:4,kol:'刀柄 18人',narr:'o',status:'候选'},
+ {name:'文玩木雕 DIY',ct:'To C',obj:'手把件·雕花珠·木质吊坠',star:5,kol:'木工 15人',narr:'n',status:'候选'},
+ {name:'微流控/生物实验室',ct:'To Lab',obj:'微流控芯片模具·夹具·微槽道',star:4,kol:'—',narr:'y',status:'候选'},
+ {name:'路亚渔具 DIY',ct:'To C',obj:'仿生假饵·铅坠母模·配重腔',star:4,kol:'—',narr:'o',status:'候选'},
+ {name:'火漆印章/手账文创',ct:'To B',obj:'火漆章头·章柄·铜印',star:4,kol:'—',narr:'o',status:'候选'},
+ {name:'文玩印章定制门店',ct:'To B',obj:'立体印章钮·玉石件·经文雕刻',star:4,kol:'—',narr:'n',status:'候选'},
+ {name:'高端美甲定制',ct:'To B',obj:'美甲雕花母模·钻托·饰品母模',star:3,kol:'—',narr:'o',status:'候选'},
+ {name:'珠宝设计专业实训',ct:'To 教育',obj:'首饰蜡模·金属小样·刻字',star:3,kol:'珠宝 1人(弱)',narr:'o',status:'候选'},
+ {name:'军事模型/微缩场景',ct:'To C',obj:'模型金属改件·炮管·履带片',star:3,kol:'—',narr:'n',status:'候选'},
+ {name:'钟表改装/维修',ct:'To B',obj:'表冠·表扣·绝版替换件',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'非遗微雕/核雕',ct:'To B',obj:'核雕粗坯·竹木牙角·印钮',star:1,kol:'—',narr:'n',status:'候选'},
+ {name:'高端烘焙/翻糖',ct:'To B',obj:'巧克力模母模·翻糖压模',star:4,kol:'—',narr:'o',status:'候选'},
+ {name:'景区/文旅文创店',ct:'To B',obj:'纪念牌·IP摆件·纪念章',star:4,kol:'—',narr:'n',status:'候选'},
+ {name:'手工博主/内容创作者',ct:'To C',obj:'创意小件·样品·粉丝周边',star:4,kol:'—',narr:'o',status:'候选'},
+ {name:'校外科创竞赛培训',ct:'To 教育',obj:'机器人竞赛零件·科创原型',star:4,kol:'—',narr:'y',status:'候选'},
+ {name:'光学/传感实验室',ct:'To Lab',obj:'镜筒·隔圈·传感器封装夹具',star:3,kol:'—',narr:'y',status:'候选'},
+ {name:'文博文创开发机构',ct:'To B',obj:'微缩文物·金属配件·IP衍生',star:3,kol:'—',narr:'o',status:'候选'},
+ {name:'玉石小件 DIY',ct:'To C',obj:'平安扣·挂坠·印章·原石修型',star:3,kol:'—',narr:'o',status:'候选'},
+ {name:'卡牌/桌游周边 DIY',ct:'To C',obj:'角色token·骰子·地形件',star:3,kol:'—',narr:'n',status:'候选'},
+ {name:'宠物纪念定制',ct:'To C',obj:'身份牌·头像吊牌·纪念吊坠',star:3,kol:'—',narr:'n',status:'候选'},
+ {name:'文物保护实验室',ct:'To Lab',obj:'文物复刻件·修复构件',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'齿科技工室',ct:'To B',obj:'义齿蜡模·临时冠·咬合蜡型',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'高端眼镜定制',ct:'To B',obj:'钛/黄铜鼻托·铰链·镶嵌件',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'手工乐器/民族乐器',ct:'To B',obj:'弦钉·琴钮·琴轴·拨片',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'3C数码配件 DIY',ct:'To C',obj:'耳机外壳·U盘外壳·键帽',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'烟斗/烟具 DIY',ct:'To C',obj:'烟嘴·装饰环·烟道芯棒',star:1,kol:'—',narr:'n',status:'候选'},
+ {name:'地质/古生物实验室',ct:'To Lab',obj:'岩心试样·薄片标样·化石复刻',star:1,kol:'—',narr:'o',status:'候选'},
+ // v0.5 补齐:与《全场景综合分析表 2026.6.26》对齐,补 5 条漏场景(To 教育 3→6)
+ {name:'职校技能培训',ct:'To 教育',obj:'数控铣削实训件·激光加工实训件·技能考核样件',star:5,kol:'—',narr:'o',status:'候选'},
+ {name:'创客空间科创项目',ct:'To 教育',obj:'学科竞赛零件·科创项目原型·学生创意作品',star:4,kol:'—',narr:'o',status:'候选'},
+ {name:'文创/设计专业教学',ct:'To 教育',obj:'产品原型·文创设计实物化·首饰设计打样',star:3,kol:'—',narr:'o',status:'候选'},
+ {name:'钢笔/文具 DIY',ct:'To C',obj:'笔握·笔帽装饰件·笔尖座·铜书签·手账铜印',star:2,kol:'—',narr:'o',status:'候选'},
+ {name:'摩擦磨损实验室',ct:'To Lab',obj:'摩擦副试样·销盘试验件·曲面磨损试样·涂层测试件',star:2,kol:'—',narr:'y',status:'候选'},
+];
+
+// ===== 需求脊 =====
+// dr驱动 scn场景 pain痛点 req需求 src来源 cap能力[] term/term2 page mod模块 exp体验目标 kpi loop闭环 dep依赖 own st状态 pd优先级依据 e/v/s/n road
+const REQ=[
+ {id:'P08',dr:'痛点',scn:'全场景',pain:'vc/fz/ap/ae 天书,填错撞刀断刀',req:'AI 给带把握度的切削参数,并把 vc/fz/ap/ae 翻成"粗/精/镜面"',src:'用户研究·一手 + KOL佐证',cap:['K','D'],term:'PC',term2:'HMI',page:'PC·Workbench·段3',mod:'参数推荐卡(把握度+来源)',exp:'用户不用懂 vc/fz/ap/ae,只理解粗/精/镜面 + 安不安全',kpi:'首切成功率↑(基线待测)',loop:'加工完成→实际工时/刀具磨损/振动/评分→更新推参模型',dep:'切削库·刀具库(五库·R03)',own:'我·PC/韩',st:'设计',pd:'首单成功率·安全',e:5,v:5,s:5,n:5},
+ {id:'P12',dr:'痛点',scn:'全场景',pain:'看不懂刀路对不对,会过切/撞夹具',req:'刀路可视 + 逐项风险摊开 + 飞件预警',src:'用户研究·一手',cap:['S','K'],term:'PC',page:'PC·Workbench·段4',mod:'仿真+风险清单',exp:'不用会看 G-code,系统指着刀路讲"这里会撞、那里漏切"',kpi:'撞刀/过切拦截率(待测)',loop:'—',dep:'仿真引擎',own:'我·PC',st:'验证',pd:'安全',e:5,v:5,s:5,n:5},
+ {id:'P16',dr:'痛点',scn:'全场景',pain:'想做意图输出者,不想学工业软件',req:'意图驱动默认流:丢模型/丢图/说一句话就能起步',src:'Nina访谈·一手 + KOL开箱即用',cap:['A','D'],term:'PC',page:'PC·Workbench·段0-5 默认流',mod:'Wizard 漏斗',exp:'像点外卖一样表达"我要做什么",不学工业软件',kpi:'首次上手时长↓(待测)',loop:'—',dep:'—',own:'我·PC',st:'设计',pd:'激活·首单成功率',e:5,v:5,s:5,n:5},
+ {id:'P01',dr:'痛点',scn:'全场景',pain:'不知道 CNC 错误可能是灾难性的',req:'危险动作前就地传达实质风险(讲后果+下一步)',src:'工厂一手 + HMI恐惧调研',cap:['E','K'],term:'跨端',term2:'PC+HMI',page:'PC·段4风险 + HMI·Run·Pre-Flight',mod:'风险预告(就地,非段0说教)',exp:'第一次也知道"这一刀可能出什么事",不是被吓退是心里有底',kpi:'待定',loop:'—',dep:'—',own:'跨端',st:'验证',pd:'安全',e:5,v:5,s:5,n:4},
+ {id:'P09',dr:'痛点',scn:'全场景',pain:'不知参数安不安全,没信心按下去',req:'把握度 + 安全底 + Pre-Flight 实质信心',src:'HMI恐惧调研·一手',cap:['D','E'],term:'跨端',term2:'PC生成/HMI按',page:'PC·段3把握度 + HMI·Run·Pre-Flight',mod:'把握度三件套',exp:'按下去之前,系统给足"这次不会出事"的实质理由',kpi:'待定',loop:'实际结果→回采校准把握度',dep:'—',own:'跨端',st:'验证',pd:'安全',e:5,v:5,s:5,n:4},
+ {id:'P13',dr:'痛点',scn:'全场景',pain:'开切前要实质信心,不是走过场checkbox',req:'Pre-Flight Gate:强制门,红灯阻断,讲清检查了什么',src:'恐惧管理·一手',cap:['E','S'],term:'跨端',term2:'PC+HMI',page:'HMI·Run·Pre-Flight Gate',mod:'Pre-Flight 门',exp:'门不是形式,是"我替你检查过这几项"的实质交代',kpi:'待定',loop:'—',dep:'—',own:'跨端',st:'验证',pd:'安全',e:5,v:5,s:5,n:4},
+ {id:'P02',dr:'痛点',scn:'全场景',pain:'没流程心智模型,不敢开始',req:'30秒端到端流程预览 + 预载起步件',src:'HMI恐惧·首切前5分钟',cap:['K'],term:'PC',page:'PC·Workbench·段0',mod:'流程预览动画',exp:'开工前看完整条链路,知道接下来会发生什么',kpi:'待定',loop:'—',dep:'—',own:'我·PC',st:'验证',pd:'激活',e:5,v:5,s:4,n:5},
+ {id:'P10',dr:'痛点',scn:'全场景',pain:'参数多→瘫痪;藏了→专家不放心',req:'千人千面按等级露参:一套结果、深浅分级',src:'双模/千人千面·一手',cap:['D','A'],term:'PC',page:'PC·Workbench·段3',mod:'U1-U5 渐进披露',exp:'小白只看该看的,专家一步展开全参,都不觉得被挡',kpi:'待定',loop:'埋点定级→调分级',dep:'埋点分级(N03)',own:'我·PC',st:'方案',pd:'留存·激活',e:5,v:4,s:5,n:5},
+ {id:'P14',dr:'痛点',scn:'全场景',pain:'上机设零/对刀/START 物理红线怕失误',req:'引导式对刀 + 人手扳机(GUI持权威)',src:'工厂一手 + KOL对刀',cap:['E'],term:'HMI',term2:'PC',page:'HMI·Prepare·Tooling + Run·START',mod:'对刀引导',exp:'对刀像有人在旁边扶着手,每步知道为什么',kpi:'对刀错误率↓(待测)',loop:'—',dep:'—',own:'跨端·HMI主',st:'验证',pd:'安全',e:5,v:5,s:5,n:3},
+ {id:'P17',dr:'痛点',scn:'全场景',pain:'黑箱不敢信,全透明又瘫痪',req:'默认藏、随等级/低把握浮出,来源可追',src:'透明>自动化·一手',cap:['D','K'],term:'PC',page:'PC·Workbench·段3',mod:'来源标签+折叠',exp:'看不见时安心、想看时一层层都在',kpi:'待定',loop:'—',dep:'—',own:'我·PC',st:'方案',pd:'品牌·留存',e:5,v:4,s:5,n:5},
+ {id:'P18',dr:'痛点',scn:'全场景',pain:'一套界面服务不了小白和专家',req:'U1–U5 连续分级,同一引擎、露参深浅不同',src:'千人千面·一手',cap:['A','D'],term:'跨端',term2:'PC主',page:'PC·Wizard/Expert',mod:'分级骨架',exp:'同一个产品,新手和专家都觉得"为我做的"',kpi:'待定',loop:'—',dep:'埋点分级(N03)',own:'我·PC',st:'方案',pd:'留存',e:5,v:4,s:5,n:5},
+ {id:'P19',dr:'痛点',scn:'全场景',pain:'首切成不成功、有没有乐趣决定留存',req:'首切必成功路径 + 成就时刻',src:'好玩上瘾·一手',cap:['A','C'],term:'PC',term2:'APP',page:'PC·Workbench·段0 + Home',mod:'首切成就',exp:'第一次就成、而且好玩,想再来一次',kpi:'首切成功率/次日留存(待测)',loop:'—',dep:'—',own:'我·PC',st:'验证',pd:'留存·激活',e:4,v:5,s:5,n:4},
+ {id:'P04',dr:'痛点',scn:'全场景',pain:'材料选择困惑:材料定后续一切',req:'材料 AI 建议 + 一句为什么 + 能力gate',src:'工艺思维壁垒·一手',cap:['K','D'],term:'PC',page:'PC·段1 + Library·Materials',mod:'材料推荐',exp:'选材料像选难度,系统把后果讲成人话',kpi:'待定',loop:'—',dep:'材料库(R03)',own:'我·PC',st:'验证',pd:'首单成功率',e:5,v:4,s:4,n:5},
+ {id:'P06',dr:'痛点',scn:'全场景',pain:'不懂CAM特征/工艺术语,逐个确认更懵',req:'特征识别默认藏,低把握/成长者才浮出',src:'工艺思维壁垒·一手',cap:['A','K'],term:'PC',page:'PC·Workbench·段2',mod:'特征识别(默认藏)',exp:'新手根本不知道有"特征识别"这步',kpi:'待定',loop:'—',dep:'特征库(R03)',own:'我·PC',st:'方案',pd:'激活',e:5,v:4,s:4,n:5},
+ {id:'P03',dr:'痛点',scn:'全场景',pain:'不知从哪开始、界面一开没抓手',req:'首屏三入口任一起步、无空白页',src:'AI-CAM新手·一手',cap:['D'],term:'PC',page:'PC·Workbench·段1 + Home',mod:'起步入口',exp:'一打开就知道先干什么',kpi:'待定',loop:'—',dep:'—',own:'我·PC',st:'验证',pd:'激活',e:4,v:4,s:4,n:5},
+ {id:'P05',dr:'痛点',scn:'全场景',pain:'文件格式恐惧:不懂 STL 与 STEP',req:'STL/STEP 直读、坏几何拦截给人话原因',src:'转化者·一手',cap:['A','K'],term:'PC',page:'PC·Workbench·段1 导入',mod:'导入防呆',exp:'不懂 STL/STEP 也不怕导错',kpi:'待定',loop:'—',dep:'—',own:'我·PC',st:'验证',pd:'激活',e:3,v:3,s:3,n:5},
+ {id:'P07',dr:'痛点',scn:'全场景',pain:'(成长者)特征识别错了要能查能改',req:'特征可查可改、不接受黑箱',src:'成长者·一手',cap:['K','D'],term:'PC',page:'PC·Workbench·段2',mod:'特征可编辑',exp:'错了能翻出来改',kpi:'待定',loop:'—',dep:'特征库(R03)',own:'我·PC',st:'方案',pd:'留存',e:4,v:3,s:4,n:5},
+ {id:'P11',dr:'痛点',scn:'全场景',pain:'(专家)要覆盖任意参数+知道为什么',req:'全参可覆盖无强制 + 来源可解释',src:'成长者·一手',cap:['D'],term:'PC',page:'PC·Workbench·段3(Expert)',mod:'全参面板',exp:'想改哪个改哪个、不被挡',kpi:'待定',loop:'—',dep:'—',own:'我·PC',st:'方案',pd:'留存',e:5,v:3,s:4,n:5},
+ {id:'P15',dr:'痛点',scn:'全场景',pain:'不知下发后机器怎么动,有失控感',req:'下发后动作可预期、实时可视',src:'恐惧管理·一手',cap:['E','S'],term:'跨端',term2:'HMI主',page:'HMI·Run·Live View + PC·段4',mod:'实时加工视图',exp:'知道机器接下来怎么动',kpi:'待定',loop:'—',dep:'—',own:'跨端·HMI主',st:'验证',pd:'安全',e:4,v:4,s:4,n:3},
+ {id:'C04',dr:'痛点',scn:'工程原型/消费电子',pain:'外包→报废恶性循环;报价荒谬100倍',req:'"从想法到成品几小时"的本地快速验证(价值主张)',src:'KOL社区·一手(19人)',cap:['A'],term:'跨端',term2:'定位',page:'L0·价值主张',mod:'—(定位非某屏)',exp:'不用求外包、不看人脸色,自己几小时出件',kpi:'待定',loop:'—',dep:'—',own:'L0/市场',st:'验证',pd:'战略卖点',e:5,v:5,s:5,n:2},
+ {id:'C08',dr:'痛点',scn:'刀具·刀柄/通用',pain:'寻边碰边生理应激·手抖拧反手轮',req:'对刀/寻边防呆 + 方向确认 + 慢动引导',src:'机台操作报告·一手',cap:['E'],term:'HMI',page:'HMI·Prepare·Position/Tooling',mod:'寻边防呆',exp:'手抖也不怕拧反,系统挡住危险方向',kpi:'待定',loop:'—',dep:'—',own:'跨端·HMI主',st:'发现',pd:'安全',e:4,v:5,s:5,n:3},
+ {id:'C05',dr:'痛点',scn:'全场景',pain:'软件选型困惑、工艺模板缺失',req:'按项目类型推荐工艺模板(免选型)',src:'KOL社区·一手',cap:['K','D'],term:'PC',page:'PC·Workbench·段0-3',mod:'工艺模板库',exp:'不用纠结用哪套软件/参数,按"做什么"直接给模板',kpi:'待定',loop:'—',dep:'策略库(R03)',own:'我·PC',st:'发现',pd:'激活',e:4,v:4,s:4,n:5},
+ {id:'C01',dr:'痛点',scn:'刀具·刀柄/通用',pain:'多工序对刀坐标对齐无自动方案',req:'自动找正/对刀,多工序坐标自动对齐',src:'KOL社区·一手',cap:['A','E'],term:'HMI',term2:'PC/韩',page:'HMI·Prepare·Tooling',mod:'自动找正',exp:'换工序不用重新手动找半天',kpi:'待定',loop:'—',dep:'探针/probing能力(韩)',own:'我·PC/韩',st:'发现',pd:'首单成功率',e:4,v:4,s:4,n:4},
+ {id:'C02',dr:'痛点',scn:'一体机/多工艺',pain:'同件双工艺若需重新装夹会增加对位成本；但木工4样本未找到“需求存在且尺寸适配”的支持案例',req:'验证并设计CNC↔激光复合工作流，优先减少重新装夹；共享坐标是否成立须由小件同件双工艺与硬件精度验证',src:'产品战略假设+KOL信号；木工研究未充分验证(2026-07-24)',cap:['A','E'],term:'跨端',term2:'多工艺',page:'多工艺复合机流程规格',mod:'复合工序编排',exp:'适配场景下少装夹、少对位，同时不把未验证能力包装成确定卖点',kpi:'待定',loop:'珠宝/刀具刻字/电子原型小件验证→决定保留或降级',dep:'多工艺后处理·硬件重复定位精度',own:'多工艺规格',st:'发现',pd:'战略卖点·待验证',e:2,v:4,s:5,n:3},
+ {id:'C07',dr:'痛点',scn:'全场景',pain:'厂商自带软件不被信任',req:'第三方级 CAM 质量作差异化',src:'KOL社区·一手',cap:['D'],term:'跨端',term2:'定位',page:'L0·差异化',mod:'—',exp:'—',kpi:'—',loop:'—',dep:'—',own:'L0',st:'发现',pd:'品牌',e:4,v:3,s:4,n:4},
+ {id:'C06',dr:'痛点',scn:'一体机/多工艺',pain:'仅凭“木工”等场景标签无法判断该用激光还是CNC；终端产品与工序目标才是预测变量',req:'AI 按终端产品、材料、结构/表面属性、尺寸、食品接触要求与目标效果逐工序推荐 CNC/激光/复合加工，并解释原因',src:'木工研究·Reddit VOC+4位KOC(2026-07-24)+KOL社区',cap:['D','K'],term:'PC',term2:'多工艺',page:'多工艺·工艺选(段0-1)',mod:'工艺选择',exp:'不用自己判断该激光还是CNC；系统说明为什么及能力/行程边界',kpi:'工艺推荐采纳率/因工艺选错导致的返工率(基线待测)',loop:'实际结果+用户覆盖→校准工艺推荐',dep:'材料库·机型能力/行程数据',own:'多工艺规格',st:'发现',pd:'战略卖点·首单成功率',e:5,v:4,s:4,n:4},
+ {id:'C03',dr:'痛点',scn:'刀具·刀柄',pain:'纹理/防滑是付费需求(≥$150)',req:'将防滑纹理作为激光结果对象：AI 在握持区推荐并将多种纹理真实包覆到曲面，用户按视觉与握持效果选择，不填密度/深度参数',src:'KOL启示·一手 + G01/G02重构(2026-08-12)',cap:['A','D','S'],term:'PC',page:'PC·Workbench·段3激光结果编辑',mod:'曲面纹理结果对象',exp:'在自己刀柄上直接对比“哪种握感和样子更对”',kpi:'纹理方案首次选中率/人工调参率/成品满意度(基线待测)',loop:'结果选择→实际握感/成品评价→更新材料·纹理样片',dep:'R11·R15·曲面投影/焦距补偿 EVT 验证',own:'我·PC/激光+视觉',st:'设计',pd:'收入·差异化',e:3,v:4,s:5,n:5},
+ {id:'C09',dr:'规划',scn:'刀具·刀柄/通用',pain:'刀具身份与设备库存靠人工录入易错、换刀后状态不可信',req:'每把刀印唯一二维码；机身摄像头或手机摄像头扫码识别刀具身份并录入设备，换刀/装盒时同步刀具库状态',src:'Daisy确认·当前刀具库设计(2026-07-29；原飞哥想法升级)',cap:['A','R'],term:'跨端',term2:'HMI+APP+PC',page:'HMI·Prepare·Tooling + APP扫码 + PC·Library·Tools',mod:'刀具QR身份识别',exp:'扫一下即知道“这把是什么、现在在哪”，无需手填刀具参数',kpi:'扫码识别成功率/单把录入时长/错刀率(基线待测)',loop:'扫码入库→使用/磨损回采→刀具身份履历',dep:'刀具唯一ID规则·二维码耐久性·机身/手机摄像头·刀具库(R03)',own:'硬件+跨端+韩/L2',st:'规划',pd:'战略能力·安全',road:'M1'},
+ {id:'C10',dr:'痛点',scn:'全场景(5轴)',pain:'设零缺乏防呆；异常Z偏移可能切穿工作台（W20事故根因关联尚未本人确认）',req:'引导式设零:探针碰三点→零设好,全程可视化防呆；异常Z偏移必须阻断并给出校正路径',src:'用户访谈·一手(W20)+事故关联推断(待核)',cap:['E','K'],term:'HMI',page:'HMI·Prepare·Position/Tooling',mod:'引导式设零向导',exp:'不用理解坐标系也能安全设零；明显异常不会被带入加工',kpi:'设零错误率/Z异常拦截率(基线待测)',loop:'异常拦截→原因回采→更新防呆规则',dep:'探针硬件·Z状态真值',own:'跨端·HMI主',st:'发现',pd:'安全·首单成功率',e:3,v:5,s:5,n:3},
+ {id:'C11',dr:'痛点',scn:'精密木工/翻面加工',pain:'两面加工瓶颈是拆装、重新定位与探针换装耗时，不是现有坐标精度不可信',req:'保存首面基准与装夹记录；翻面时引导定位销/夹具复位并快速复测，复用坐标上下文但不虚假承诺免复测',src:'木工研究·W08十八轮深访+M6/20mm销钉实操(2026-07-24)',cap:['K','A'],term:'HMI',term2:'PC',page:'HMI·Prepare + PC·段5 多面WCS',mod:'翻面装夹+坐标上下文',exp:'少做重复步骤，且清楚哪些坐标已继承、哪些必须重新确认',kpi:'翻面准备时长/重复定位偏差(基线待测)',loop:'翻面复测结果→夹具/基准履历',dep:'探针硬件·WCS管理·夹具生态(H05)',own:'跨端·HMI主',st:'发现',pd:'首单成功率·效率',e:4,v:4,s:4,n:3},
+ {id:'C12',dr:'规划',scn:'全产品',pain:'—',req:'零点硬件自动识别:检测到零点底座/虎钳→跳过设零,坐标已确认',src:'PM规划·硬件配合',cap:['A','K'],term:'HMI',page:'HMI·Prepare·Tooling',mod:'零点硬件识别',exp:'装上零点虎钳,软件直接说"坐标确认,开始"',kpi:'—',loop:'—',dep:'零点硬件接口(硬件团队)',own:'跨端·硬件+HMI',st:'规划',pd:'战略能力',road:'M1/M2'},
+ {id:'C13',dr:'痛点',scn:'一体机/多工艺',pain:'同件CNC→激光若重新装夹需重新对位；但木工4样本未找到“需求存在且尺寸适配”的支持案例',req:'验证并设计复合工序坐标交接：同机铣后打标时继承坐标、减少重新对位；是否可免复测由硬件精度决定',src:'产品假设+W10弱支持；木工研究未充分验证(2026-07-24)；Vision PRD V2.3.4 V06给出EVT任务(非已验证)',cap:['A','E'],term:'PC',term2:'HMI',page:'PC·多工艺编排 + HMI·Run',mod:'坐标自动交接',exp:'在适配的小件同件双工艺中减少重新对位，同时诚实显示坐标把握度',kpi:'待定',loop:'小件同件双工艺验证→决定保留/降级',dep:'多工艺后处理·C02·Vision V06坐标链·珠宝/刀具/电子原型实机验证',own:'多工艺规格',st:'发现',pd:'战略卖点·待验证',e:2,v:4,s:5,n:3},
+ {id:'C15',dr:'痛点',scn:'精密木工/工装标识',pain:'CNC雕刻标识与木材同色，编号难以快速找到和辨认',req:'识别“标识可读性/高对比度”意图；需要时推荐激光打标并预览视觉效果，而非只按加工时间选工艺',src:'木工研究·W10一手(2026-07-24；单一样本)',cap:['D','K'],term:'PC',term2:'多工艺',page:'PC·Workbench·工艺选择/预览',mod:'高对比标识推荐',exp:'用户按“清晰易读”选择结果，不必理解雕刻与激光打标差异',kpi:'标识辨识成功率/二次着色或返工率(基线待测)',loop:'用户采纳+成品反馈→校准推荐',dep:'C06·激光参数库·标识预览',own:'我·PC/多工艺规格',st:'发现',pd:'场景价值·待验证',e:3,v:3,s:3,n:4},
+ {id:'C14',dr:'痛点',scn:'全场景(评估者/熟手)',pain:'熟手已有自己的 CAM(Fusion360 等)、不信任厂商自带;但第三方刀路不懂本机运动学/安全,直接跑不适配',req:'开放第三方 CAM 接入,但后处理器 + 安全闸留在 PalmX PC:第三方管到刀路,我们后处理成机器专属、过 Pre-Flight/运动学/仿真校验的 G-code——切削点权威仍在我们',src:'市场KOL·一手(Makera 开放 Fusion360/Jeff) + 评估者定位',cap:['E','A','D'],term:'PC',term2:'韩/L2',page:'PC·Workbench·段1 导入刀路 + 段5 后处理',mod:'第三方刀路接入 + 我方后处理/安全闸',exp:'想用哪套 CAM 都行,但"能不能安全上机"这一关永远我们把',kpi:'待定',loop:'—',dep:'后处理器(N01·韩)·仿真(P12)·开放交接格式(待韩定)',own:'我·PC/韩',st:'发现',pd:'战略卖点·评估者口碑',e:4,v:3,s:5,n:4},
+ {id:'H01',dr:'痛点',scn:'刀具·刀柄',pain:'装夹定位难、刚性不足、震动毁刀',req:'(硬件)夹持刚性 + 减震',src:'KOL社区·一手+木工W08/W20改装行为推断(非直接自述)',cap:['E'],term:'硬件',page:'机器本体',mod:'—',exp:'—',kpi:'—',loop:'—',dep:'—',own:'硬件团队',st:'发现',pd:'硬件销量',e:4,v:5,s:2,n:1},
+ {id:'H02',dr:'痛点',scn:'全场景',pain:'粉尘磨损刀具 / 除尘 / 通风',req:'(硬件)除尘/排烟',src:'KOL社区·一手',cap:['E'],term:'硬件',page:'机器本体',mod:'—',exp:'—',kpi:'—',loop:'—',dep:'—',own:'硬件团队',st:'发现',pd:'硬件销量',e:4,v:4,s:2,n:1},
+ {id:'H03',dr:'痛点',scn:'全场景',pain:'入门机控制系统不流畅、修机时间长',req:'(硬件)控制系统/配件流畅度',src:'KOL社区·一手',cap:['E'],term:'硬件',page:'机器本体/固件',mod:'—',exp:'—',kpi:'—',loop:'—',dep:'—',own:'硬件/固件',st:'发现',pd:'硬件销量',e:3,v:4,s:2,n:1},
+ {id:'H04',dr:'痛点',scn:'全场景',pain:'厚料激光双面/焦距;金属需光纤激光',req:'(硬件)厚料双面激光/光纤激光',src:'KOL社区·一手',cap:['E'],term:'硬件',page:'机器本体',mod:'—',exp:'—',kpi:'—',loop:'—',dep:'—',own:'硬件团队',st:'发现',pd:'硬件销量',e:2,v:3,s:2,n:1},
+ {id:'H05',dr:'痛点',scn:'精密木工/翻面加工',pain:'原厂工作台不平/不方正/孔位少，既有夹具无法附着，重复定位需用户二次改装',req:'(硬件)保证工作台平面度/方正度；提供密集孔位或T槽，并评估兼容SMW M6/20mm定位生态、真空夹持与零点快换',src:'木工研究·W08一手+Jeff市场信号(2026-07-24)',cap:['E'],term:'硬件',page:'机器本体/夹具生态',mod:'工作台+夹具生态',exp:'复用既有夹具投资，开箱即可稳定装夹与重复定位',kpi:'平面度/重复定位精度/兼容夹具覆盖率(规格待硬件定)',loop:'—',dep:'工作台机械规格·夹具生态决策',own:'硬件团队',st:'发现',pd:'硬件销量·迁移成本',e:4,v:4,s:3,n:1},
+ {id:'H06',dr:'痛点',scn:'精密木工/翻面加工',pain:'3D探针需手动装入主轴刀位、用完再换回铣刀，流程可靠但节拍耗时',req:'(硬件)评估独立固定探针或其他不占主轴刀位的触探方案；HMI自动识别探针可用状态',src:'木工研究·W08十八轮深访主动点名DMC2 mini+VOC设置耗时交叉佐证(2026-07-24)',cap:['E','A'],term:'硬件',term2:'HMI',page:'机器本体 + HMI·Prepare·Tooling',mod:'独立探针',exp:'减少探针/铣刀反复换装；价值口径是节拍时间而非虚构精度提升',kpi:'单次设零/翻面准备时长·探针换装次数(基线待测)',loop:'—',dep:'探针硬件方案·刀长/WCS状态管理',own:'硬件团队+HMI',st:'发现',pd:'效率·首单成功率',e:4,v:4,s:3,n:2},
+ // 支撑
+ {id:'N02',dr:'支撑',scn:'全场景',pain:'—',req:'报价(单件成本/工时输出)',src:'商业必要',cap:['K'],term:'PC',page:'PC·段3-5 + L2',mod:'报价',exp:'—',kpi:'—',loop:'加工工时回采→校准成本模型',dep:'加工时间预测',own:'我·PC/L2',st:'方案',pd:'收入',},
+ {id:'N01',dr:'支撑',scn:'全场景',pain:'—',req:'后处理 / G-code 生成(含第三方 CAM 刀路后处理·见 C14)',src:'生产必要',cap:['E'],term:'PC',page:'PC·段5 + L2',mod:'后处理器',exp:'—',kpi:'—',loop:'—',dep:'—',own:'韩/L2',st:'方案',pd:'—',},
+ {id:'N03',dr:'支撑',scn:'全场景',pain:'—',req:'埋点 / 用户分级打分(U1-U5底座)',src:'PM规划',cap:['L'],term:'跨端',page:'L2 / 全端 infra',mod:'埋点分级',exp:'—',kpi:'—',loop:'行为埋点→定级→回退',dep:'—',own:'韩/L2',st:'方案',pd:'战略能力',},
+ {id:'N04',dr:'支撑',scn:'激光/真实工件',pain:'—',req:'实物画布数据契约：统一传递原图/时间戳、工件轮廓与位姿、高度/点云、像素→设备→振镜坐标、标定版本、把握度、失效原因和重拍状态',src:'Vision PRD V2.3.4 V01—V07 + G02(2026-08-12)',cap:['R','E','S'],term:'PC',term2:'Vision+Laser',page:'PC·激光实物画布 + Vision API',mod:'Vision—Laser画布契约',exp:'画面上看到的位置与真实激光落点同源可追溯',kpi:'坐标转换误差/失效画布拦截率/API失败可复现率(基线待EVT)',loop:'抓拍→编辑→落点回拍→误差归因→更新标定/算法',dep:'Vision V01—V07·Laser Studio对象Schema·设备时钟/坐标真值',own:'Vision+激光软件+我·PC',st:'规划',pd:'激光实物画布底座',},
+ // 产品规划
+ {id:'R01',dr:'规划',scn:'全产品',pain:'—',req:'AI 创作/生成:文生图→图生3D + 可制造性检查',src:'PM规划·AI能力',cap:['A','K'],term:'PC',page:'PC·Workbench·Mode C(.aigen)',mod:'AI创作画布',exp:'说一句话/给张图,长出可加工的 3D',kpi:'待定',loop:'生成→可制造性→用户采纳率→调生成',dep:'图生3D引擎(韩)',own:'我·PC/韩',st:'规划',pd:'战略能力',road:'M1?'},
+ {id:'R02',dr:'规划',scn:'全产品',pain:'—',req:'千人千面 U1–U5 分级体验(骨架)',src:'PM规划·战略',cap:['A','D'],term:'跨端',term2:'PC主',page:'PC·Wizard/Expert + infra',mod:'分级引擎',exp:'—(骨架)',kpi:'待定',loop:'埋点→定级→回退',dep:'埋点分级(N03)',own:'我·PC',st:'规划',pd:'战略能力',road:'M1'},
+ {id:'R03',dr:'规划',scn:'全产品',pain:'—',req:'资源库 / 五库知识底座(特征/策略/刀具/切削/精度)',src:'PM规划·AI能力',cap:['R','K'],term:'PC',term2:'L2',page:'PC·Library + L2·五库',mod:'五库',exp:'—',kpi:'—',loop:'加工回采→丰富库',dep:'—',own:'韩/L2',st:'规划',pd:'战略能力',road:'M1'},
+ {id:'R04',dr:'规划',scn:'全产品',pain:'—',req:'可解释学习 体验系统(过程可感知/可控)',src:'PM规划·差异化',cap:['L','F'],term:'PC',page:'PC·Workbench(learning)',mod:'可解释学习',exp:'用户看得见/信得过系统"学到了什么"',kpi:'待定',loop:'学习过程可视 + 撤销/遗忘',dep:'埋点(N03)·五库(R03)',own:'我·PC',st:'设计',pd:'战略能力·品牌',road:'M1'},
+ {id:'R05',dr:'规划',scn:'全产品',pain:'—',req:'社区 / Discover(发现·灵感·分享)',src:'PM规划·战略',cap:['C'],term:'APP',term2:'PC',page:'APP·Discover',mod:'社区feed',exp:'—',kpi:'—',loop:'—',dep:'—',own:'郑凯欣/APP',st:'规划',pd:'留存·品牌',road:'M2'},
+ {id:'R06',dr:'规划',scn:'全产品',pain:'—',req:'远程监控(加工中/完成/换刀 推送)',src:'PM规划',cap:['E'],term:'APP',page:'APP·Workshop',mod:'远程监控',exp:'—',kpi:'—',loop:'—',dep:'—',own:'APP',st:'规划',pd:'留存',road:'M1/M2'},
+ {id:'R07',dr:'规划',scn:'全产品',pain:'—',req:'成长 / 留存体系(好玩上瘾)',src:'PM规划·战略',cap:['C'],term:'APP',term2:'PC',page:'APP + PC·Home',mod:'成长体系',exp:'—',kpi:'待定',loop:'—',dep:'社区(R05)',own:'郑凯欣',st:'规划',pd:'留存',road:'M2'},
+ {id:'R08',dr:'规划',scn:'全产品',pain:'—',req:'灵巧手叙事 / 示例件内容(全端一致)',src:'CEO战略·#10',cap:['C','R'],term:'跨端',page:'data-fixtures(全端)',mod:'内容/fixtures',exp:'—',kpi:'—',loop:'—',dep:'—',own:'Daisy/内容',st:'规划',pd:'品牌',road:'M1'},
+ {id:'R09',dr:'规划',scn:'全产品/刀具管理',pain:'—',req:'可拆卸刀具盒：用户可整盒拆装/更换；当前容量暂定8把，设备维护“盒—槽位—刀具QR身份”映射',src:'Daisy确认·当前刀具库设计(2026-07-29)',cap:['R','E','A'],term:'硬件',term2:'HMI+PC',page:'机器刀具盒 + HMI·Prepare·Tooling + PC·Library·Tools',mod:'8槽可拆刀具盒',exp:'换一盒即完成整组刀具切换，设备知道每个槽位是哪把刀',kpi:'整盒识别成功率/换盒后库存一致率/换盒时长(基线待测)',loop:'装盒/拆盒/扫码→库存状态同步',dep:'C09·刀具盒在位/槽位检测·刀具库R03',own:'硬件+跨端+韩/L2',st:'规划',pd:'战略能力·效率',road:'M1'},
+ {id:'R10',dr:'规划',scn:'全产品/刀具管理',pain:'—',req:'用户可自定义刀具Set：命名、编组、复用或切换；Set与8槽刀具盒、项目和材料场景的绑定关系待产品/数据契约确认',src:'Daisy确认·当前刀具库设计(2026-07-29)',cap:['R','K'],term:'PC',term2:'HMI+APP',page:'PC·Library·Tools + HMI·Tooling + APP扫码',mod:'自定义刀具Set',exp:'按自己的项目习惯管理“常用铝件组/木工组”等刀具组合，并清楚缺刀/错刀',kpi:'Set复用率/配套缺刀拦截率(基线待测)',loop:'项目用刀结果→建议更新Set；用户显式确认后生效',dep:'C09·R09·刀具库R03·用户数据模型',own:'我·PC/跨端/韩L2',st:'规划',pd:'个性化·效率',road:'M1/M2'},
+ {id:'R11',dr:'规划',scn:'全产品/激光',pain:'—',req:'建立统一激光结果对象“加工区域×用户内容×期待效果”；用户结果归为表面标记、表面雕刻/灰度图、深度浮雕、轮廓切割四类，矢量/位图/高度图、平面/曲面仅作系统数据与承载条件',src:'Daisy确认(2026-08-12) + Laser PRD V2.3.3 S02—S04',cap:['K','D','R'],term:'PC',term2:'Laser+L2',page:'PC·Workbench·激光结果编辑',mod:'激光结果对象Schema',exp:'只说想做出的样子，不先学数据类型和激光工艺',kpi:'激光意图首次识别率/结果类型人工更正率(基线待测)',loop:'结果选择→实际成品→用户评价→校准结果分类/推荐',dep:'Laser对象Schema·轮廓切割材料/厚度/边缘质量验证',own:'我·PC/激光软件/L2',st:'设计',pd:'战略能力·激活',road:'M1'},
+ {id:'R12',dr:'规划',scn:'全产品/激光',pain:'—',req:'AI 根据本次尚未确定的结果生成最短有效路径：单一 Logo/文字/图案在一个画布直接编辑；只在多结果存在承载面、覆盖、深度、精度或释放依赖时，才生成可预览、可回改的结果工序链；未涉及工序不展示',src:'Daisy确认·G02(2026-08-12)',cap:['A','D','S'],term:'PC',page:'PC·Workbench·段3 AI策略',mod:'自适应激光流程',exp:'只打一个Logo时“放作品→选效果→确认”，复杂任务才看到必要顺序',kpi:'单结果有效操作数/任务完成时长/无关步骤暴露率(基线待测)',loop:'任务路径+放弃点→校准流程展开规则',dep:'R11·AI Planner·结果依赖规则',own:'我·PC/韩AI',st:'设计',pd:'激活·首单成功率',road:'M1'},
+ {id:'R13',dr:'规划',scn:'激光/数字模型+真实工件',pain:'—',req:'同一激光结果编辑器支持两种工件来源：导入数字模型，或将实物放入机床后抓拍并建立带设备坐标的实物画布；实物画布展示工件轮廓、可加工区、孔洞/夹具排除和位姿，支持结果叠加与人工修正',src:'Vision PRD V2.3.4 V01/V04/V05/V07 + Daisy手机壳场景(2026-08-12)',cap:['A','E','S'],term:'PC',term2:'Vision+Laser',page:'PC·Workbench·导入/实物抓拍',mod:'Workpiece Canvas',exp:'把手机壳等实物放进去，拍一下就能在它上面放作品',kpi:'抓拍成功率/工件轮廓修正率/重复摆放定位误差(基线待EVT)',loop:'抓拍+人工修正+落点回拍→定位/分割回归集',dep:'N04·Vision V01/V04/V05/V07；当前只证实100×100mm核心区，整手机壳FOV/移动拍摄/拼接待验证；材料自动识别未立项',own:'我·PC/Vision/激光软件',st:'规划',pd:'激光核心体验',road:'M1?'},
+ {id:'R14',dr:'规划',scn:'全产品/激光',pain:'—',req:'Wizard 以工件为中心提供直接操作：内容可拖到实际表面并吸附/投影，用户在模型或抓拍画面上点击、框选/涂抹区域、拖动、缩放、旋转、选择叠加在工件上的效果并随时撤销；AI失败不回退为矢量/位图/曲面分类表单',src:'Daisy确认·G01/G02(2026-08-12) + Vision V05人工修正',cap:['D','S','A'],term:'PC',page:'PC·Workbench·激光结果画布',mod:'可视化Self-control',exp:'系统猜错时也只需“看、点、拖、选效果、撤销”',kpi:'首次放置成功率/人工修正成功率/分类表单暴露率(目标0)',loop:'修正行为→回采AI错误类型→改善区域/结果推荐',dep:'R11·R13·3D/叠加编辑器·无障碍替代交互',own:'我·PC/视觉算法',st:'设计',pd:'可用性·控制感',road:'M1'},
+ {id:'R15',dr:'规划',scn:'全产品/激光',pain:'—',req:'Wizard 只让用户基于当前工件/材料选浅深、对比、疏密、清晰度、切透与边缘质量等可视化结果，AI反向写入光源、功率、速度、填充、DPI、路径、轮次与焦距补偿；Expert展开同一结果对象的工艺与参数，切换不丢状态，两端修改互相同步',src:'G01/G02 + Laser PRD V2.3.3 S04(2026-08-12)',cap:['K','D','S'],term:'PC',term2:'Laser+L2',page:'PC·Workbench·Wizard/Expert',mod:'结果↔工艺双视图',exp:'新手选“成品长什么样”，专家仍能查改完整制造方法',kpi:'视觉效果选择率/手动调参率/Wizard↔Expert状态一致率(基线待测)',loop:'选中效果+专家覆盖+实际成品→校准材料工艺库',dep:'R03扩展材料—光源—效果库·真实参数映射·预览引擎',own:'我·PC/激光软件/L2',st:'设计',pd:'首单成功率·专家信任',road:'M1'},
+ {id:'R16',dr:'规划',scn:'激光/多结果+复合加工',pain:'—',req:'AI将多个结果对象组成有顺序、有依赖、可预览、可回改的结果工序链：先形成承载面，再做依赖该表面的形体/表面/精细效果，改变工件稳定性的轮廓切割默认最后；光源切换仅能在不破坏结果依赖与质量时优化执行顺序',src:'Daisy确认·G02(2026-08-12) + Laser PRD对象/图层/浮雕工序能力',cap:['A','D','S'],term:'PC',term2:'Laser+CNC',page:'PC·Workbench·段3策略/段4预览',mod:'结果工序依赖图',exp:'Wizard看成品一步步变化；Expert才展开光源、路径、轮次与实际执行顺序',kpi:'AI排序采纳率/用户改序率/因顺序导致返工率(基线待测)',loop:'排序+覆盖+实际质量→校准依赖与优化规则',dep:'R11·R12·C02/C13·Geometry/CNC/Laser状态链',own:'我·PC/韩AI/激光+CNC工艺',st:'规划',pd:'复合加工差异化',road:'M1?'},
+ {id:'R17',dr:'规划',scn:'激光/加工前确认',pain:'—',req:'在结果确认前校验画布时效、工件位姿/可加工边界、画面→激光落点标定、高度/焦距、光源与材料能力、轮廓闭合/切透及必要安全项；工件移动、低把握度、异常高度、标定失效或超出能力时阻断并给出重拍/重标/修正路径',src:'Vision PRD V2.3.4 V02/V04/V05/V06 + Laser PRD V2.3.3 + G02',cap:['E','K','S'],term:'跨端',term2:'PC生成/HMI复核',page:'PC·结果预览 + HMI·Pre-Flight',mod:'激光结果安全门',exp:'只为真正风险停下，并清楚知道“哪里不对、怎么恢复”',kpi:'失效画布/越界/异常高度拦截率·视觉→落点系统误差(基线待EVT)',loop:'阻断原因+落点回拍+加工结果→归因标定/机械/振镜/装夹',dep:'N04·Vision V02/V04/V05/V06·HMI安全链·材料工艺能力矩阵',own:'我·PC/跨端/Vision/工艺',st:'规划',pd:'安全·首单成功率',road:'M1'},
+ {id:'R18',dr:'规划',scn:'全产品/激光',pain:'—',req:'建立激光效果证据库：按当前材料、机型/光源、表面状态和结果类型管理实测样片、仿真预测与概念示意，所有Wizard效果选项必须标明证据等级并绑定可复现参数；加工后回采实际成品图、质量和用户评价',src:'G01/G02 + Laser PRD工艺参数状态',cap:['R','F','L','K'],term:'PC',term2:'L2+Vision',page:'PC·Library·Materials/Results + Workbench效果选择',mod:'材料—效果证据库',exp:'点选看得见的成品效果，同时知道它是真实打过、系统预测还是只供示意',kpi:'样片→成品相似度/首次加工成功率/待验证参数误当标准率(目标0)',loop:'效果选择→实际成品回拍/评分→参数与证据状态更新',dep:'R03资源库扩展·激光工艺验证样片·Vision回拍·证据版本规则',own:'我·PC/工艺/L2/Vision',st:'规划',pd:'信任·数据壁垒',road:'M1/M2'},
+];
+const CAPNAME={K:'知识',D:'决策',A:'自动化',S:'仿真',E:'执行',F:'反馈',L:'学习',C:'社区',R:'资源'};
+
+// ===== 逻辑 =====
+let W={e:30,v:30,s:25,n:15},sortK='prio',sortDir=-1,expanded=new Set();
+let reqFilt={dr:new Set(),term:new Set(),cap:new Set(),src:new Set(),st:new Set()},scnFilt={ct:new Set(),narr:new Set()};
+let scnSortK='star',scnSortDir=-1;
+const norm=()=>{const t=W.e+W.v+W.s+W.n||1;return{e:W.e/t,v:W.v/t,s:W.s/t,n:W.n/t}};
+const hasScore=d=>d.dr==='痛点'&&!d.id.startsWith('H')&&typeof d.e==='number';
+const score=d=>hasScore(d)?Math.round((d.e*norm().e+d.v*norm().v+d.s*norm().s+d.n*norm().n)/5*100):null;
+const band=d=>{if(d.id.startsWith('H'))return'登记';if(d.dr==='支撑')return'支撑';if(d.dr==='规划')return d.road;const s=score(d);return s>=95?'P0':s>=85?'P1':s>=70?'P2':'观察';};
+const prioRank=d=>{const b=band(d),o={P0:0,P1:1,P2:2,观察:3,'M1?':4,M1:4,'M1/M2':4,M2:5,支撑:6,登记:7};return (o[b]??9)*1000-(score(d)??0);};
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.getElementById('v-'+t.dataset.v).classList.add('on');}));
+function updW(){const w=norm();pe.textContent=Math.round(w.e*100)+'%';pv.textContent=Math.round(w.v*100)+'%';ps.textContent=Math.round(w.s*100)+'%';pn.textContent=Math.round(w.n*100)+'%';wsum.textContent=(W.e+W.v+W.s+W.n)+' → 100%';renderReq();renderTerm();}
+function resetW(){W={e:30,v:30,s:25,n:15};['we','wv','ws','wn'].forEach((id,i)=>document.getElementById(id).value=[30,30,25,15][i]);updW();}
+['e','v','s','n'].forEach(k=>document.getElementById('w'+k).addEventListener('input',e=>{W[k]=+e.target.value;updW();}));
+document.querySelectorAll('#v-req thead th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=(k==='req'||k==='scn')?1:-1}renderReq();}));
+document.querySelectorAll('#v-scene thead th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(scnSortK===k)scnSortDir*=-1;else{scnSortK=k;scnSortDir=(k==='name'||k==='obj')?1:-1}renderScene();}));
+
+function chips(host,groups,store,cb){let h='';groups.forEach(g=>{h+=`<span class="fl">${g.label}</span>`;g.items.forEach(it=>h+=`<span class="chip" data-g="${g.key}" data-v="${it[0]}">${it[1]}</span>`);h+='<span class="chip sep">|</span>';});host.innerHTML=h;host.querySelectorAll('.chip[data-g]').forEach(c=>c.addEventListener('click',()=>{const s=store[c.dataset.g],v=c.dataset.v;s.has(v)?s.delete(v):s.add(v);c.classList.toggle('on');cb();}));}
+chips(document.getElementById('reqFilt'),[
+  {key:'dr',label:'驱动',items:[['痛点','痛点'],['规划','规划'],['支撑','支撑']]},
+  {key:'term',label:'端',items:[['PC','PC'],['HMI','HMI'],['APP','APP'],['跨端','跨端']]},
+  {key:'cap',label:'能力',items:[['K','知'],['D','决'],['A','动'],['S','仿'],['E','执'],['F','馈'],['L','学'],['C','群'],['R','资']]},
+  {key:'st',label:'状态',items:[['发现','发现'],['验证','验证'],['方案','方案'],['设计','设计'],['规划','规划']]},
+],reqFilt,()=>renderReq());
+chips(document.getElementById('scnFilt'),[
+  {key:'ct',label:'客户',items:[['To B','To B'],['To C','To C'],['To Lab','To Lab'],['To 教育','To 教育']]},
+  {key:'narr',label:'叙事',items:[['y','✓对齐'],['o','○中性'],['n','⚠偏离']]},
+],scnFilt,renderScene);
+
+function passReq(d){const f=reqFilt;if(f.dr.size&&!f.dr.has(d.dr))return false;if(f.term.size&&!f.term.has(d.term))return false;if(f.cap.size&&![...f.cap].some(c=>d.cap.includes(c)))return false;if(f.st.size&&!f.st.has(d.st))return false;return true;}
+function passScn(s){const f=scnFilt;if(f.ct.size&&!f.ct.has(s.ct))return false;if(f.narr.size&&!f.narr.has(s.narr))return false;return true;}
+
+function capPills(caps){return caps.map(c=>`<span class="cap cap-${c}" title="${CAPNAME[c]}">${CAPNAME[c][0]}</span>`).join('');}
+function prioCell(d){const b=band(d),s=score(d);
+  if(d.dr==='规划')return `<span class="band b-${b.replace('/','').replace('?','')}">${b}</span>`;
+  if(d.dr==='支撑')return `<span class="band b-支撑">支撑</span>`;
+  if(d.id.startsWith('H'))return `<span class="band b-登记">登记</span>`;
+  return `<span class="band b-${b}">${b}</span> <span class="score">${s}</span>`;}
+const val=x=>!x||x==='—'?'<span style="color:var(--gray)">—</span>':(x.startsWith('待定')?`<span class="todo">${x}</span>`:x);
+
+function renderReq(){
+  const rows=REQ.filter(passReq).slice().sort((a,b)=>{
+    if(sortK==='prio')return sortDir*(prioRank(a)-prioRank(b))*-1;
+    let av=a[sortK==='driver'?'dr':sortK],bv=b[sortK==='driver'?'dr':sortK];if(av==null)av='';if(bv==null)bv='';
+    if(Array.isArray(av)){av=av.join();bv=(bv||[]).join()}
+    if(typeof av==='string')return sortDir*av.localeCompare(bv,'zh');return sortDir*(av-bv);});
+  const cnt=x=>REQ.filter(d=>d.dr===x).length;
+  document.getElementById('stats').innerHTML=
+    `<div class="stat pain"><div class="n">${cnt('痛点')}</div><div class="l">痛点驱动</div></div>`+
+    `<div class="stat plan"><div class="n">${cnt('规划')}</div><div class="l">产品规划</div></div>`+
+    `<div class="stat sup"><div class="n">${cnt('支撑')}</div><div class="l">支撑必要</div></div>`+
+    `<div class="stat"><div class="n">${REQ.length}</div><div class="l">总条目</div></div>`;
+  // capability distribution
+  const capCnt={};REQ.forEach(d=>d.cap.forEach(c=>capCnt[c]=(capCnt[c]||0)+1));
+  document.getElementById('capbar').innerHTML='<span class="t">能力成长路径:</span>'+Object.keys(CAPNAME).filter(c=>capCnt[c]).map(c=>`<span class="capcell"><span class="cap cap-${c}">${CAPNAME[c][0]}</span>${CAPNAME[c]} <b>${capCnt[c]}</b></span>`).join('');
+  document.getElementById('reqTb').innerHTML=rows.map(d=>{const ex=expanded.has(d.id);const sh=hasScore(d);
+    return `<tr class="main ${d.src&&d.src.includes('团队')?'conflict':''}" data-id="${d.id}">
+      <td><span class="dr dr-${d.dr}">${d.dr}</span></td>
+      <td class="num">${prioCell(d)}</td>
+      <td style="font-size:11.5px;color:var(--sub)">${d.scn}</td>
+      <td class="painreq"><span class="id">${d.id}</span> ${d.dr==='痛点'?`<span class="pn">${d.pain}</span>`:''}<div class="rq">${d.req}</div></td>
+      <td>${capPills(d.cap)}</td>
+      <td><span class="term term-${d.term}">${d.term}</span><br><span class="page">${d.page}</span></td>
+      <td class="src">${d.src}</td>
+      <td><span class="st st-${d.st}">${d.st}</span></td>
+      <td class="owner">${d.own}</td></tr>`+
+    (ex?`<tr class="detail"><td colspan="9"><div class="dgrid">
+      <div class="dcell"><div class="k">模块 Module</div><div class="val">${val(d.mod)}</div></div>
+      <div class="dcell"><div class="k">体验目标 Experience Goal</div><div class="val">${val(d.exp)}</div></div>
+      <div class="dcell"><div class="k">KPI 成功指标</div><div class="val ${(d.kpi||'').includes('待定')?'todo':''}">${val(d.kpi)}</div></div>
+      <div class="dcell"><div class="k">闭环 Closed Loop</div><div class="val">${val(d.loop)}</div></div>
+      <div class="dcell"><div class="k">依赖 Dependency</div><div class="val">${val(d.dep)}</div></div>
+      <div class="dcell"><div class="k">优先级依据 Priority Driver</div><div class="val">${val(d.pd)}</div></div>
+      ${sh?`<div class="dcell"><div class="k">四维分</div><div class="val evs">证${d.e} 值${d.v} 战${d.s} 节${d.n} → ${score(d)}</div></div>`:''}
+      <div class="dcell"><div class="k">协同端</div><div class="val">${val(d.term2)}</div></div>
+    </div></td></tr>`:'');}).join('');
+  document.querySelectorAll('#reqTb tr.main').forEach(tr=>tr.addEventListener('click',()=>{const id=tr.dataset.id;expanded.has(id)?expanded.delete(id):expanded.add(id);renderReq();}));
+  document.getElementById('reqN').textContent=REQ.length;
+}
+function renderScene(){
+  const rows=SCEN.filter(passScn).slice().sort((a,b)=>{let av=a[scnSortK],bv=b[scnSortK];if(typeof av==='string')return scnSortDir*av.localeCompare(bv,'zh');return scnSortDir*(av-bv);});
+  const nm={y:'✓ 对齐',o:'○ 中性',n:'⚠ 偏离'},cl={y:'var(--ok)',o:'var(--gray)',n:'var(--coral)'};
+  document.getElementById('scnTb').innerHTML=rows.map(s=>`<tr class="${s.narr==='n'?'conflict':''}">
+    <td class="num" style="color:var(--warn);font-family:var(--mono)">${'★'.repeat(s.star)}${'☆'.repeat(5-s.star)}</td>
+    <td style="font-weight:600">${s.name}</td><td style="font-size:12px;color:var(--sub)">${s.ct}</td>
+    <td style="font-size:12px;max-width:240px">${s.obj}</td>
+    <td style="font-size:12px;${s.kol!=='—'?'color:var(--blue);font-weight:600':'color:var(--gray)'}">${s.kol}</td>
+    <td style="font-size:12px;color:${cl[s.narr]};font-weight:${s.narr==='o'?400:700}">${nm[s.narr]}</td>
+    <td><button class="btn ghost" style="font-size:11px;padding:3px 9px" data-i="${SCEN.indexOf(s)}">${s.status}</button></td></tr>`).join('');
+  document.querySelectorAll('#scnTb .btn').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.i,cyc={候选:'选定',选定:'搁置',搁置:'候选'};SCEN[i].status=cyc[SCEN[i].status];renderScene();}));
+  document.getElementById('scnN').textContent=SCEN.length;
+}
+const TERMS=[
+  {t:'PC',role:'CAM 编程 + 资源库 + AI 创作',pks:['PC·Workbench','PC·Library','PC·Home']},
+  {t:'HMI',role:'机台操作(执行·运动最终启动点)',warn:'L1 5vs6 未定',pks:['HMI·Prepare','HMI·Run','HMI·Diagnose']},
+  {t:'APP',role:'桥梁(远程监控·发现·社区)',pks:['APP·Discover','APP·Workshop','APP·Create']},
+  {t:'其它',role:'跨端基建 / 定位 / 引擎 / 硬件',pks:['跨端·基建','多工艺·复合机','L0·定位','L2·引擎','硬件·本体']},
+];
+function pkOf(d){const p=d.page;
+  if(p.includes('Workbench')||p.includes('Wizard')||p.includes('learning')||p.includes('Mode C'))return 'PC·Workbench';
+  if(p.includes('Library'))return 'PC·Library'; if(p.includes('Home'))return 'PC·Home';
+  if(p.includes('Prepare'))return 'HMI·Prepare'; if(p.includes('Run'))return 'HMI·Run'; if(p.includes('Diagnose'))return 'HMI·Diagnose';
+  if(p.includes('Discover')||p.includes('APP +'))return 'APP·Discover'; if(p.includes('Workshop'))return 'APP·Workshop'; if(p.includes('APP·Create'))return 'APP·Create';
+  if(p.includes('多工艺'))return '多工艺·复合机'; if(p.includes('L0'))return 'L0·定位'; if(p.includes('机器本体'))return '硬件·本体';
+  if(p.includes('L2')||p.includes('infra')||p.includes('fixtures'))return '跨端·基建'; return '跨端·基建';}
+function renderTerm(){
+  let h='';
+  TERMS.forEach(T=>{
+    const inT=REQ.filter(d=>T.pks.includes(pkOf(d)));
+    h+=`<div class="tv-term ${T.t}"><h3>${T.t==='其它'?'跨端 / 基建 / 定位':T.t}</h3><div class="role">${T.role}${T.warn?` · <span class="warn">⚠ ${T.warn}</span>`:''} · 共 ${inT.length} 条需求</div></div><div class="tv-grid">`;
+    T.pks.forEach(pk=>{
+      const items=REQ.filter(d=>pkOf(d)===pk).sort((a,b)=>prioRank(a)-prioRank(b));
+      if(!items.length)return;
+      const np=items.filter(d=>d.dr==='痛点').length,npl=items.filter(d=>d.dr==='规划').length;
+      let gap='';
+      if(np>0&&npl===0&&!['L0·定位','硬件·本体'].includes(pk))gap='<div class="tv-gap">▸ 有痛点·没规划 — 用户逼出来的,别漏</div>';
+      if(npl>0&&np===0)gap='<div class="tv-gap">▸ 有规划·没痛点 — 原则8:验证下注的用户依据</div>';
+      h+=`<div class="tv-card"><h4>${pk}</h4><div class="cnt">${items.length} 条 · 痛点 ${np} / 规划 ${npl}</div>`+
+        items.map(d=>`<div class="tv-row"><span class="cid" style="color:${d.dr==='痛点'?'var(--blue)':d.dr==='规划'?'var(--purple)':'var(--ok)'}">${d.id}</span><span>${(d.req||'').slice(0,26)}</span><span class="caps">${capPills(d.cap)}</span></div>`).join('')+gap+`</div>`;
+    });
+    h+=`</div>`;
+  });
+  document.getElementById('termWrap').innerHTML=h;
+}
+document.getElementById('foot').innerHTML=`
+  <b>维护方式</b>:本文件是 Daisy 的 PM 需求池唯一真源，按“场景→痛点→需求”持续原位更新，不再按每次变更派生版本文件。重要变更记录日期与依据，历史 v0.x 文件仅作快照、不再维护。<br>
+  <b>最近更新 · 2026-08-12</b>:① 新增激光全局体验约束 <b>G02 Workpiece as Canvas</b>：统一结果对象=“加工区域×用户内容×期待效果”，单结果直接编辑，多结果按依赖成链；数字模型和真实工件抓拍进入同一结果编辑器。② 新增 <b>R11—R18</b> 激光体验主干：四类用户结果、最短有效路径、实物画布、直接操作Self-control、Wizard/Expert同数据、多结果依赖链、激光安全门和效果证据库；新增 <b>N04</b> Vision—Laser实物画布数据契约。③ 证据更新：硬件已支持轮廓切割；Vision PRD V2.3.4 支撑抓拍、轮廓/位姿、画布叠加、人工修正和视觉→振镜落点，但当前 EVT 只证明 100×100mm 核心区，整手机壳视野/拼接与材料自动识别仍待验证。④ 修订 <b>C03</b> 为曲面纹理可视化结果对象，修订 <b>C13</b> 接入Vision V06坐标链任务但不将EVT任务写成已验证能力。<br>
+  <b>诚实旗</b>:🚩 HMI L1 5vs6 未锁(按 v3.7 五档标)。🚩 AI 创作(Mode C)IA 标"M1待确认"(R01=M1?)。🚩 C08 待你核实。🚩 刀具盒容量8把为暂定；二维码耐久性、盒/槽位检测方式、Set是否跨盒仍待硬件/L2契约。🚩 激光实物画布当前只有 100×100mm EVT 核心区证据；整手机壳FOV/拼接、材料自动识别、曲面各结果类型和轮廓切割的材料/厚度/边缘质量边界待实机验证。🚩 KPI 目标值全为「待定」——没基线不编。🚩 场景专属痛点要等场景选定后调研才填,现在多数标"全场景"。🚩 新增 5 场景的「叙事」标签(职校/创客/文创教学/钢笔=○中性,摩擦磨损=✓对齐)为暂定,待 Daisy 核。<br>
+  <b>改数据</b>:<code>REQ</code>/<code>SCEN</code> 数组。IA 源=v3.7 entity-first + L1-PRD 六段。`;
+
+resetW();renderScene();renderTerm();
+</script>

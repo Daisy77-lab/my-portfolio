@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="../i18n-init.js?v=1120"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>三天工厂日记 · 从 CNC 小白到知道自己在做什么</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0E0A18; --bg2:#120B22;
+    --surf:#191130; --surf2:#211845; --surf3:#2A1E55;
+    --purple:#6C3BAA; --purple-l:#9D6BD4; --purple-g:#B991E8;
+    --cyan:#06B6D4; --lime:#A3E635;
+    --success:#10B981; --warn:#F97316; --error:#EF4444; --yellow:#FACC15;
+    --tx:#F4F1FB; --tx-mut:#A99FC4; --tx-dim:#6F6691;
+    --grid:rgba(157,107,212,.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--tx);
+    font-family:"Plus Jakarta Sans",-apple-system,sans-serif;
+    line-height:1.6; overflow-x:hidden;
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:38px 38px;
+  }
+  .mono{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{position:relative}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .rv.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:96vh;display:flex;flex-direction:column;justify-content:center;padding:90px 0 60px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55}
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.22em;color:var(--purple-g);font-weight:600;text-transform:uppercase;margin-bottom:26px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1.title{font-size:clamp(38px,6.6vw,76px);line-height:1.04;font-weight:800;letter-spacing:-.02em;margin-bottom:24px}
+  h1.title .hl{background:linear-gradient(100deg,var(--cyan),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:clamp(16px,2vw,20px);color:var(--tx-mut);max-width:600px;margin-bottom:40px}
+  .datestamp{display:inline-flex;align-items:center;gap:14px;font-size:14px;color:var(--tx-dim);border-radius:99px;background:rgba(255,255,255,.025);padding:9px 18px}
+  .datestamp b{color:var(--purple-g);font-weight:500}
+  .scrollcue{margin-top:60px;font-size:12px;letter-spacing:.18em;color:var(--tx-dim);display:flex;align-items:center;gap:10px;text-transform:uppercase}
+  .scrollcue .bar{width:34px;height:1px;background:var(--tx-dim);position:relative;overflow:hidden}
+  .scrollcue .bar::after{content:"";position:absolute;inset:0;background:var(--lime);transform:translateX(-100%);animation:slide 2s infinite}
+  @keyframes slide{50%,100%{transform:translateX(100%)}}
+
+  /* ---------- STATS ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 30px}
+  .stat{background:linear-gradient(160deg,var(--surf2),var(--surf));border-radius:18px;padding:24px 22px;position:relative;overflow:hidden}
+  .stat::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--cyan),var(--lime))}
+  .stat .num{font-size:42px;font-weight:700;line-height:1;letter-spacing:-.01em}
+  .stat .num .u{font-size:17px;color:var(--tx-dim);margin-left:5px;font-weight:500}
+  .stat .lab{font-size:13px;color:var(--tx-mut);margin-top:10px}
+  .stat .grow{font-size:24px;letter-spacing:6px}
+
+  /* ---------- section heading ---------- */
+  .shead{margin:0 0 30px}
+  .seyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .seyebrow::before{content:"";width:22px;height:2px;background:var(--cyan)}
+  h2{font-size:clamp(26px,3.6vw,38px);font-weight:800;letter-spacing:-.015em;line-height:1.15}
+  .ssub{color:var(--tx-mut);font-size:16px;margin-top:12px;max-width:640px}
+  .block{padding:84px 0}
+
+  /* ---------- EMOTION CURVE ---------- */
+  .chart-card{background:linear-gradient(165deg,var(--surf2),var(--surf));border-radius:24px;padding:34px 30px 26px;position:relative;overflow:hidden}
+  .chart-axis{position:absolute;left:0;right:0;display:flex;justify-content:space-between;font-size:11px;color:var(--tx-dim);font-family:"JetBrains Mono",monospace}
+  .ec-top{font-size:12px;color:var(--tx-dim);display:flex;justify-content:space-between;margin-bottom:8px;font-family:"JetBrains Mono",monospace}
+  svg.curve{width:100%;height:auto;display:block;overflow:visible}
+  .ec-pt{cursor:pointer}
+  .ec-pt circle.hit{fill:transparent}
+  .ec-tip{position:absolute;pointer-events:none;background:#070510;border:1px solid var(--surf3);border-radius:14px;padding:12px 15px;max-width:280px;opacity:0;transform:translateY(6px);transition:.2s;z-index:9;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  .ec-tip.show{opacity:1;transform:none}
+  .ec-tip .t{font-size:13.5px;font-weight:700;margin-bottom:5px}
+  .ec-tip .q{font-size:12.5px;color:var(--tx-mut);line-height:1.5}
+  .ec-tip .dtag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--cyan);margin-bottom:7px}
+  .ec-legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;font-size:12.5px;color:var(--tx-mut)}
+  .ec-legend span{display:inline-flex;align-items:center;gap:7px}
+  .ec-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  /* ---------- TIMELINE ---------- */
+  .tl{position:relative;margin-top:10px;padding-left:30px}
+  .tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--cyan),var(--lime),var(--purple))}
+  .day{position:relative;margin-bottom:54px}
+  .day::before{content:"";position:absolute;left:-30px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--cyan);box-shadow:0 0 0 5px rgba(6,182,212,.12)}
+  .day.g::before{border-color:var(--lime);box-shadow:0 0 0 5px rgba(163,230,53,.12)}
+  .day-hd{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .day-tag{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--cyan);background:rgba(6,182,212,.1);padding:4px 11px;border-radius:7px}
+  .day-h{font-size:23px;font-weight:800;letter-spacing:-.01em}
+  .day-date{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--tx-dim)}
+  .day-line{color:var(--tx-mut);font-size:15px;margin-bottom:18px;max-width:680px}
+  .beats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+  .beat{background:var(--surf);border-radius:15px;padding:17px 18px;position:relative;transition:transform .3s,background .3s}
+  .beat:hover{transform:translateY(-4px);background:var(--surf2)}
+  .beat .bt{font-size:14.5px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .beat .bd{font-size:13px;color:var(--tx-mut);line-height:1.55}
+  .beat .chip{font-size:10.5px;font-family:"JetBrains Mono",monospace;letter-spacing:.06em;padding:2px 8px;border-radius:6px;font-weight:500}
+  .chip.win{background:rgba(16,185,129,.16);color:#34d8a4}
+  .chip.alert{background:rgba(239,68,68,.15);color:#ff7a7a}
+  .chip.warn{background:rgba(249,115,22,.16);color:#ff9a55}
+  .chip.idea{background:rgba(157,107,212,.18);color:var(--purple-g)}
+
+  /* ---------- QUOTE strips ---------- */
+  .quote{background:linear-gradient(120deg,var(--surf2),var(--surf));border-radius:18px;padding:26px 28px;margin-top:18px;position:relative;border-left:3px solid var(--lime)}
+  .quote .qm{font-size:54px;line-height:.4;color:var(--purple);font-family:Georgia,serif;position:absolute;top:24px;left:18px;opacity:.4}
+  .quote p{font-size:17px;font-weight:600;padding-left:34px;letter-spacing:-.005em}
+  .quote .src{padding-left:34px;font-size:12.5px;color:var(--tx-dim);margin-top:9px;font-family:"JetBrains Mono",monospace}
+
+  /* ---------- 分中棒 CLIMAX ---------- */
+  .climax{background:
+      radial-gradient(120% 120% at 80% 0%,rgba(16,185,129,.10),transparent 55%),
+      linear-gradient(165deg,var(--surf2),var(--surf));
+    border-radius:26px;padding:46px 38px;overflow:hidden;position:relative}
+  .climax .arc{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:26px}
+  .dro{background:#070510;border-radius:18px;padding:22px 22px;text-align:center;position:relative;transition:.5s}
+  .dro .who{font-size:12px;letter-spacing:.12em;color:var(--tx-dim);font-family:"JetBrains Mono",monospace;text-transform:uppercase;margin-bottom:14px}
+  .dro .read{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:700;line-height:1.5}
+  .dro .read .ax{color:var(--tx-dim);font-size:18px;margin-right:8px}
+  .dro.me{box-shadow:inset 0 0 0 1px rgba(239,68,68,.4)}
+  .dro.me .read{color:#ff8c8c}
+  .dro.ok{box-shadow:inset 0 0 0 1px rgba(16,185,129,.55)}
+  .dro.ok .read{color:#34d8a4}
+  .arc-mid{text-align:center}
+  .delta{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--tx-dim);margin-bottom:10px}
+  .delta b{color:var(--warn);font-size:22px;display:block;transition:.5s}
+  .delta.done b{color:var(--success)}
+  .matchbadge{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:var(--success);background:rgba(16,185,129,.12);padding:10px 18px;border-radius:99px;opacity:0;transform:scale(.8);transition:.5s cubic-bezier(.34,1.56,.64,1)}
+  .matchbadge.show{opacity:1;transform:none}
+  .climax .cl-foot{margin-top:30px;font-size:15px;color:var(--tx-mut);max-width:720px}
+  .climax .cl-foot b{color:var(--tx)}
+  .pulse-ring{position:absolute;inset:0;border-radius:26px;pointer-events:none;box-shadow:0 0 0 0 rgba(16,185,129,.5);opacity:0}
+  .pulse-ring.go{animation:ring 1.1s ease-out}
+  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(16,185,129,.45);opacity:1}100%{box-shadow:0 0 0 60px rgba(16,185,129,0);opacity:0}}
+
+  /* ---------- SKILL TREE ---------- */
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;margin-top:8px}
+  .skill{padding:8px 0}
+  .skill-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+  .skill-hd .nm{font-size:14.5px;font-weight:600}
+  .skill-hd .lv{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--tx-dim)}
+  .segs{display:flex;gap:7px}
+  .seg{flex:1;height:9px;border-radius:5px;background:var(--surf2);position:relative;overflow:hidden}
+  .seg .fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:left;border-radius:5px;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+  .seg.in .fill{transform:scaleX(1)}
+  .seglabels{display:flex;gap:7px;margin-top:6px}
+  .seglabels span{flex:1;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--tx-dim)}
+  .legend4{display:flex;gap:18px;flex-wrap:wrap;margin-top:30px;font-size:12.5px;color:var(--tx-mut);justify-content:center}
+  .legend4 span{display:inline-flex;align-items:center;gap:8px}
+  .legend4 i{width:11px;height:11px;border-radius:4px}
+
+  /* ---------- INSIGHT ---------- */
+  .insight{background:linear-gradient(165deg,var(--surf2),var(--bg2));border-radius:26px;padding:50px 42px;margin-top:6px}
+  .ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+  .ins-card{background:var(--surf);border-radius:18px;padding:28px 26px;position:relative}
+  .ins-card .n{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--cyan);letter-spacing:.1em}
+  .ins-card h3{font-size:19px;font-weight:800;margin:12px 0 10px;letter-spacing:-.01em}
+  .ins-card p{font-size:14px;color:var(--tx-mut);line-height:1.6}
+  .ins-card .map{margin-top:16px;font-size:12.5px;font-family:"JetBrains Mono",monospace;color:var(--lime);background:rgba(163,230,53,.07);padding:9px 13px;border-radius:9px}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:60px 0 80px;text-align:center;color:var(--tx-dim)}
+  footer .big{font-size:clamp(22px,3.4vw,34px);font-weight:800;color:var(--tx);letter-spacing:-.02em;max-width:760px;margin:0 auto 22px;line-height:1.25}
+  footer .big .hl{background:linear-gradient(100deg,var(--cyan),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+  footer .meta{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em}
+
+  @media(max-width:760px){
+    .stats{grid-template-columns:1fr 1fr}
+    .climax .arc{grid-template-columns:1fr}
+    .skills,.ins-grid{grid-template-columns:1fr}
+    .climax,.insight{padding:34px 22px}
+    .beat:hover{transform:none}
+  }
+</style>
+
+<link rel="stylesheet" href="../i18n.css?v=1120-layout-audit3">
+<script src="../i18n-en.js?v=1120-locale8" defer></script>
+<script src="../i18n.js?v=1120-locale6" defer></script>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <svg class="hero-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <path id="hpath" d="M-50,640 C200,640 240,360 440,360 S700,520 760,360 920,180 1260,220"
+      fill="none" stroke="url(#hg)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle id="hbit" r="6" fill="#A3E635"/>
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#06B6D4"/><stop offset="1" stop-color="#A3E635"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div class="wrap" style="position:relative;z-index:2">
+    <span class="kicker rv in"><span class="dot"></span>桌面 CNC · 工厂实操日记</span>
+    <h1 class="title rv in d1">三天，我把<span class="hl">恐惧</span><br/>一点点拧成了<span class="hl">坐标</span>。</h1>
+    <p class="lede rv in d2">一个 CNC 小白进了工厂车间，从"装刀手都在抖"到"分中算得和老师傅一模一样"。这是那三天里，身体和情绪真实走过的一条路。</p>
+    <div class="datestamp mono rv in d3"><b>RECORD</b> 2026.04.21 → 04.23 &nbsp;·&nbsp; 发那科 &amp; 牧野设备 &nbsp;·&nbsp; 记录人 Daisy</div>
+    <div class="scrollcue rv in d4"><span class="bar"></span>向下，跟着走一遍</div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="wrap" style="margin-top:-30px">
+  <div class="stats">
+    <div class="stat rv"><div class="num mono"><span class="cnt" data-to="3">0</span><span class="u">天</span></div><div class="lab">车间集中实操</div></div>
+    <div class="stat rv d1"><div class="num mono"><span class="cnt" data-to="6">0</span><span class="u">类</span></div><div class="lab">亲历异常事件</div></div>
+    <div class="stat rv d2"><div class="num mono"><span class="cnt" data-to="2">0</span><span class="u">项</span></div><div class="lab">从零到独立完成</div></div>
+    <div class="stat rv d3"><div class="grow">🟡→🟢</div><div class="lab" style="margin-top:14px">成长等级跃迁</div></div>
+  </div>
+</section>
+
+<!-- ===================== EMOTION CURVE ===================== -->
+<section class="block">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="seyebrow">EMOTION · DRO</div>
+      <h2>三天情绪曲线</h2>
+      <p class="ssub">CNC 加工每一步都不可逆，所以情绪不是平的——它跟着"碰刀的瞬间"和"算对的瞬间"剧烈起伏。把鼠标放到节点上，看每个高点和低谷背后发生了什么。</p>
+    </div>
+    <div class="chart-card rv d1" id="chartCard">
+      <div class="ec-top"><span>← 紧张 / 焦虑</span><span>信心 / 成就感 →</span></div>
+      <svg class="curve" id="curve" viewBox="0 0 1000 320"></svg>
+      <div class="ec-legend">
+        <span><i style="background:var(--cyan)"></i>低谷 = 生理应激或异常现场</span>
+        <span><i style="background:var(--lime)"></i>高点 = 独立完成 / 精确达标</span>
+      </div>
+    </div>
+    <div class="ec-tip" id="ecTip"></div>
+  </div>
+</section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section class="block" style="padding-top:20px">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="seyebrow">DAY 01–03 · TIMELINE</div>
+      <h2>三天，发生了什么</h2>
+    </div>
+    <div class="tl">
+
+      <!-- DAY 1 -->
+      <div class="day rv">
+        <div class="day-hd"><span class="day-tag">DAY 01</span><span class="day-h">入门紧张</span><span class="day-date mono">2026.04.21</span></div>
+        <p class="day-line">第一次亲手装刀，全程紧张——"反复确认是唯一能缓解焦虑的方式，但确认完了心里还是不踏实，因为没有任何反馈告诉我'你做对了'"。</p>
+        <div class="beats">
+          <div class="beat"><div class="bt">😰 装刀焦虑 <span class="chip alert">不可逆</span></div><div class="bd">人对不可逆动作的本能反应——干了三十年的师傅也会确认两遍，区别只是不再害怕。</div></div>
+          <div class="beat"><div class="bt">💡 T 码 ≠ 刀偏</div><div class="bd">T 码是刀库槽位，刀偏才是刀具的"身份"。我之前把两者混为一谈了。</div></div>
+          <div class="beat"><div class="bt">🔁 原点 ≠ 中心 <span class="chip idea">纠错</span></div><div class="bd">一直以为原点在几何中心，实际图纸从右下角开始——这正是小白最普遍的误区。</div></div>
+          <div class="beat"><div class="bt">👂 发现"五感防线"</div><div class="bd">师傅真正的护身符是听切削声、看切屑、闻气味、摸振动——而这恰恰是小白完全没有的能力。</div></div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day g rv">
+        <div class="day-hd"><span class="day-tag" style="color:var(--lime);background:rgba(163,230,53,.1)">DAY 02</span><span class="day-h">全流程贯通</span><span class="day-date mono">2026.04.22</span></div>
+        <p class="day-line">自己完整走了一遍上料→寻边→对刀→加工→取件。也在这一天，第一次亲身对抗了身体的本能。</p>
+        <div class="beats">
+          <div class="beat"><div class="bt">✋ 寻边手抖 <span class="chip warn">生理应激</span></div><div class="bd">刀头一碰工件，我下意识手一抖往反方向拧，坐标立刻就错。听到金属声 → 大脑判定"危险" → 手本能缩回。</div></div>
+          <div class="beat"><div class="bt">🟢 独立走完全流程 <span class="chip win">从零到独立</span></div><div class="bd">每步有人指导，但物理动作是自己做的、心理路径是自己走的。</div></div>
+          <div class="beat"><div class="bt">🧭 "CNC = 坐标映射"顿悟</div><div class="bd">所有准备，本质都是把文件里的 XYZ 映射到机床的 XYZ。认知从"零散步骤"升级到"统一逻辑"。</div></div>
+          <div class="beat"><div class="bt">⚡ 飞刀 + 断刀×2 <span class="chip alert">异常现场</span></div><div class="bd">刀头松脱、连续两次断刀。第一次断刀是操作员"听到切削声消失"才发现的——五感防线的真实一课。</div></div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day g rv">
+        <div class="day-hd"><span class="day-tag" style="color:var(--lime);background:rgba(163,230,53,.1)">DAY 03</span><span class="day-h">从恐惧到掌握</span><span class="day-date mono">2026.04.23</span></div>
+        <p class="day-line">昨天还"有点无法接受"的分中棒，今天自己上手——而且算得和师傅一模一样。</p>
+        <div class="beats">
+          <div class="beat"><div class="bt">🎯 分中棒独立精确 <span class="chip win">高光时刻</span></div><div class="bd">关键技巧是"倍率切换"——100 倍快速接近，10 倍精确定位，像显微镜先粗准焦再细准焦。</div></div>
+          <div class="beat"><div class="bt">😬 Z 轴对刀焦虑 <span class="chip warn">认知压力</span></div><div class="bd">不是手抖那种本能，而是持续的认知焦虑——你知道有个危险节点在等你，全程手都紧绷着。</div></div>
+          <div class="beat"><div class="bt">🪨 飞件 + 持续废刀 <span class="chip alert">硬约束</span></div><div class="bd">底面不平→真空吸不住→工件飞出；材料太硬→刀具持续断。有些问题现场无解，只能换料。</div></div>
+          <div class="beat"><div class="bt">🧩 CAM 初接触</div><div class="bd">选刀、加工位置、加工顺序、刀路——CAM 是把"图纸"翻译成"机器怎么动"的翻译器。</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 分中棒 CLIMAX ===================== -->
+<section class="block" style="padding-top:10px">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="seyebrow">THE TURNING POINT</div>
+      <h2>分中棒：从"我有点无法接受"到"和师傅一模一样"</h2>
+      <p class="ssub">这是三天里我最难忘的一刻。难度其实主要来自心理门槛，而不是技术门槛——一旦上手、找到观察方法，偏差可以收敛到零。</p>
+    </div>
+
+    <div class="climax rv d1" id="climax">
+      <div class="pulse-ring" id="pulseRing"></div>
+      <div class="quote" style="margin-top:0;border-left-color:var(--error)">
+        <span class="qm">"</span><p>分中棒的难度太大了，我有一点无法接受……那个偏移量太微小了，根本分辨不出碰没碰到。</p>
+        <div class="src">— DAY 02 · 旁观时</div>
+      </div>
+
+      <div class="arc">
+        <div class="dro me" id="droMe">
+          <div class="who">我算的原点</div>
+          <div class="read"><span class="ax">XY</span><span id="readMe">寻边中…</span></div>
+        </div>
+        <div class="arc-mid">
+          <div class="delta" id="deltaWrap">偏差 Δ<b id="deltaVal">0.038</b>mm</div>
+          <div class="matchbadge" id="matchBadge">✓ 完全一致</div>
+        </div>
+        <div class="dro" id="droMaster">
+          <div class="who">师傅的原点</div>
+          <div class="read"><span class="ax">XY</span><span>基准</span></div>
+        </div>
+      </div>
+
+      <p class="cl-foot">滚动到这里，偏差会自己收敛到 <b>0.000mm</b>。<b>"我自己计算出来的 X、Y 原点，和师傅完全一致——当时特别特别开心，这意味着我不是'大概会了'，而是精确度达到了操作标准。"</b> 从 Day 2 的"无法接受"到这一刻，只用了一天。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SKILL TREE ===================== -->
+<section class="block">
+  <div class="wrap">
+    <div class="shead rv">
+      <div class="seyebrow">SKILL · LEVEL UP</div>
+      <h2>三天，能力是怎么长出来的</h2>
+      <p class="ssub">每一行是一项能力，三格分别是 Day 1 / 2 / 3。颜色用的是我自己日记里的成长标记体系。</p>
+    </div>
+    <div class="skills" id="skills"></div>
+    <div class="legend4">
+      <span><i style="background:var(--surf2)"></i>未接触</span>
+      <span><i style="background:var(--yellow)"></i>完全不懂</span>
+      <span><i style="background:var(--warn)"></i>知道概念</span>
+      <span><i style="background:var(--cyan)"></i>敢动手</span>
+      <span><i style="background:var(--success)"></i>独立掌握</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INSIGHT ===================== -->
+<section class="block" style="padding-top:10px">
+  <div class="wrap">
+    <div class="insight rv">
+      <div class="shead" style="margin-bottom:0">
+        <div class="seyebrow">WHAT IT MEANS</div>
+        <h2>三天换来的两句话</h2>
+      </div>
+      <div class="ins-grid">
+        <div class="ins-card rv d1">
+          <div class="n">// 01</div>
+          <h3>CNC 的本质，是一次坐标映射</h3>
+          <p>读图、装夹、寻边、对刀、设零点——所有准备都是在把文件里的 XYZ 坐标，对到机床工作空间的 XYZ 上。映射建好，机器就知道在哪切、切多深。</p>
+          <div class="map">→ 产品要做的：让"建立映射"尽量自动、不需要用户理解坐标系</div>
+        </div>
+        <div class="ins-card rv d2">
+          <div class="n">// 02</div>
+          <h3>焦虑，几乎都来自"未知"</h3>
+          <p>因为不了解，所以没有把控感。手抖、对刀紧绷、连续断刀时的气氛……恐惧的源头是"我不知道接下来会发生什么"。</p>
+          <div class="map">→ 产品要做的：消灭需要"学"的环节，而不是教用户学 CNC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <p class="big">三天前，CNC 对我是一堆零散的术语；<br/>三天后，我<span class="hl">知道自己在做什么</span>了。</p>
+    <p class="meta">工厂实操学习笔记 · DAY 01–03 · 2026.04 · Daisy</p>
+  </div>
+</footer>
+
+<script>
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.16});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* ---------- count up ---------- */
+const ioc=new IntersectionObserver((es)=>{es.forEach(e=>{
+  if(!e.isIntersecting)return; const el=e.target,to=+el.dataset.to; let s=null;
+  const step=(t)=>{if(!s)s=t;const p=Math.min((t-s)/900,1);el.textContent=Math.round(p*to);if(p<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step); ioc.unobserve(el);
+})},{threshold:.6});
+document.querySelectorAll('.cnt').forEach(el=>ioc.observe(el));
+
+/* ---------- hero toolpath bit ---------- */
+(function(){
+  const path=document.getElementById('hpath'),bit=document.getElementById('hbit');
+  if(!path)return; const len=path.getTotalLength(); let t=0;
+  (function loop(){ t=(t+0.0012)%1; const p=path.getPointAtLength(t*len); bit.setAttribute('cx',p.x); bit.setAttribute('cy',p.y); requestAnimationFrame(loop); })();
+})();
+
+/* ---------- emotion curve ---------- */
+const PTS=[
+  {x:50,y:215,day:'DAY 01',t:'装刀：反复确认还是不踏实',q:'确认完了心里还是不踏实——因为没有任何反馈告诉我"你做对了"。',c:'var(--warn)'},
+  {x:185,y:185,day:'DAY 01',t:'纠错：原点 ≠ 中心',q:'一直以为原点在几何中心，实际从右下角开始——小白最普遍的误区。',c:'var(--purple-l)'},
+  {x:320,y:222,day:'DAY 02',t:'寻边手抖：本能往反方向拧',q:'我必须大脑严格给手发送指令，刻意忍住不往反方向拧。',c:'var(--error)'},
+  {x:455,y:115,day:'DAY 02',t:'独立走完全流程 🟢',q:'从完全没操作过 → 独立完成全流程，物理动作和心理路径都是自己走的。',c:'var(--success)'},
+  {x:590,y:195,day:'DAY 02',t:'断刀×2 + 分中棒"无法接受"',q:'分中棒的难度太大了，我有一点无法接受。',c:'var(--warn)'},
+  {x:725,y:60,day:'DAY 03',t:'分中：和师傅一模一样 🟢',q:'我自己算的 X、Y 原点和师傅完全一致——当时特别特别开心。',c:'var(--lime)'},
+  {x:845,y:110,day:'DAY 03',t:'Z 轴对刀：压力依然很大',q:'整个过程中我的手一直是紧绷的，注意力全在"千万别忘了取走垫片"上。',c:'var(--cyan)'},
+  {x:950,y:78,day:'DAY 03',t:'三天：知道自己在做什么',q:'从"CNC 小白"到"知道自己在做什么"。',c:'var(--lime)'}
+];
+(function(){
+  const svg=document.getElementById('curve'); if(!svg)return;
+  const NS='http://www.w3.org/2000/svg';
+  // smooth path (Catmull-Rom -> bezier)
+  function smooth(p){let d=`M ${p[0].x} ${p[0].y}`;for(let i=0;i<p.length-1;i++){const p0=p[i?i-1:0],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;const c1x=p1.x+(p2.x-p0.x)/6,c1y=p1.y+(p2.y-p0.y)/6,c2x=p2.x-(p3.x-p1.x)/6,c2y=p2.y-(p3.y-p1.y)/6;d+=` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${p2.x} ${p2.y}`;}return d;}
+  const dStr=smooth(PTS);
+  // gradient + area
+  const defs=document.createElementNS(NS,'defs');
+  defs.innerHTML=`<linearGradient id="cg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#06B6D4"/><stop offset="1" stop-color="#A3E635"/></linearGradient>
+  <linearGradient id="cfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(99,160,180,.22)"/><stop offset="1" stop-color="rgba(20,12,40,0)"/></linearGradient>`;
+  svg.appendChild(defs);
+  const area=document.createElementNS(NS,'path');
+  area.setAttribute('d',dStr+` L ${PTS[PTS.length-1].x} 320 L ${PTS[0].x} 320 Z`);
+  area.setAttribute('fill','url(#cfill)'); svg.appendChild(area);
+  const line=document.createElementNS(NS,'path');
+  line.setAttribute('d',dStr); line.setAttribute('fill','none'); line.setAttribute('stroke','url(#cg)');
+  line.setAttribute('stroke-width','3.5'); line.setAttribute('stroke-linecap','round'); svg.appendChild(line);
+  const L=line.getTotalLength(); line.style.strokeDasharray=L; line.style.strokeDashoffset=L;
+  line.style.transition='stroke-dashoffset 2.2s cubic-bezier(.4,0,.2,1)';
+  // points
+  const tip=document.getElementById('ecTip'), card=document.getElementById('chartCard');
+  PTS.forEach((p,i)=>{
+    const g=document.createElementNS(NS,'g'); g.setAttribute('class','ec-pt');
+    const ring=document.createElementNS(NS,'circle');
+    ring.setAttribute('cx',p.x);ring.setAttribute('cy',p.y);ring.setAttribute('r','6.5');
+    ring.setAttribute('fill','#0E0A18');ring.setAttribute('stroke',p.c);ring.setAttribute('stroke-width','3');
+    ring.style.opacity=0;ring.style.transition='opacity .4s '+(1+i*.12)+'s';
+    const hit=document.createElementNS(NS,'circle');
+    hit.setAttribute('cx',p.x);hit.setAttribute('cy',p.y);hit.setAttribute('r','22');hit.setAttribute('class','hit');hit.setAttribute('fill','transparent');
+    g.appendChild(ring);g.appendChild(hit);svg.appendChild(g);
+    const show=()=>{const r=card.getBoundingClientRect();const sx=r.width/1000;
+      tip.innerHTML=`<div class="dtag">${p.day}</div><div class="t">${p.t}</div><div class="q">${p.q}</div>`;
+      tip.style.left=Math.max(6,Math.min(p.x*sx-130,r.width-280))+'px';
+      tip.style.top=(p.y*(r.height/320)-tip.offsetHeight-92)+'px';
+      tip.classList.add('show');ring.setAttribute('r','8');};
+    const hide=()=>{tip.classList.remove('show');ring.setAttribute('r','6.5');};
+    g.addEventListener('mouseenter',show);g.addEventListener('mouseleave',hide);
+    g.addEventListener('click',show);
+  });
+  const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+    line.style.strokeDashoffset=0; svg.querySelectorAll('.ec-pt circle:not(.hit)').forEach(c=>c.style.opacity=1); obs.disconnect();
+  }})},{threshold:.4});
+  obs.observe(card);
+})();
+
+/* ---------- 分中棒 climax ---------- */
+(function(){
+  const climax=document.getElementById('climax'); if(!climax)return;
+  const readMe=document.getElementById('readMe'),deltaVal=document.getElementById('deltaVal'),
+        deltaWrap=document.getElementById('deltaWrap'),badge=document.getElementById('matchBadge'),
+        droMe=document.getElementById('droMe'),ring=document.getElementById('pulseRing');
+  const obs=new IntersectionObserver((es)=>{es.forEach(e=>{ if(!e.isIntersecting)return; obs.disconnect();
+    let d=0.038; const tick=()=>{ d=Math.max(0,d-0.0021+ (Math.random()-0.5)*0.0006);
+      deltaVal.textContent=d.toFixed(3);
+      readMe.textContent = d>0.0005 ? (Math.random()>0.5?'校准中':'倍率 10×') : 'X·Y';
+      if(d>0.0005){requestAnimationFrame(()=>setTimeout(tick,55));}
+      else{ deltaVal.textContent='0.000'; readMe.textContent='X·Y'; deltaWrap.classList.add('done');
+            droMe.classList.remove('me'); droMe.classList.add('ok');
+            const dm=document.getElementById('droMaster'); dm.classList.add('ok');
+            badge.classList.add('show'); ring.classList.add('go');
+            const who=droMe.querySelector('.who'); who.textContent='我算的原点 ✓'; }
+    }; setTimeout(tick,400);
+  })},{threshold:.5});
+  obs.observe(climax);
+})();
+
+/* ---------- skill tree ---------- */
+(function(){
+  const COL=['var(--surf2)','var(--yellow)','var(--warn)','var(--cyan)','var(--success)'];
+  const LAB=['—','不懂','概念','动手','掌握'];
+  const DATA=[
+    {nm:'全流程操作',lv:[0,4,4]},
+    {nm:'分中棒',lv:[2,2,4]},
+    {nm:'寻边 / 对刀',lv:[1,3,3]},
+    {nm:'异常处理',lv:[2,2,3]},
+    {nm:'CNC 本质理解',lv:[1,4,4]},
+    {nm:'五感防线',lv:[2,3,3]},
+    {nm:'材料 - 刀具匹配',lv:[0,0,3]},
+    {nm:'CAM 编程',lv:[0,0,2]}
+  ];
+  const host=document.getElementById('skills');
+  DATA.forEach((s,si)=>{
+    const cur=LAB[s.lv[2]];
+    const segs=s.lv.map((l,i)=>`<div class="seg"><span class="fill" style="background:${COL[l]};transition-delay:${i*.12}s"></span></div>`).join('');
+    const el=document.createElement('div'); el.className='skill rv';
+    el.innerHTML=`<div class="skill-hd"><span class="nm">${s.nm}</span><span class="lv">D3 · ${cur}</span></div>
+      <div class="segs">${segs}</div>
+      <div class="seglabels"><span>D1</span><span>D2</span><span>D3</span></div>`;
+    host.appendChild(el); io.observe(el);
+    const so=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){el.querySelectorAll('.seg').forEach(g=>g.classList.add('in'));so.disconnect();}})},{threshold:.5});
+    so.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

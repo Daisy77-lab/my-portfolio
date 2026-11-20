@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PalmX PC · 用户旅程 User Journey（三画像 · 旅程组合 · v0.2）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#1c1d24; --ink-2:#4a4c58; --ink-3:#8a8c99;
+    --brand:#6C3BAA; --brand-deep:#41245F; --brand-bg:#F4F0FA;
+    --leo:#6C3BAA; --maya:#0B8A5F; --ray:#0A7E93;
+    --ok:#10B981; --warn:#F97316; --err:#EF4444; --run:#06B6D4;
+    --line:#e4e4ec; --line-2:#d2d2dd; --paper:#fff; --mono:'JetBrains Mono',monospace;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { background:#EFEEF3; font-family:'Plus Jakarta Sans','Noto Sans SC',system-ui,sans-serif; color:var(--ink); font-size:13.5px; line-height:1.6; }
+  .page { max-width:960px; margin:28px auto; background:var(--paper); padding:52px 54px 54px; border-radius:3px; box-shadow:0 2px 14px rgba(20,18,30,.09); }
+  h1 { font-size:26px; font-weight:800; letter-spacing:-.02em; margin:0 0 6px; }
+  h2 { font-size:16px; font-weight:700; margin:30px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--ink); display:flex; align-items:baseline; gap:9px; }
+  h2 .no { font-family:var(--mono); font-size:12px; font-weight:700; color:var(--brand); }
+  h2:first-of-type { margin-top:0; }
+  h3 { font-size:13.5px; font-weight:700; margin:18px 0 7px; }
+  .kick { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--brand); text-transform:uppercase; margin-bottom:12px; }
+  .sub { font-size:13.5px; color:var(--ink-2); margin:0 0 22px; }
+  p { margin:0 0 10px; }
+  strong { font-weight:700; }
+  span.code { font-family:var(--mono); font-size:10.5px; background:var(--brand-bg); color:var(--brand-deep); padding:1px 6px; border-radius:4px; }
+  .meta-grid { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line-2); border-radius:6px; overflow:hidden; margin-bottom:14px; }
+  .meta-grid > div { padding:9px 13px; border-right:1px solid var(--line); }
+  .meta-grid > div:last-child { border-right:none; }
+  .meta-grid .k { font-size:10.5px; font-weight:700; letter-spacing:.07em; color:var(--ink-3); text-transform:uppercase; }
+  .meta-grid .v { font-size:12.5px; font-weight:600; margin-top:1px; }
+  .mono { font-family:var(--mono); }
+  table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:11.5px; }
+  th { text-align:left; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-3); padding:6px 8px; border-bottom:1.5px solid var(--ink); white-space:nowrap; }
+  td { padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  .lane { display:inline-block; font-size:9.5px; font-weight:800; padding:1px 6px; border-radius:5px; font-family:var(--mono); }
+  .lane.leo { background:#F1EBFA; color:#6C3BAA; } .lane.maya { background:#E3F6EF; color:#0B7A55; } .lane.ray { background:#E1F6FA; color:#0A7E93; }
+  .callout { border:1px solid var(--line-2); border-left:3px solid var(--brand); border-radius:6px; padding:11px 15px; margin:12px 0 16px; font-size:12.5px; background:#FBFAFD; }
+  .callout.ok { border-left-color:var(--ok); background:#F7FCFA; } .callout.warn { border-left-color:var(--warn); background:#FFFBF6; }
+  .callout .t { font-weight:700; margin-bottom:3px; }
+  /* persona cards */
+  .persona { border:1px solid var(--line-2); border-radius:9px; padding:13px 15px; margin:9px 0; background:#FCFBFE; border-left-width:4px; }
+  .persona.leo { border-left-color:var(--leo); } .persona.maya { border-left-color:var(--maya); } .persona.ray { border-left-color:var(--ray); }
+  .persona .ph { font-weight:800; font-size:13.5px; margin-bottom:4px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .persona .pd { font-size:12px; color:var(--ink-2); }
+  .posPill { font-family:var(--mono); font-size:10px; font-weight:700; background:var(--brand-bg); color:var(--brand-deep); padding:1px 7px; border-radius:20px; }
+  .pmeta { display:flex; gap:14px; flex-wrap:wrap; font-size:11px; margin:6px 0 4px; }
+  .pmeta b { color:var(--ink); }
+  .pains { margin-top:5px; }
+  /* coverage matrix */
+  table.cov td { font-size:11px; }
+  table.cov .grp td { background:var(--brand-bg); font-weight:800; color:var(--brand-deep); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; padding:6px 8px; }
+  .jt { font-weight:600; white-space:nowrap; }
+  .dc { text-align:center; font-family:var(--mono); font-weight:800; font-size:12px; letter-spacing:1px; width:8%; }
+  .d3 { color:#6C3BAA; } .d2 { color:#9B72C7; } .d1 { color:#CBB8E2; } .d0 { color:#c6c6ce; }
+  .covnote { font-size:10.5px; color:var(--ink-2); }
+  .vtag { display:inline-block; font-size:9px; font-weight:800; padding:0 5px; border-radius:4px; margin-left:2px; }
+  .vtag.fear { background:#FEECE2; color:#C2410C; } .vtag.learn { background:#EFE7F8; color:#6C3BAA; } .vtag.decide { background:#E1F3F7; color:#0A7E93; }
+  /* portfolio band */
+  .port { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:12px 0 6px; }
+  .pcol { border:1px solid var(--line-2); border-radius:8px; padding:10px 11px; background:#fff; }
+  .pcol .ph2 { font-size:10.5px; font-weight:800; letter-spacing:.03em; margin-bottom:6px; color:var(--ink-3); text-transform:uppercase; }
+  .pcol ul { margin:0; padding-left:15px; } .pcol li { font-size:11px; margin-bottom:4px; line-height:1.45; }
+  .pcol.branch { border-width:2px; }
+  .pcol.fear { border-color:#F6B99A; background:#FFF7F2; } .pcol.fear .ph2 { color:#C2410C; }
+  .pcol.learn { border-color:#C9B6E0; background:#FAF7FD; } .pcol.learn .ph2 { color:#6C3BAA; }
+  .pcol.decide { border-color:#9FD8E4; background:#F3FBFD; } .pcol.decide .ph2 { color:#0A7E93; }
+  .painrow { font-size:11.5px; margin:8px 0 2px; }
+  .emorow { font-size:11.5px; color:var(--ink-2); }
+  .pfoot { display:flex; justify-content:space-between; margin-top:32px; padding-top:12px; border-top:1px solid var(--line); font-family:var(--mono); font-size:10px; color:var(--ink-3); }
+  section,h3,.callout,table tr,.persona { break-inside:avoid; }
+  h2,h3 { break-after:avoid; }
+  @media (max-width:720px){ .port{grid-template-columns:1fr 1fr;} .meta-grid{grid-template-columns:1fr 1fr;} }
+  @media print { body{background:none;} .page{max-width:none;margin:0;padding:0;box-shadow:none;border-radius:0;break-after:page;} .page:last-child{break-after:auto;} @page{margin:.55in;} }
+</style>
+</head>
+<body>
+
+<!-- ============ P1 · 三画像 + 场景 ============ -->
+<div class="page">
+  <div class="kick">PalmX · PC · 用户旅程 User Journey · v0.2 · 三画像 × 旅程组合</div>
+  <h1>用户旅程：一条骨架，三个画像，各自的旅程组合</h1>
+  <p class="sub">一条共同骨架旅程（Home → 工作区 → 工作视图 → 下发），三个画像各带<strong>不同的进入方式、不同的岔路反应、不同的深度</strong>。v0.2 把画像从 2 拆成 3、并把之前漏掉的<strong>进入 / 管理 / 岔路 / 之后 / 成长</strong>五大簇归纳进来——每个画像不再是一条路径，是一份<strong>旅程组合</strong>。</p>
+
+  <div class="meta-grid">
+    <div><div class="k">版本</div><div class="v mono">v0.2 草案</div></div>
+    <div><div class="k">日期</div><div class="v mono">2026-07-07</div></div>
+    <div><div class="k">状态</div><div class="v">待评审 · 预期迭代</div></div>
+    <div><div class="k">画像</div><div class="v mono">3 · 转化/成长/评估</div></div>
+  </div>
+
+  <div class="callout ok">
+    <div class="t">v0.2 相对 v0.1 变了什么</div>
+    ① 画像 <strong>2 → 3</strong>（成长者从 Ray 里独立出来 = Maya）；② 新增 <strong>全覆盖矩阵</strong>（旅程类型 × 画像，逐条归属）；③ 每画像补 <strong>旅程组合</strong>（进入/主流程/<strong>岔路</strong>/之后/成长），岔路层是重点；④ 情绪曲线 <strong>2 → 3 条</strong>。骨架、切削点铁律、恐惧管理不变。
+  </div>
+
+  <h3>三个画像（都做灵巧手 · canon #10 · 材料与复杂度递进）</h3>
+
+  <div class="persona leo">
+    <div class="ph"><span class="lane leo">BASIC / WIZARD · U1</span> Leo · 转化者 <span class="posPill">坐标 W×Basic</span></div>
+    <div class="pmeta"><span><b>样例</b>：POM 触觉指尖盖 · 普通 3 轴软料</span><span><b>坐标</b>：默认坡起点</span></div>
+    <div class="pd">从 3D 打印转来、CNC 零基础，用一键打印的心智想象 CNC，<strong>不知道 CNC 错误可能是灾难性的</strong>。<strong>JTBD</strong>：不学 CAM，一句话 + 放行，安全拿到第一件、且知道不会出事。</div>
+    <div class="pains"><span class="code">P01</span> <span class="code">P02</span> <span class="code">P03</span> <span class="code">P04</span> <span class="code">P05</span> <span class="code">P08</span> <span class="code">P09</span> <span class="code">P12</span> <span class="code">P13</span> <span class="code">P14</span> <span class="code">P15</span> <span class="code">P16</span> <span class="code">P19</span> <span style="font-size:10.5px;color:var(--ink-3)">— 恐惧管理全谱（19 条痛点里 13 条是他的）</span></div>
+  </div>
+
+  <div class="persona maya">
+    <div class="ph"><span class="lane maya">PRO / EXPERT 倾向 · U2–U3</span> Maya · 成长者 <span class="posPill">坐标 坡中段</span></div>
+    <div class="pmeta"><span><b>样例</b>：6061 铝 指节连杆 · 3 轴 / 简单多轴</span><span><b>坐标</b>：正在 Wizard→Expert 过渡</span></div>
+    <div class="pd">有 CNC / 机加工底子，要参数透明可控、能溯源、能手改。"好用" ≠ 帮我决定，而是<strong>不挡路</strong>。<strong>JTBD</strong>：识别与参数可查可改、自己上手调，系统别低估我。</div>
+    <div class="pains"><span class="code">P07</span> <span class="code">P11</span> <span class="code">P17</span> <span style="font-size:10.5px;color:var(--ink-3)">— 少而尖：可查可改 / 可覆盖 / 透明但别过载</span></div>
+  </div>
+
+  <div class="persona ray">
+    <div class="ph"><span class="lane ray">ULTRA / EXPERT · U4–U5</span> Ray · 评估者 <span class="posPill">坐标 E×Ultra</span></div>
+    <div class="pmeta"><span><b>样例</b>：7075 仿生腕关节 · 五轴 + 激光复合</span><span><b>坐标</b>：默认坡顶</span></div>
+    <div class="pd">CAM / CNC 熟手，评估能力边界。<strong>JTBD</strong>：把几小时人工编程压成一次对话式编排 + 关键节点人工把关，每步可溯源可覆盖，<strong>发论坛不被笑为玩具</strong>。</div>
+    <div class="pains"><span class="code">P10</span> <span class="code">P11</span> <span class="code">P18</span> <span style="font-size:10.5px;color:var(--ink-3)">— 参数过多/藏都不行 / 必须可覆盖 / 一套 UI 通吃两端</span></div>
+  </div>
+
+  <div class="callout">
+    <div class="t">为什么从 2 拆成 3（Daisy 2026-07-07 拍板）</div>
+    v0.1 把成长者 + 评估者并成一个 Ray。拆开的理由是<strong>痛点天然分野</strong>：成长者痛在"识别/参数被当黑箱、被低估"（<span class="code">P07</span> <span class="code">P11</span>），评估者痛在"能力边界 + 一套 UI 通吃两端"（<span class="code">P10</span> <span class="code">P18</span>）。合着就看不清中间那位"想上手、还没到专家"的用户该被怎么接住。
+  </div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>1 / 7</span></div>
+</div>
+
+<!-- ============ P2 · 全覆盖矩阵 ============ -->
+<div class="page">
+  <h2><span class="no">02</span>全覆盖矩阵：每条旅程类型，归给谁</h2>
+  <p class="sub">之前只画了 happy-path。真实旅程有 5 簇、每簇多条。下表把<strong>每一条旅程类型</strong>逐条归到 3 画像——<strong>无空白 = 归纳完整</strong>。命中度：<span class="d3 mono">●●●</span> 主 · <span class="d2 mono">●●</span> 次 · <span class="d1 mono">●</span> 罕见 · <span class="d0 mono">—</span> 不适用。</p>
+
+  <table class="cov">
+    <tr><th class="jt" style="width:26%">旅程类型</th><th style="width:8%;text-align:center">Leo<br>转化</th><th style="width:8%;text-align:center">Maya<br>成长</th><th style="width:8%;text-align:center">Ray<br>评估</th><th>备注（差异在哪）</th></tr>
+
+    <tr class="grp"><td colspan="5">① 进入</td></tr>
+    <tr><td class="jt">大对话框说需求</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d1">●</td><td class="covnote">Leo 主入口；Ray 多半直接拖 CAD</td></tr>
+    <tr><td class="jt">语音输入</td><td class="dc d2">●●</td><td class="dc d1">●</td><td class="dc d1">●</td><td class="covnote">PC 文字优先，语音是回退（HMI 才语音优先）</td></tr>
+    <tr><td class="jt">拖 CAD 进来</td><td class="dc d1">●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">带自己模型的是成长者 / 评估者</td></tr>
+    <tr><td class="jt">从示例开始</td><td class="dc d3">●●●</td><td class="dc d1">●</td><td class="dc d0">—</td><td class="covnote">首成功阶梯；专家不需要</td></tr>
+    <tr><td class="jt">fork 社区件</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d1">●</td><td class="covnote">新手灵感；评估者偶尔参考做法</td></tr>
+    <tr><td class="jt">打开最近 / 迭代</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">回访 / 迭代者主用</td></tr>
+    <tr><td class="jt">新建空项目</td><td class="dc d1">●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">管理型用户先建结构</td></tr>
+
+    <tr class="grp"><td colspan="5">② 管理</td></tr>
+    <tr><td class="jt">零件树多件切换</td><td class="dc d1">●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">Leo 一次一件；成长/评估多件并行</td></tr>
+    <tr><td class="jt">Drafts 草稿</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="dc d1">●</td><td class="covnote">松散件；评估者更爱进正式项目</td></tr>
+    <tr><td class="jt">告警角标预判</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="covnote">Leo 靠它进项目前就避雷</td></tr>
+    <tr><td class="jt">刀具 / 材料库维护</td><td class="dc d0">—</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">评估者调库；Leo 用默认</td></tr>
+    <tr><td class="jt">Machine 监控 <span style="color:var(--warn)">〔待补〕</span></td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">页面 IA 列了、规格未出</td></tr>
+    <tr><td class="jt">本地优先 / 离线</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">车间仅局域网也能用</td></tr>
+
+    <tr class="grp"><td colspan="5">③ 岔路（异常流）— 画像差异最大处</td></tr>
+    <tr><td class="jt">几何硬门失败</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="covnote">唯一硬门 <span class="code">R-AI-5</span>，谁都拦。<span class="vtag fear">恐惧</span><span class="vtag learn">学习</span><span class="vtag decide">裁决</span></td></tr>
+    <tr><td class="jt">材料未命中 / 越档</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="covnote">Leo 被劝软料防烧刀；Ray 解锁金属</td></tr>
+    <tr><td class="jt">门控裁决三出口</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">Ray 主场：改判。凌驾等级，谁都可能被停</td></tr>
+    <tr><td class="jt">把握度三件套</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">全画像都出，Leo 要人话 / Ray 要溯源</td></tr>
+    <tr><td class="jt">诚实边界（三盲区）</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">评估者最看重：夹具柔性/刀补/热变形</td></tr>
+    <tr><td class="jt">飞件预警</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="covnote">Leo 协防 <span class="code">P01</span>：讲后果不讲规则</td></tr>
+    <tr><td class="jt">碰撞 / 过切</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">Leo 被拦；Ray 判可补偿否</td></tr>
+    <tr><td class="jt">Pre-Flight / 切削点</td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="covnote">人亲手在 HMI，全档一致；对 Leo 是恐惧峰值</td></tr>
+    <tr><td class="jt">后处理 / 机床校验</td><td class="dc d1">●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote"><span class="code">N01</span>：评估者关心机床吃不吃这份 NC</td></tr>
+    <tr><td class="jt">离线降级</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">下发保本地 + U盘出口，安全链不受影响</td></tr>
+    <tr><td class="jt">E-Stop</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">安全红线，全档、全静音也照播</td></tr>
+
+    <tr class="grp"><td colspan="5">④ 之后</td></tr>
+    <tr><td class="jt">下发 → HMI 亲手</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">切削点铁律，全档一致</td></tr>
+    <tr><td class="jt">去 Machine 看 / 监控</td><td class="dc d2">●●</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="covnote">post-dispatch 出口②</td></tr>
+    <tr><td class="jt">分享社区 <span style="color:var(--warn)">〔未 speced〕</span></td><td class="dc d3">●●●</td><td class="dc d2">●●</td><td class="dc d1">●</td><td class="covnote">Leo 首切成就闭环 <span class="code">P19</span>；作者侧发布未 speced</td></tr>
+    <tr><td class="jt">存模板 / 复用</td><td class="dc d1">●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">复用者</td></tr>
+    <tr><td class="jt">迭代改版</td><td class="dc d1">●</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="covnote">post-dispatch 出口①：再编程下一件</td></tr>
+
+    <tr class="grp"><td colspan="5">⑤ 成长</td></tr>
+    <tr><td class="jt">U1 → U5 熟练度爬升</td><td class="dc d3">●●●</td><td class="dc d3">●●●</td><td class="dc d1">●</td><td class="covnote">Leo 起点 / Maya 中段 / Ray 已顶</td></tr>
+    <tr><td class="jt">Wizard → Expert 过渡</td><td class="dc d2">●●</td><td class="dc d3">●●●</td><td class="dc d0">—</td><td class="covnote">Maya 是过渡主角；Ray 早已 Expert</td></tr>
+  </table>
+
+  <div class="callout ok"><div class="t">这张矩阵就是"归纳到画像"的验收</div>没有一条旅程类型是悬空的。<strong>岔路那一簇标了「恐惧 / 学习 / 裁决」三色</strong>——这就是同一条岔路对三人反应不同的证据，也是原型在那几步要"能薄能厚"的原因。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>2 / 7</span></div>
+</div>
+
+<!-- ============ P3 · Leo 组合 ============ -->
+<div class="page">
+  <h2><span class="no">03</span>Leo · 转化者 · 旅程组合 <span style="font-size:11px;font-weight:600;color:var(--ink-3)">（岔路 = 恐惧峰值）</span></h2>
+  <p class="sub">默认服务对象。主流程体感只 <strong>3 个确认点</strong>；但真正决定他去留的是<strong>岔路怎么稳住他</strong>——他不知道 CNC 会灾难，每一次异常都是恐惧。</p>
+
+  <div class="port">
+    <div class="pcol"><div class="ph2">① 进入</div><ul>
+      <li>从示例（Tactile Sensor Cap）</li><li>逛社区筛"新手友好"</li><li>大对话框"做个指尖盖"</li></ul></div>
+    <div class="pcol"><div class="ph2">② 主流程 · 3 步</div><ul>
+      <li>材料 POM 已填 · 确认</li><li>特征识别 <em>跳过</em></li><li>一张推荐卡 · 确认</li><li>看仿真 30 秒</li></ul></div>
+    <div class="pcol branch fear"><div class="ph2">③ 岔路 · 恐惧峰值</div><ul>
+      <li><b>几何门失败</b>→ 别吓跑：人话 + 修复指路</li><li><b>材料越档</b>→ 劝回软料</li><li><b>飞件预警</b>→"件会飞出"讲后果</li><li><b>切削点 Pre-Flight</b>→ 第一次亲手，最怕</li></ul></div>
+    <div class="pcol"><div class="ph2">④ 之后</div><ul>
+      <li>首切成功 → 踏实 / 成就</li><li>分享社区（留存）</li></ul></div>
+    <div class="pcol"><div class="ph2">⑤ 成长</div><ul>
+      <li>U1 起点</li><li>未来或摸向 Expert</li></ul></div>
+  </div>
+
+  <div class="painrow"><b>痛点锚：</b> <span class="code">P01</span> 不知灾难 · <span class="code">P02</span> 没心智不敢开始 · <span class="code">P03</span><span class="code">P04</span><span class="code">P05</span> 不知从哪开始/材料/文件 · <span class="code">P08</span><span class="code">P09</span> 参数天书/不敢按 · <span class="code">P12</span><span class="code">P13</span> 看不懂刀路/要实质信心 · <span class="code">P14</span><span class="code">P15</span> 上机恐惧/失控感 · <span class="code">P16</span> 不想学工业软件 · <span class="code">P19</span> 首切留存</div>
+  <div class="emorow"><b>情绪：</b> 低谷在<strong>入口（开机恐惧，起点最低）</strong>，靠 Basic 快切 + 先成功一次拉起；高峰在<strong>首切成功的踏实</strong>（他基本不裁决）。</div>
+
+  <div class="callout warn"><div class="t">给原型的含义</div>Leo 的这一列，岔路每一格都要配"<strong>稳住</strong>"设计（恐惧管理 · canon #3-2）：讲后果不讲规则、给可执行的下一步、绝不用一键"忽略全部"。他的主流程越短越好，但岔路不能省。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>3 / 7</span></div>
+</div>
+
+<!-- ============ P4 · Maya 组合 ============ -->
+<div class="page">
+  <h2><span class="no">04</span>Maya · 成长者 · 旅程组合 <span style="font-size:11px;font-weight:600;color:var(--ink-3)">（岔路 = 学习 + 掌控）</span></h2>
+  <p class="sub">"想上手、还没到专家"的中间人。她带着自己的 CAD 来，要的不是被代劳，是<strong>看得懂、改得动、别被低估</strong>。岔路对她不是恐惧，是<strong>学习和掌控的机会</strong>。</p>
+
+  <div class="port">
+    <div class="pcol"><div class="ph2">① 进入</div><ul>
+      <li>拖自己的 CAD（6061 指节连杆）</li><li>打开最近 / 新建项目</li></ul></div>
+    <div class="pcol"><div class="ph2">② 主流程 · Pro</div><ul>
+      <li>查看识别结果 → 改判 2 处</li><li>方案卡带把握度</li><li>编辑坞调关键参</li><li>仿真核对</li></ul></div>
+    <div class="pcol branch learn"><div class="ph2">③ 岔路 · 学习+掌控</div><ul>
+      <li><b>识别有疑</b>→ 展开证据 / 改判 → 下游重算（<span class="code">P07</span>）</li><li><b>参数想改</b>→ 回跳改参，不从头重来</li><li><b>门控裁决</b>→ 读依据后自己改判</li></ul></div>
+    <div class="pcol"><div class="ph2">④ 之后</div><ul>
+      <li>迭代改版</li><li>存模板复用</li></ul></div>
+    <div class="pcol branch learn" style="border-style:dashed"><div class="ph2">⑤ 成长 · 过渡主角</div><ul>
+      <li>正在 <b>Wizard → Expert</b> 过渡</li><li>U2 → U3 爬升</li></ul></div>
+  </div>
+
+  <div class="painrow"><b>痛点锚：</b> <span class="code">P07</span> 识别错误必须可查可改、不接受黑箱 · <span class="code">P11</span> 参数必须能覆盖、且知道系统为何这么推 · <span class="code">P17</span> 要透明、但别过载到瘫痪</div>
+  <div class="emorow"><b>情绪：</b> 低谷在<strong>产物核对过载</strong>（面板一多就回落）→ 靠<strong>风险汇总总览</strong>救；高峰在<strong>"我自己上手改成了"</strong>的掌控。</div>
+
+  <div class="callout"><div class="t">给原型的含义</div>Maya 是"渐进披露"的最佳压测对象：给她<strong>可展开的证据 + 可回跳的改参 + 可覆盖的默认</strong>，但默认别一次全摊（那是 Ray 的档）。她验证的是坐标平面上那条 <strong>Wizard→Expert 的坡</strong>走得顺不顺。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>4 / 7</span></div>
+</div>
+
+<!-- ============ P5 · Ray 组合 ============ -->
+<div class="page">
+  <h2><span class="no">05</span>Ray · 评估者 · 旅程组合 <span style="font-size:11px;font-weight:600;color:var(--ink-3)">（岔路 = 冷静裁决）</span></h2>
+  <p class="sub">CAM/CNC 熟手，评估能力边界，其评价决定口碑。全参数摊开、五轴 + 激光复合。岔路对他既不恐惧也不为学习，是<strong>一次次专业裁决</strong>——他要的是依据和可覆盖。</p>
+
+  <div class="port">
+    <div class="pcol"><div class="ph2">① 进入</div><ul>
+      <li>拖 CAD（7075 腕关节）</li><li>评估式打开 / 直接上五轴+激光</li></ul></div>
+    <div class="pcol"><div class="ph2">② 主流程 · Ultra 全摊</div><ul>
+      <li>深度分析（倒扣/薄壁/干涉）</li><li>多方案对比</li><li>编辑坞逐参 · 工序序列<br>（粗铣→五轴精修→激光刻 SN）</li><li>仿真碰撞热力</li></ul></div>
+    <div class="pcol branch decide"><div class="ph2">③ 岔路 · 冷静裁决</div><ul>
+      <li><b>门控裁决</b>→ 改判（主场）</li><li><b>诚实边界</b>→ 读三盲区</li><li><b>override 护栏</b>→ 软越界二次确认</li><li><b>刀路能力到边</b>→ 换工艺出口</li></ul></div>
+    <div class="pcol"><div class="ph2">④ 之后</div><ul>
+      <li>分段接力 HMI</li><li>评估能力边界</li><li>存为可复用工艺</li></ul></div>
+    <div class="pcol"><div class="ph2">⑤ 成长</div><ul>
+      <li>已 U5（坡顶）</li><li>产出口碑：值不值得推荐</li></ul></div>
+  </div>
+
+  <div class="painrow"><b>痛点锚：</b> <span class="code">P10</span> 参数过多瘫痪 / 藏起来专家不安（双向） · <span class="code">P11</span> 必须可覆盖、且知依据、不被强制 · <span class="code">P18</span> 一套 UI 通吃小白与专家（靠 U1–U5 千人千面解）</div>
+  <div class="emorow"><b>情绪：</b> 低谷在<strong>产物过载</strong>（比 Maya 更深，但他扛得住）；高峰在<strong>薄壁筋人工裁决的掌控感 + 全程可溯源</strong>。</div>
+
+  <div class="callout"><div class="t">给原型的含义</div>Ray 的列证明"<strong>切削点铁律 + 门控裁决</strong>跨到最高等级也不松口"：他能覆盖参数、能绕 AI，但 START / WCS / 设零仍是他<strong>亲手在 HMI</strong> 点。给他的是<strong>依据密度</strong>（来源标签 + 把握度 + 三盲区），不是更多自动化。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>5 / 7</span></div>
+</div>
+
+<!-- ============ P6 · 骨架 + 三情绪曲线 ============ -->
+<div class="page">
+  <h2><span class="no">06</span>六阶段骨架 + 三条情绪曲线</h2>
+  <p class="sub">三个画像走的是<strong>同一条 6 阶段骨架</strong>（canon #5 骨架不变），只在进入方式 / 岔路反应 / 深度上分。情绪曲线却<strong>三种形状</strong>——低谷、高峰不在同一处，UI 要分别接住。</p>
+
+  <h3>共同骨架（6 阶段 · 谁都走这条脊）</h3>
+  <div class="flow" style="display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:6px 0 4px;font-size:11.5px;">
+    <span class="lane" style="background:var(--brand-bg);color:var(--brand-deep)">1 进入与发起</span><span style="color:var(--ink-3)">→</span>
+    <span class="lane" style="background:var(--brand-bg);color:var(--brand-deep)">2 参数确认</span><span style="color:var(--ink-3)">→</span>
+    <span class="lane" style="background:var(--brand-bg);color:var(--brand-deep)">3 编排与裁决</span><span style="color:var(--ink-3)">→</span>
+    <span class="lane" style="background:var(--brand-bg);color:var(--brand-deep)">4 产出核对</span><span style="color:var(--ink-3)">→</span>
+    <span class="lane" style="background:var(--brand-bg);color:var(--brand-deep)">5 验证与交付</span><span style="color:var(--ink-3)">→</span>
+    <span class="lane" style="background:#F3F2F6;color:var(--ink-3)">6 报价与合规（规划中）</span>
+  </div>
+  <p style="font-size:11px;color:var(--ink-3)">最大转译：原 PalmakeX"七阶段逐个确认"→ 新壳里是"AI 后台跑 · 浮层按需端出 · 只在风险/低把握度门控停"。Basic/Wizard 体感 3 步，Ultra/Expert 才全摊。差异地图（见坐标讨论稿）已证：<strong>差异集中在阶段 3（编排）与阶段 4（核对）</strong>，首尾两端几乎不变、下发全档钉死。</p>
+
+  <h3>三条情绪曲线</h3>
+  <svg viewBox="0 0 620 285" style="width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#FCFBFE">
+    <line x1="50" y1="60" x2="600" y2="60" stroke="#eee"/>
+    <line x1="50" y1="140" x2="600" y2="140" stroke="#eee"/>
+    <line x1="50" y1="220" x2="600" y2="220" stroke="#eee"/>
+    <text x="12" y="64" font-size="10" fill="#8a8c99">高</text>
+    <text x="12" y="144" font-size="10" fill="#8a8c99">中</text>
+    <text x="12" y="224" font-size="10" fill="#8a8c99">低</text>
+    <text x="66" y="245" font-size="10" fill="#4a4c58">进入</text>
+    <text x="186" y="245" font-size="10" fill="#4a4c58">确认</text>
+    <text x="300" y="245" font-size="10" fill="#4a4c58">裁决</text>
+    <text x="416" y="245" font-size="10" fill="#4a4c58">核对</text>
+    <text x="530" y="245" font-size="10" fill="#4a4c58">交付</text>
+    <!-- Leo -->
+    <polyline points="80,215 200,150 315,155 430,145 545,95" fill="none" stroke="#6C3BAA" stroke-width="2.5"/>
+    <circle cx="80" cy="215" r="4" fill="#6C3BAA"/><circle cx="200" cy="150" r="4" fill="#6C3BAA"/><circle cx="315" cy="155" r="4" fill="#6C3BAA"/><circle cx="430" cy="145" r="4" fill="#6C3BAA"/><circle cx="545" cy="95" r="4" fill="#6C3BAA"/>
+    <text x="64" y="207" font-size="9" fill="#41245F">开机恐惧</text>
+    <text x="500" y="86" font-size="9" fill="#41245F">先成功·踏实</text>
+    <!-- Maya -->
+    <polyline points="80,150 200,140 315,120 430,178 545,100" fill="none" stroke="#0B8A5F" stroke-width="2.5"/>
+    <circle cx="80" cy="150" r="4" fill="#0B8A5F"/><circle cx="200" cy="140" r="4" fill="#0B8A5F"/><circle cx="315" cy="120" r="4" fill="#0B8A5F"/><circle cx="430" cy="178" r="4" fill="#0B8A5F"/><circle cx="545" cy="100" r="4" fill="#0B8A5F"/>
+    <text x="392" y="196" font-size="9" fill="#0B6E4C">核对过载</text>
+    <!-- Ray -->
+    <polyline points="80,150 200,135 315,68 430,140 545,95" fill="none" stroke="#06B6D4" stroke-width="2.5"/>
+    <circle cx="80" cy="150" r="4" fill="#06B6D4"/><circle cx="200" cy="135" r="4" fill="#06B6D4"/><circle cx="315" cy="68" r="4" fill="#06B6D4"/><circle cx="430" cy="140" r="4" fill="#06B6D4"/><circle cx="545" cy="95" r="4" fill="#06B6D4"/>
+    <text x="272" y="60" font-size="9" fill="#0A7E93">掌控峰值·裁决</text>
+    <!-- legend -->
+    <rect x="410" y="18" width="12" height="4" fill="#6C3BAA"/><text x="428" y="25" font-size="10" fill="#4a4c58">Leo 转化(Basic)</text>
+    <rect x="410" y="34" width="12" height="4" fill="#0B8A5F"/><text x="428" y="41" font-size="10" fill="#4a4c58">Maya 成长(Pro)</text>
+    <rect x="410" y="50" width="12" height="4" fill="#06B6D4"/><text x="428" y="57" font-size="10" fill="#4a4c58">Ray 评估(Ultra)</text>
+  </svg>
+
+  <table>
+    <tr><th style="width:16%">画像</th><th style="width:30%">低谷（要重点接住）</th><th>高峰（差异化灵魂）</th></tr>
+    <tr><td><strong>Leo 转化</strong></td><td><strong>入口开机恐惧</strong>（起点最低）→ Basic 快切 + 先成功一次拉起</td><td>交付 / 首切成功的<strong>踏实</strong>（他基本不裁决）</td></tr>
+    <tr><td><strong>Maya 成长</strong></td><td><strong>产物核对过载</strong>（面板一多就回落）→ 风险汇总总览救</td><td><strong>自己上手改成了</strong>的掌控（Wizard→Expert 爬坡）</td></tr>
+    <tr><td><strong>Ray 评估</strong></td><td>产物过载（比 Maya 深，但扛得住）</td><td><strong>薄壁筋人工裁决</strong>的掌控峰值 + 全程可溯源</td></tr>
+  </table>
+  <div class="callout"><div class="t">给设计的含义</div>一条流程要能接住<strong>三种曲线</strong>：Leo 的谷在入口（恐惧管理 + 先成功），Maya 与 Ray 的谷在核对（风险汇总总览），Ray 的峰在裁决（门控 + 溯源做到位）。别用一条曲线代表所有人。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2</span><span>6 / 7</span></div>
+</div>
+
+<!-- ============ P7 · 关键时刻 + 埋点 ============ -->
+<div class="page">
+  <h2><span class="no">07</span>关键体验时刻 + 埋点度量</h2>
+  <p class="sub">五处决定成败、建议设埋点。右列标出主要归属画像。</p>
+  <table>
+    <tr><th style="width:22%">关键时刻</th><th style="width:14%">决定什么</th><th style="width:16%">主归属</th><th>埋点度量</th></tr>
+    <tr><td><strong>① 把握度展示</strong>（参数确认）</td><td>愿不愿继续</td><td><span class="lane leo">Leo</span> <span class="lane maya">Maya</span></td><td>确认框放弃率 / 修改率；低把握度项"依据展开率"</td></tr>
+    <tr><td><strong>② 门控裁决</strong>（掌控峰值）</td><td>掌控感 · 差异化灵魂</td><td><span class="lane ray">Ray</span></td><td>裁决停留时长 / 采纳 AI 占比 / 重裁率</td></tr>
+    <tr><td><strong>③ 策略·特征可追溯</strong>（五库 / 把握度依据）</td><td>专业用户敢不敢上机</td><td><span class="lane maya">Maya</span> <span class="lane ray">Ray</span></td><td>判定依据展开率 / 导出前核对覆盖率</td></tr>
+    <tr><td><strong>④ 首切成功</strong></td><td>转化者留存（<span class="code">P19</span>）</td><td><span class="lane leo">Leo</span></td><td>断网走通率 / 首切完成率 / 首切后复玩意愿</td></tr>
+    <tr><td><strong>⑤ 改判 → 回跳重算</strong>（新增·成长者）</td><td>成长者是否"上手了"</td><td><span class="lane maya">Maya</span></td><td>改判率 / 回跳改参后采纳率 / 从 Wizard 切 Expert 的转化</td></tr>
+  </table>
+
+  <h3>给产品团队的机会点（按优先级）</h3>
+  <ol style="font-size:12.5px">
+    <li><strong>历史件 / 社区新手友好复用</strong>做默认入口，降冷启动（三画像都受益）。</li>
+    <li>低置信项配<strong>判定依据 + 可选项</strong>（把握度三件套），不只"请核对"。</li>
+    <li><strong>AI 档 + Wizard/Expert = 两根独立杆</strong>：让同一流程对 Leo 快、对 Maya 可爬坡、对 Ray 稳可控（详见坐标讨论稿）。</li>
+    <li><strong>风险汇总总览页</strong>解决产物过载（Maya / Ray 核对低谷的解药）。</li>
+    <li><strong>后处理适配校验</strong>打通到机床最后一公里；本地优先保局域网可用。</li>
+    <li>按路标推进<strong>报价 + GD&T 审查</strong>，向决策平台演进。</li>
+  </ol>
+
+  <div class="callout ok">
+    <div class="t">已定（本轮 Daisy 拍板）</div>
+    画像 <strong>3 个</strong>：Leo 转化 / Maya 成长 / Ray 评估（英文名，Maya 为新起、可换）；样例 <span class="lane leo">Basic 普通 3 轴软料</span> → <span class="lane maya">Pro 6061 铝</span> → <span class="lane ray">Ultra 五轴+激光</span>；<strong>穷尽场景 + 渐进披露</strong>：反角场景不砍，架构可达、默认在坡上；<strong>报价 / GD&T「规划中」</strong>本版不做。
+  </div>
+
+  <div class="callout"><div class="t">下一步（本文件之外）</div>本旅程 settle 后，把"三轴界定 + 坐标模型 + 差异地图"一起<strong>折进 <span class="code">00-信息架构</span> IA</strong>，并给"特征识别 / 方案"两块可伸缩区补字段级规格。Machine / Library / Settings 三页仍<strong>待补</strong>。</div>
+
+  <div class="pfoot"><span>PalmX PC · 用户旅程 v0.2 · Daisy（李带雨）</span><span>7 / 7</span></div>
+</div>
+
+</body>
+</html>

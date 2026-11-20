@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PalMake 机台操作 · 环节 × 痛点 × 恐惧热力图 v1.1</title>
+<style>
+  :root{
+    --bg:#F4F1FA; --surface:#FFFFFF; --surface-2:#FBFAFE;
+    --brand:#6C3BAA; --brand-ink:#2E2640; --muted:#6B6580; --line:#E7E1F2;
+    --i0:#EFEAF6; --i1:#E2D8F0; --i2:#CBB6E6; --i3:#A981D5; --i4:#8A5AC4; --i5:#6C3BAA;
+    --coral:#F2785C; --coral-deep:#E8533A; --coral-soft:#FBE3DC;
+    --silent:#B89BE0; --fp:#1FA98B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--brand-ink);
+    font-family:"Plus Jakarta Sans","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;padding:32px 28px 48px}
+  .wrap{max-width:1180px;margin:0 auto}
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13.5px;line-height:1.7;margin:0 0 22px;max-width:880px}
+  .sub b{color:var(--brand)}
+  .legend{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;
+    background:var(--surface);border-radius:14px;padding:14px 18px;margin-bottom:22px;
+    box-shadow:0 1px 0 var(--line)}
+  .lg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+  .scale{display:flex;border-radius:6px;overflow:hidden}
+  .scale i{width:22px;height:14px;display:block}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--coral-deep);
+    box-shadow:0 0 0 3px var(--coral-soft)}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  table{border-collapse:separate;border-spacing:3px;width:100%}
+  th,td{padding:0}
+  thead th{font-size:11.5px;color:var(--muted);font-weight:600;vertical-align:bottom;
+    padding:0 2px 8px;text-align:center;line-height:1.35;height:64px}
+  thead th.meta{text-align:left;width:236px;vertical-align:bottom}
+  thead th.fearcol{width:122px}
+  .stagecell{background:var(--surface);border-radius:10px;padding:9px 11px;text-align:left;
+    height:52px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .stagecell .nm{font-size:13px;font-weight:600;line-height:1.2}
+  .stagecell .meta2{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted)}
+  .pill{font-size:10px;padding:1px 6px;border-radius:20px;background:var(--i0);color:var(--brand);font-weight:600}
+  .pill.p4{background:#FCEAE4;color:var(--coral-deep)}
+  .silent{color:var(--silent);font-weight:700}
+  .fp{color:var(--fp);font-weight:800;letter-spacing:.3px}
+  td.cell{border-radius:9px;height:52px;position:relative;text-align:center;
+    transition:transform .08s ease}
+  td.cell .ct{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+  td.cell .sub2{font-size:9.5px;opacity:.85;margin-top:1px}
+  td.cell.has:hover{transform:scale(1.07);z-index:5;box-shadow:0 6px 18px rgba(44,30,64,.22);cursor:default}
+  td.cell .fdot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%}
+  .fear-wrap{display:flex;align-items:center;gap:8px;height:52px;background:var(--surface);
+    border-radius:10px;padding:0 11px}
+  .fear-bar{flex:1;height:12px;border-radius:7px;background:var(--i0);overflow:hidden}
+  .fear-bar > i{display:block;height:100%;border-radius:7px;
+    background:linear-gradient(90deg,#F6A98E,var(--coral-deep))}
+  .fear-val{font-size:13px;font-weight:800;width:16px;text-align:right;font-variant-numeric:tabular-nums}
+  .calm{color:var(--coral-deep)}
+  .calm .fear-bar{background:repeating-linear-gradient(45deg,#FBE3DC,#FBE3DC 5px,#fff 5px,#fff 10px)}
+  .callout{background:linear-gradient(180deg,#fff,var(--surface-2));border:1px solid var(--line);
+    border-left:4px solid var(--brand);border-radius:14px;padding:16px 20px;margin:26px 0 10px;font-size:13.5px;line-height:1.75}
+  .callout h3{margin:0 0 8px;font-size:15px;color:var(--brand)}
+  .callout b{color:var(--coral-deep)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+  .card{background:var(--surface);border-radius:14px;padding:15px 17px;box-shadow:0 1px 0 var(--line)}
+  .card h4{margin:0 0 10px;font-size:13.5px;color:var(--brand-ink)}
+  .card .row{display:flex;gap:9px;font-size:12px;line-height:1.55;margin-bottom:7px}
+  .tag{flex:0 0 64px;font-weight:700;font-size:11px;padding:2px 0;text-align:center;border-radius:6px;height:fit-content}
+  .tag.c{background:#FCEAE4;color:var(--coral-deep)} .tag.b{background:#EDE4F8;color:var(--brand)} .tag.e{background:#E9F6F2;color:var(--fp)}
+  .foot{color:var(--muted);font-size:11.5px;line-height:1.7;margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+  .sectitle{font-size:13px;color:var(--muted);font-weight:700;margin:30px 0 12px;letter-spacing:.4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>PalMake 机台操作 · 环节 × 痛点 × 恐惧热力图</h1>
+  <p class="sub">全手感链路 14 环节 × 8 类痛点。格子深浅 = <b>严重度 intensity</b>（0–5）；格内数字 = 证据条数；右上角珊瑚点 = <b>该格恐惧 fear≥4</b>；最右列 = <b>逐环节恐惧曲线</b>。<b>🔇 静默区</b>（文档无独立能力）· <b style="color:#1FA98B">★FP</b> 该环节有 Daisy 三天工厂实操的一手具身印证。v1.1 · 2026-06-24 · 二手为主 + 一手现场层。</p>
+
+  <div class="legend">
+    <div class="lg">严重度&nbsp;<div class="scale"><i style="background:var(--i0)"></i><i style="background:var(--i1)"></i><i style="background:var(--i2)"></i><i style="background:var(--i3)"></i><i style="background:var(--i4)"></i><i style="background:var(--i5)"></i></div>&nbsp;0→5</div>
+    <div class="lg"><span class="dot"></span>恐惧 fear ≥ 4</div>
+    <div class="lg"><span class="silent">🔇</span> 静默区 / <span style="color:var(--silent)">◐</span> 半静默</div>
+    <div class="lg"><span class="fp">★FP</span> 一手印证</div>
+    <div class="lg calm" style="display:flex;gap:6px;align-items:center"><span style="width:22px;height:12px;border-radius:6px;background:repeating-linear-gradient(45deg,#FBE3DC,#FBE3DC 4px,#fff 4px,#fff 8px);display:inline-block"></span>「无知平静」fear=0</div>
+  </div>
+
+  <table id="grid"><thead></thead><tbody></tbody></table>
+
+  <div class="callout">
+    <h3>一眼看到的三件事</h3>
+    1. <b>四峰一谷</b>：恐惧打满 5 分的环节是 <b>装夹 / 探刀长 / 设零 / 启动门 / 首件</b>——而中间 <b>主轴预热、空跑 dry-run、排屑</b> 三个环节 fear=0，<b>不是不可怕，是新手根本不知道这些环节存在</b>（「无知的平静」，最危险的静默）。<br>
+    2. <b>恐惧峰 × 静默区高度重合</b>：装夹（全静默）、首件（半静默）、探刀长的「顺序心智」（隐性知识）——恐惧最高的地方恰恰是产品当前最没设计的地方。产品把火力全压在「按 START 那一下」，漏了前后 7+ 个准备 / 判读环节。<br>
+    3. <b style="color:#1FA98B">8/14 环节有一手印证</b>：三座恐惧峰（装夹飞件 / 对刀设零撞机焦虑 / 首件不知听什么）从纯二手升级为<b style="color:#1FA98B">一手 + 二手双证</b>；并新增一条二手 64 条完全没有的痛点——<b>寻边「手抖拧反」的生理应激</b>（设零行）。
+  </div>
+
+  <div class="sectitle">三人格分歧 · 同一环节痛点完全不同（设计分层依据）</div>
+  <div class="cards" id="cards"></div>
+
+  <p class="foot">
+    数据源：34-agent 深调研（133 条原始痛点 → 核验 64 条）+ Daisy 三天工厂实操一手笔记（F1–F8）。完整报告见 <span class="mono">02-用户研究/PalMake-机台操作全手感链路用户痛点深调研-v1.1.md</span>。<br>
+    诚实提示：二手为主、论坛存在「硬核过度代表 + 沉默 Crossover 欠代表」双重偏差；一手层是工业场景 N=1 autoethnography（加分版 Crossover = 恐惧下界），均非 PalMake 真机可用性数据。confidence 仅在现有证据强度内成立。
+  </p>
+</div>
+
+<script>
+const PT = ["工业设备通病","竞品具体踩坑","心智模型错配","物理人因","恐惧信任","异常恢复","交接上手","维护保养"];
+const PT_SHORT = ["工业通病","竞品踩坑","心智错配","物理人因","恐惧信任","异常恢复","交接上手","维护保养"];
+const STAGES = [
+  {id:"stock-and-fixture-load",nm:"上料与工件装夹",lay:"P2",sil:"🔇",fp:1},
+  {id:"stock-load",nm:"作业包接收·刀具核对",lay:"P1",sil:"",fp:0},
+  {id:"tool-mount",nm:"装刀（换刀·规格录入）",lay:"P2",sil:"◐",fp:1},
+  {id:"tool-length-probe",nm:"探刀长 / 对刀长",lay:"P3",sil:"",fp:1},
+  {id:"workpiece-wcs-setup",nm:"工件定位 / 设零（WCS）",lay:"P3",sil:"",fp:1},
+  {id:"spindle-warmup",nm:"主轴预热",lay:"P4",sil:"🔇",fp:0},
+  {id:"dry-run",nm:"空跑 / 试切预演 dry-run",lay:"P4",sil:"🔇",fp:0},
+  {id:"start-gate",nm:"Pre-Flight 门与启动确认",lay:"P3",sil:"",fp:0},
+  {id:"first-article-confirm",nm:"首件确认（切入观察）",lay:"P4",sil:"◐",fp:1},
+  {id:"machining-monitor",nm:"加工执行·负载判读",lay:"P4",sil:"◐",fp:1},
+  {id:"alarm-recovery",nm:"异常现场恢复",lay:"P3",sil:"◐",fp:1},
+  {id:"chip-clearing",nm:"排屑与中途清理",lay:"P2",sil:"🔇",fp:0},
+  {id:"part-removal-cooldown",nm:"取件与冷却收尾",lay:"P2",sil:"🔇",fp:1},
+  {id:"machine-cleanup-shutdown",nm:"首次清洁与收工归档",lay:"P2",sil:"◐",fp:0},
+];
+const FEAR = {"stock-and-fixture-load":5,"stock-load":3,"tool-mount":3,"tool-length-probe":5,"workpiece-wcs-setup":5,"spindle-warmup":0,"dry-run":0,"start-gate":5,"first-article-confirm":5,"machining-monitor":4,"alarm-recovery":4,"chip-clearing":0,"part-removal-cooldown":3,"machine-cleanup-shutdown":2};
+// cells[stage][painType] = {i,f,c,t}
+const C = {};
+function add(s,p,i,f,c,t){ (C[s]=C[s]||{})[p]={i,f,c,t}; }
+add("stock-and-fixture-load","恐惧信任",5,4,5,"夹持不牢工件被旋转刀拉飞，拓竹转来的 Crossover 没有'工件会飞'的物理直觉");
+add("stock-and-fixture-load","竞品具体踩坑",5,5,3,"蓝胶带/CA'贴住就行'的打印贴床心智反复失效，第2/3刀松脱飞件靠急停");
+add("stock-and-fixture-load","工业设备通病",4,3,3,"夹具/压板太高或离刀路太近直接撞，约35%撞机源于此");
+add("stock-and-fixture-load","心智模型错配",4,3,2,"夹紧力全靠猜没标尺，在'怕松动'与'怕压坏'间横跳");
+add("stock-and-fixture-load","物理人因",3,3,6,"看似夹紧实则隐性松动（下垫渣/长工件杠杆/渐进失效），肉眼判断不出");
+add("stock-and-fixture-load","交接上手",2,2,1,"开箱后调平/找正前置校准劝退，拓竹用户没有'机器要自校准'预期");
+add("stock-load","心智模型错配",3,2,1,"打印只对一卷料，CNC要核对这单需哪几把刀、料够不够，漏核对到机前才发现缺刀");
+add("stock-load","交接上手",2,3,1,"首作业'从哪下手'信息过载，完美准备瘫痪（证据弱/被吓退者不在样本）");
+add("tool-mount","工业设备通病",5,3,6,"夹头有屑/锁不到位，立铣刀被右旋几何'拔'出、Z越扎越深直到废件");
+add("tool-mount","异常恢复",4,3,2,"换刀后忘重对Z，或新刀伸出更长，抬刀/启动即扎进料、撞夹具");
+add("tool-mount","心智模型错配",4,3,3,"错误时机手动拉主轴到机前装刀破坏初始化基准；英制/公制夹头配错刀径");
+add("tool-mount","竞品具体踩坑",4,3,1,"ATC自动换刀夹簧尺寸不匹配，刀被压进刀座或没夹起，新手看不懂");
+add("tool-mount","物理人因",3,2,3,"'拧多紧才算紧'没刻度，全凭手感+'monkey tight'玄学，太松打滑太紧伤主轴");
+add("tool-length-probe","竞品具体踩坑",5,5,4,"换刀后没重触发测刀长（没点Load Tool/G43跳过），新刀按旧刀长走、整刀扎进料拔翻工件");
+add("tool-length-probe","心智模型错配",4,4,3,"BitSetter/对刀与设零先后顺序是隐性知识，连论坛老手都讲不清，新手无从自查");
+add("tool-length-probe","工业设备通病",3,2,4,"自动对刀长重复性差到熟手都不信任（同刀一次0.028一次0.015反向跳）");
+add("tool-length-probe","恐惧信任",3,4,1,"设完新刀长熟手不敢直接跑，制度性人工复核'刀真到没到我以为的位置'");
+add("workpiece-wcs-setup","竞品具体踩坑",5,5,2,"BitSetter式换刀忘重跑刀长探测，设零写错Z offset首刀扎飞工件；探针探完Z带刀低空快移撞件");
+add("workpiece-wcs-setup","心智模型错配",4,4,4,"BitZero设零=黑箱不知哪个数字代表料顶面；对刀板板厚填错；机床系vs工件系/G54错");
+add("workpiece-wcs-setup","物理人因",3,3,5,"手动Z对刀Jog步长还停0.1″多按一下扎进料/崩小刀；寻边器直径填错/不垂直带系统偏差");
+add("start-gate","恐惧信任",5,5,5,"按START那刻手悬急停屏息盯听机器不给信心；确认框被秒点、START无防误触，Pre-Flight形同虚设");
+add("start-gate","工业设备通病",5,4,3,"启动瞬间无间隙碰撞：防尘罩没降到位、retract默认过大、rapid快移砸向工件/夹具");
+add("start-gate","心智模型错配",4,4,4,"没核对夹具高度/CAM零点与物理对零不一致就发刀；跳过dry-run直接开干");
+add("first-article-confirm","异常恢复",5,5,3,"首件Z零扎刀：设零/换刀后工作流没刷新，第一刀全深猛扎进工件或台面");
+add("first-article-confirm","恐惧信任",4,5,3,"切入瞬间无人盯防，新手没有'紧盯第一刀'安全反射，悬指急停却不知该听什么声音");
+add("first-article-confirm","交接上手",4,4,1,"没有'空切预演'习惯，不抬刀试跑外轮廓就真切，首件即撞夹具/螺钉/断刀");
+add("first-article-confirm","心智模型错配",3,3,1,"首件切深'对不对'缺判读基准，空切还是猛扎分不清，错过止损窗口");
+add("first-article-confirm","物理人因",3,3,1,"切穿分离瞬间小料在工位里'蹦'，未固定废料弹跳撞坏对刀基准");
+add("machining-monitor","心智模型错配",4,4,4,"新手没有'正常声音/切屑/负载'基线，听异响不敢确定该不该停；'点了就走开'放养心智迁移自打印");
+add("machining-monitor","工业设备通病",4,3,3,"告警疲劳让操作员对真危险脱敏；7寸小屏高饱和杂色spaghetti screen把真告警藏起来");
+add("machining-monitor","物理人因",4,3,1,"加工噪声>85dB叠加护听器，HMI提示音/安全告警声被完全盖住，纯靠声的安全冗余失效");
+add("alarm-recovery","异常恢复",5,4,9,"Stop后机器进HOLDING全界面变灰死锁；断刀无法断点续跑半小时白干；复位后G54/刀补丢失漏重述即撞刀；报警只给cryptic短句看不懂");
+add("alarm-recovery","恐惧信任",3,4,1,"新手遇Homing/Probe fail第一反应反复关机重启盲试，社区需用'Don't panic'安抚");
+add("part-removal-cooldown","物理人因",4,3,1,"急着取件主轴/刀未完全停、不戴护目镜，断刀碎片高速飞溅的人身风险被低估");
+add("machine-cleanup-shutdown","异常恢复",2,2,1,"收工不清屑递延代价：限位/回零开关被铁屑糊住，下次开机homing报警");
+add("machine-cleanup-shutdown","维护保养",2,1,1,"收工清理量远超预期：铝屑/油雾四处飞溅，集尘/油雾收集未提前装好");
+
+const DIV = [
+  {st:"设零（WCS）· 分歧最剧烈",c:"设零=黑箱，不知 BitZero 哪个数字是料顶面，看不懂换刀后要重跑刀长探测——隐藏工作流直接导致首刀扎飞工件，几乎不可能自防",b:"纸片+点动多按一下顶断细刀、X/Y靠肉眼无精度；寻边器直径填错/不垂直带系统偏差，是精细人因抱怨非撞机",e:"把机床系当工件系、探针标定值当可调偏置乱改，关心坐标系纪律与可重复性、要制度性复核入口"},
+  {st:"首件确认",c:"没有'紧盯第一刀'反射，首件Z零扎刀只会惊慌不会诊断，悬指急停却不知该听什么声音、空切还是猛扎分不清",b:"知道要抬刀空跑外轮廓验证坐标，痛在系统不给'空切预演'入口、首件切深缺判读基准、得手动构造aircut",e:"评估是否有客观切入观察手段（而非肉耳）、零点保持是否可靠、切穿分离废料管理是否到位"},
+  {st:"异常恢复",c:"报警只给 ALARM:9 cryptic 短句看不懂，Stop后全界面变灰彻底不知能干嘛，第一反应反复断电重启盲试",b:"断刀后要断点续跑却只能整件重切或手改G-code删已跑行，零点还不一定保得住，半小时白干",e:"评估复位后G54/模态/刀补是否自动恢复、Run-From-Here能否安全选块——中高阶恢复能力的口碑分水岭"},
+  {st:"装夹",c:"没有'工件会飞'的物理直觉，贴床心智反复失效仍在第2/3刀松脱飞件，意识不到是安全风险而非手艺问题",b:"纠结'夹紧力多紧才够'，在怕松动与怕压坏间横跳；识得隐性松动但缺量化扭矩参照",e:"评估工装对薄壁/软料的变形控制、夹具高度与刀路干涉预警、长加工渐进失效的可监测性"},
+];
+const IC=["var(--i0)","var(--i1)","var(--i2)","var(--i3)","var(--i4)","var(--i5)"];
+
+const thead=document.querySelector("#grid thead");
+const tr=document.createElement("tr");
+tr.innerHTML='<th class="meta">环节（按链路顺序）</th>'+PT_SHORT.map(p=>`<th>${p}</th>`).join("")+'<th class="fearcol">恐惧曲线 →</th>';
+thead.appendChild(tr);
+
+const tb=document.querySelector("#grid tbody");
+STAGES.forEach(s=>{
+  const row=document.createElement("tr");
+  let html=`<td><div class="stagecell"><span class="nm">${s.nm}</span><span class="meta2">`
+    +`<span class="pill ${s.lay==='P4'?'p4':''}">${s.lay}</span>`
+    +(s.sil?`<span class="silent">${s.sil} ${s.sil==='🔇'?'静默':'半静默'}</span>`:'')
+    +(s.fp?`<span class="fp">★FP</span>`:'')
+    +`</span></div></td>`;
+  PT.forEach(p=>{
+    const d=(C[s.id]||{})[p];
+    if(d){
+      const txtw = d.i>=3?'#fff':'var(--brand-ink)';
+      html+=`<td class="cell has" style="background:${IC[d.i]}" title="${p}｜严重度${d.i}/恐惧${d.f}/证据${d.c}条 — ${d.t}">`
+        +(d.f>=4?`<span class="fdot" style="background:var(--coral-deep)"></span>`:'')
+        +`<div class="ct" style="color:${txtw}">${d.c}</div>`
+        +`<div class="sub2" style="color:${txtw}">i${d.i}·f${d.f}</div></td>`;
+    } else {
+      html+=`<td class="cell" style="background:var(--surface-2)"></td>`;
+    }
+  });
+  const f=FEAR[s.id], calm=f===0;
+  html+=`<td><div class="fear-wrap ${calm?'calm':''}">`
+    +`<div class="fear-bar"><i style="width:${calm?100:f/5*100}%;${calm?'background:none':''}"></i></div>`
+    +`<span class="fear-val">${calm?'⚠0':f}</span></div></td>`;
+  row.innerHTML=html;
+  tb.appendChild(row);
+});
+
+const cards=document.querySelector("#cards");
+DIV.forEach(d=>{
+  const el=document.createElement("div");el.className="card";
+  el.innerHTML=`<h4>${d.st}</h4>`
+    +`<div class="row"><span class="tag c">Crossover</span><span>${d.c}</span></div>`
+    +`<div class="row"><span class="tag b">Builder</span><span>${d.b}</span></div>`
+    +`<div class="row"><span class="tag e">Evaluator</span><span>${d.e}</span></div>`;
+  cards.appendChild(el);
+});
+</script>
+</body>
+</html>

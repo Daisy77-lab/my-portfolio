@@ -1,0 +1,118 @@
+[
+  {
+    "path": "assets/anker/listing.mp4",
+    "sha256": "161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb",
+    "parts": [
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0000.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0001.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0002.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0003.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0004.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0005.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0006.part",
+      ".deployment/chunks/161011b9a3e5d8f282917a14f3acabea0e9b742ed8aa2570a7ce757667761bdb/0007.part"
+    ]
+  },
+  {
+    "path": "assets/palmx-hmi-workflow.gif",
+    "sha256": "b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2",
+    "parts": [
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0000.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0001.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0002.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0003.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0004.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0005.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0006.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0007.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0008.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0009.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0010.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0011.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0012.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0013.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0014.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0015.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0016.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0017.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0018.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0019.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0020.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0021.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0022.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0023.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0024.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0025.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0026.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0027.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0028.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0029.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0030.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0031.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0032.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0033.part",
+      ".deployment/chunks/b2ee052f67ec8b154c15f66effa0b1b5d65f6517d65490eefd0c111cb7ec81c2/0034.part"
+    ]
+  },
+  {
+    "path": "assets/palmx-website-tour.mp4",
+    "sha256": "21b2f7bcacedc29e0ae950fb247501f5b663e0fdf4d984eac37bd4767b5721bb",
+    "parts": [
+      ".deployment/chunks/21b2f7bcacedc29e0ae950fb247501f5b663e0fdf4d984eac37bd4767b5721bb/0000.part",
+      ".deployment/chunks/21b2f7bcacedc29e0ae950fb247501f5b663e0fdf4d984eac37bd4767b5721bb/0001.part",
+      ".deployment/chunks/21b2f7bcacedc29e0ae950fb247501f5b663e0fdf4d984eac37bd4767b5721bb/0002.part",
+      ".deployment/chunks/21b2f7bcacedc29e0ae950fb247501f5b663e0fdf4d984eac37bd4767b5721bb/0003.part"
+    ]
+  },
+  {
+    "path": "prototypes/palmx-handwheel.html",
+    "sha256": "061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a",
+    "parts": [
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0000.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0001.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0002.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0003.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0004.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0005.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0006.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0007.part",
+      ".deployment/chunks/061b258f9b0fd2a64546d27b73d92db4fb12fc2effad1ba940c2265a9725a13a/0008.part"
+    ]
+  },
+  {
+    "path": "prototypes/palmx-materials.html",
+    "sha256": "7c26d892b2beaa5dbc0e9cbb68811c70675c0cf71f8a6b02937e456fadb328a2",
+    "parts": [
+      ".deployment/chunks/7c26d892b2beaa5dbc0e9cbb68811c70675c0cf71f8a6b02937e456fadb328a2/0000.part",
+      ".deployment/chunks/7c26d892b2beaa5dbc0e9cbb68811c70675c0cf71f8a6b02937e456fadb328a2/0001.part",
+      ".deployment/chunks/7c26d892b2beaa5dbc0e9cbb68811c70675c0cf71f8a6b02937e456fadb328a2/0002.part",
+      ".deployment/chunks/7c26d892b2beaa5dbc0e9cbb68811c70675c0cf71f8a6b02937e456fadb328a2/0003.part"
+    ]
+  },
+  {
+    "path": "prototypes/palmx-website.html",
+    "sha256": "98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165",
+    "parts": [
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0000.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0001.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0002.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0003.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0004.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0005.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0006.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0007.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0008.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0009.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0010.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0011.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0012.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0013.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0014.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0015.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0016.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0017.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0018.part",
+      ".deployment/chunks/98ceeff97da0d71732d9667438408bb70126287207129075e1d9ee1ca56ca165/0019.part"
+    ]
+  }
+]
