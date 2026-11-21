@@ -3,9 +3,11 @@
   document.querySelectorAll('[data-design-gallery]').forEach(gallery => {
     const buttons = [...gallery.querySelectorAll('[data-design-select]')];
     const panels = [...gallery.querySelectorAll('[data-design-panel]')];
+    window.portfolioMedia.prepare(gallery, '[data-design-panel] img');
     buttons.forEach(button => button.addEventListener('click', () => {
       buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
       panels.forEach(panel => { panel.hidden = panel.dataset.designPanel !== button.dataset.designSelect; });
+      window.portfolioMedia.activate(panels.find(panel => !panel.hidden));
     }));
   });
 

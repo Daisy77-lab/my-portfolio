@@ -14,7 +14,7 @@ if (document.querySelector('.selected-project')) {
 const data=window.PORTFOLIO;
 if(!data)return;
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const link=p=>'case.html?project='+encodeURIComponent(p.id);
+const link=p=>'case-'+encodeURIComponent(p.id)+'.html';
 const archive=document.querySelector('#archive-projects');
 function renderArchive(filter){
  if(!archive)return;
@@ -44,16 +44,14 @@ if(document.querySelector('.palmx-overview, .software-showcase'))initViewer([
 const caseContainer=document.querySelector('#case-content');
 if(caseContainer){
  const all=data.projects.concat(data.archive);
- const id=new URLSearchParams(location.search).get('project');
+ const id=caseContainer.dataset.project||new URLSearchParams(location.search).get('project');
  if(id==='palmx-fixture'){const destination=new URL('palmx.html',location.href);const language=new URLSearchParams(location.search).get('lang');if(language)destination.searchParams.set('lang',language);location.replace(destination);return;}
  const p=all.find(project=>project.id===id);
  if(!p){caseContainer.innerHTML='<section class="wrap not-found"><p class="eyebrow">作品集</p><h1>这个项目暂时找不到。</h1><p>可以回到作品列表，继续查看其他案例。</p><a class="button dark" href="index.html#work">返回所有作品</a></section>';document.title='未找到项目 — lidaiyu';return;}
  document.title=p.shortTitle+' — lidaiyu 产品作品集';
  const next=all[(all.indexOf(p)+1)%all.length];
- const roleLabel=p.group==='palmx'?'我的角色':'项目参与';
  const gallery=p.gallery||[];
- const backLink=p.group==='palmx'?'<a class="back-link" href="palmx.html">← 返回 PalmX 项目</a>':'<a class="back-link" href="index.html#archive">← 返回设计作品</a>';
- caseContainer.innerHTML='<section class="wrap case-heading">'+backLink+'<p class="eyebrow">'+escapeHtml(p.subtitle)+'</p><h1>'+escapeHtml(p.title)+'</h1><p class="case-intro">'+escapeHtml(p.intro)+'</p><dl class="case-meta"><div><dt>'+roleLabel+'</dt><dd>'+escapeHtml(p.role)+'</dd></div><div><dt>项目阶段</dt><dd>'+escapeHtml(p.status)+'</dd></div><div><dt>时间</dt><dd>'+escapeHtml(p.time)+'</dd></div></dl></section><figure class="case-hero wrap '+(p.imageClass==='knob'?'is-knob':'')+'"><img src="'+p.image+'" alt="'+escapeHtml(p.shortTitle)+'项目界面"></figure><div class="wrap case-layout"><nav class="case-toc" aria-label="案例目录"><span>本篇内容</span><a href="#challenge">问题与背景</a><a href="#role">'+roleLabel+'</a><a href="#decisions">关键决策</a><a href="#outcome">产出与验证</a><a href="#gallery">项目原稿</a><a href="#reflection">复盘与思考</a></nav><div class="case-body"><section class="case-section" id="challenge"><h2>需要解决什么问题</h2><p>'+escapeHtml(p.problem)+'</p></section><section class="case-section" id="role"><h2>'+roleLabel+'</h2><p>'+escapeHtml(p.roleText)+'</p></section><section class="case-section" id="decisions"><h2>关键决策与取舍</h2><ol class="decision-list">'+p.decisions.map((d,i)=>'<li><span class="decision-index">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+escapeHtml(d[0])+'</h3><p>'+escapeHtml(d[1])+'</p></div></li>').join('')+'</ol></section><section class="case-section" id="outcome"><h2>产出与验证到哪里</h2><div class="result-box"><p>'+escapeHtml(p.result)+'</p><p class="boundary">'+escapeHtml(p.boundary)+'</p></div>'+(p.demo?'<div class="demo-row"><a class="button dark" href="'+p.demo+'" target="_blank" rel="noopener noreferrer">体验交互原型 <span aria-hidden="true">↗</span></a><p>浏览器模拟；不连接真实设备。</p></div>':'')+'</section><section class="case-section" id="gallery"><h2>把作品展开来看</h2><div class="case-gallery">'+gallery.map((g,i)=>'<figure><button class="gallery-trigger" data-image-index="'+i+'" aria-label="放大查看：'+escapeHtml(g.label)+'"><img data-src="'+g.src+'" alt="'+escapeHtml(g.label)+'" loading="lazy"><span class="zoom-indicator" aria-hidden="true">放大查看 ＋</span></button><figcaption>'+escapeHtml(g.caption||g.label)+'</figcaption></figure>').join('')+'</div></section><section class="case-section" id="reflection"><h2>带到下一个项目的思考</h2><p>'+escapeHtml(p.learning)+'</p></section></div></div><div class="case-next wrap"><div><p>继续看看</p><h2><a href="'+link(next)+'">'+escapeHtml(next.shortTitle)+'</a></h2></div><a href="'+link(next)+'" aria-label="下一个项目：'+escapeHtml(next.shortTitle)+'">↗</a></div>';
+ if(caseContainer.dataset.project!==p.id) caseContainer.innerHTML=window.renderPortfolioCase(p,next,window.portfolioMedia.preview);
  initViewer(gallery);
 }
 function initViewer(gallery){

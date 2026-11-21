@@ -132,6 +132,7 @@
   }
 
   panels.innerHTML = keys.map(key => '<div class="showcase-panel" id="showcase-panel-' + key + '" role="tabpanel" aria-labelledby="showcase-tab-' + key + '"' + (key === 'pc' ? '' : ' hidden') + '>' + panelContents(key) + '</div>').join('');
+  window.portfolioMedia.prepare(root, '.ecosystem-phone img, .community-window img, .hmi-device-photo');
 
   function revealThumbnail(strip, smooth = true) {
     if (!strip.clientWidth) return;
@@ -161,6 +162,7 @@
       document.querySelector('#showcase-panel-' + tab.dataset.terminal).hidden = !active;
       if (active && focus) tab.focus();
     });
+    window.portfolioMedia.activate(document.querySelector('#showcase-panel-' + key));
   }
 
   function selectScene(key, index, source) {
@@ -211,6 +213,7 @@
     // Keep keyboard focus on the same control after updating the composition.
     const target = direction ? panel.querySelector('[data-direction="' + direction + '"]') : panel.querySelector('[data-scene="' + selected[key] + '"]');
     if (source && target) target.focus({preventScroll: true});
+    window.portfolioMedia.activate(panel);
   }
 
   function toggleExpanded(key) {
