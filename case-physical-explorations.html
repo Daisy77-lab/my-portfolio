@@ -1,5 +1,15 @@
 <!doctype html><html lang="zh-CN"><head>
 <script>(() => {
+  // Old shared links reach static content without waiting for the application bundle.
+  if (!location.pathname.endsWith('/case.html')) return;
+  const url = new URL(location.href);
+  const id = url.searchParams.get('project');
+  if (!['sky-f1','ecochamps','curadent','vr-experiences','silver-bond','physical-explorations'].includes(id)) return;
+  url.pathname = url.pathname.replace(/case\.html$/, 'case-' + id + '.html');
+  url.searchParams.delete('project');
+  location.replace(url);
+})();</script>
+<script>(() => {
   const requested = new URLSearchParams(location.search).get('lang');
   let saved;
   try { saved = localStorage.getItem('lidaiyu-portfolio-language'); } catch {}
