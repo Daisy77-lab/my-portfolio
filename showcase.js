@@ -238,7 +238,7 @@
     let slot = viewerBody.querySelector('.showcase-viewer-slot');
     if (!slot) { slot = document.createElement('div'); slot.className = 'showcase-viewer-slot'; viewerBody.append(slot); }
     slot.hidden = !!scene.src;
-    if (scene.src && !scene.poster) { viewerImage.src = scene.poster && !motionPlaying ? scene.poster : scene.src; viewerImage.alt = scene.alt; }
+    if (scene.src && !scene.poster) { window.portfolioMedia.showFull(viewerImage, scene.poster && !motionPlaying ? scene.poster : scene.src); viewerImage.alt = scene.alt; }
     else if (!scene.src) slot.innerHTML = media(key, selected[key]);
     viewerMotion.hidden = !scene.poster;
     viewerMotion.textContent = motionPlaying ? '暂停动图' : '播放动图';

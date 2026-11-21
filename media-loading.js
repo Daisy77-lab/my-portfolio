@@ -2,12 +2,33 @@
   'use strict';
   const previews = window.portfolioPreviews || {};
   const preview = src => previews[src] || src;
+  // Keep the already-readable preview while a large zoom image crosses the network.
+  const fullRequests = new WeakMap();
+  function showFull(image, original) {
+    const small = preview(original);
+    const ticket = {};
+    fullRequests.set(image, ticket);
+    image.loading = 'eager';
+    image.decoding = 'async';
+    image.src = small;
+    if (small === original) return;
+    const full = new Image();
+    full.decoding = 'async';
+    full.onload = async () => {
+      try { await full.decode(); } catch { return; }
+      if (fullRequests.get(image) === ticket && image.isConnected) image.src = original;
+    };
+    // A network failure leaves a useful preview; reopening retries the original.
+    full.onerror = () => {};
+    full.src = original;
+  }
   function eligible(element) {
     const slide = element.closest('.hobby-album-slide');
     return !slide || slide.matches('.is-current, .is-previous, .is-next');
   }
   function load(element) {
     if (!eligible(element)) return;
+    if (element.tagName === 'IMG') element.loading = 'eager';
     if (element.dataset.src) {
       const original = element.dataset.src;
       const src = element.tagName === 'IMG' && !element.closest('dialog') ? preview(original) : original;
@@ -47,8 +68,8 @@
   const playbackObserver = new IntersectionObserver(entries => entries.forEach(({ target }) => syncVideo(target)));
   const seen = new WeakSet();
   function watch(root) {
-    const matches = root.nodeType === 1 && root.matches('[data-src], [data-href]') ? [root] : [];
-    matches.push(...(root.querySelectorAll?.('[data-src], [data-href]') || []));
+    const matches = root.nodeType === 1 && root.matches('[data-src], [data-href], img[loading="lazy"]') ? [root] : [];
+    matches.push(...(root.querySelectorAll?.('[data-src], [data-href], img[loading="lazy"]') || []));
     for (const element of matches) {
       if (seen.has(element)) continue;
       seen.add(element);
@@ -62,5 +83,5 @@
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(watch)))
     .observe(document.body, { childList: true, subtree: true });
   document.addEventListener('visibilitychange', () => document.querySelectorAll('video[data-motion-src]').forEach(syncVideo));
-  window.portfolioMedia = { load, syncVideo, preview };
+  window.portfolioMedia = { load, syncVideo, preview, showFull };
 })();

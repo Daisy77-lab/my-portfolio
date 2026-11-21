@@ -21,7 +21,7 @@
     media.querySelectorAll('img').forEach((image, index) => {
       image.loading = 'eager';
       const full = image.dataset.fullSrc || image.dataset.src;
-      if (full) { image.src = full; delete image.dataset.src; }
+      if (full) { window.portfolioMedia.showFull(image, full); delete image.dataset.src; }
       const original = button.querySelectorAll('img')[index];
       image.alt = window.portfolioI18n?.originalAttribute(original, 'alt') || original.alt;
     });
